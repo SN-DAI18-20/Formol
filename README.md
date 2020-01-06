@@ -26,8 +26,11 @@ The frontend is built arround [NextJS](https://nextjs.org/) framework and uses t
 
 Note: _For now, authentication mechanisms are **not planned** for the dashboard. Of course, the technical stack can add new elements on the future of the project._
 
+## Architecture diagram
+![Formol Architecture Diagram](.github/wiki/images/formol-architecture-diagram.png)
+
 ## Installing
 _WIP._
 
 ## Contributions guide
-Before contributing to the project, please read the [CONTRIBUTION.md](contribution guidelines).
+Before contributing to the project, please read the [contribution guidelines](CONTRIBUTION.md).
