@@ -1,0 +1,20 @@
+module.exports = {
+    "development": {
+      "username": "formol",
+      "password": "ReallyBadPwd",
+      "database": "formol",
+      "host": "127.0.0.1",
+      "dialect": "postgres"
+    },
+    "test": {
+      "dialect": "sqlite",
+      "storage": ":memory:"
+    },
+    "production": {
+      "username": "formol",
+      "password": "changeme",
+      "database": "formol",
+      "host": "pg_server_ip",
+      "dialect": "postgres"
+    }
+  }

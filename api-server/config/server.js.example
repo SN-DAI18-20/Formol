@@ -1,0 +1,8 @@
+module.exports = {
+    // Web server options
+    bind_ip: "[::1]",
+    bind_port: 3345,
+
+    // Task queuing options
+
+}
