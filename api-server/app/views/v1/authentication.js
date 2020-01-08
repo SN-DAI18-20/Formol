@@ -1,6 +1,80 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const sequelize = require('../../models');
+const uuid = require('uuid/v4');
 
+const config = require('../../../config/server');
+
+const postSigninSchema = {
+    tags: [{ name: 'Authentication' }],
+    body: {
+        type: 'object',
+        required: ['username', 'password'],
+        properties: {
+            username: { type: 'string' },
+            password: { type: 'string' },
+            rememberMe: { type: ['boolean', 'null'] },
+        },
+    },
+    response: {
+        201: {
+            description: 'Token created',
+            type: 'object',
+            properties: {
+                message: { type: 'string' },
+                token: { type: 'string' },
+            },
+        },
+        401: {
+            description: 'User/Email or Password incorrect',
+            type: 'object',
+            properties: {
+                statusCode: { type: 'integer' },
+                error: { type: 'string' },
+                message: { type: 'string' },
+            },
+        },
+    },
+};
+
+async function postSignin(request, reply) {
+    const unauthorizedMsg =
+        'Username/Email or the password is not valid. ' +
+        'Please double check before retrying';
+
+    let user = await sequelize.Users.findOne({
+        where: {
+            username: request.body.username,
+        },
+    });
+
+    // Check if one user was found
+    if (user == null) {
+        // Fallback on the email address
+        user = await sequelize.Users.findOne({
+            where: {
+                email: request.body.username,
+            },
+        });
+
+        if (user != null) reply.unauthorized(unauthorizedMsg).sent();
+    }
+
+    // Check if the password hash matches
+    if (!bcrypt.compareSync(request.body.password, user.dataValues.password))
+        reply.unauthorized(unauthorizedMsg).sent();
+
+    // Generate the JWT token
+    const token = jwt.sign(
+        {
+            jti: uuid(),
+            exp: request.body.rememberMe == true ? 7 * 3600 : 2 * 3600,
+        },
+        config.jwt_secret
+    );
+
+    reply.code(201).send({ token, message: 'Token created' });
+}
 
 const postSignupSchema = {
     tags: [{ name: 'Authentication' }],
@@ -75,6 +149,12 @@ async function postSignup(request, reply) {
 
 module.exports = {
     authentication: {
+        signin: {
+            POST: {
+                handler: postSignin,
+                schema: postSigninSchema,
+            },
+        },
         signup: {
             POST: {
                 handler: postSignup,
