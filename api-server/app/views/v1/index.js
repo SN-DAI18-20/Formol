@@ -1,18 +1,29 @@
-const pjson = require("../../../package.json");
+const pjson = require('../../../package.json');
+const authentication_controller = require('./authentication');
 
-module.exports = function (fastify, opts, done) {
-    // Define v1 routes
-
+module.exports = function(fastify, opts, done) {
     // Define Swagger route
-    fastify.register(require("fastify-swagger"), {
-        routePrefix: "/schema",
+    fastify.register(require('fastify-swagger'), {
+        routePrefix: '/schema',
+        exposeRoute: true,
         swagger: {
             info: {
-                title: "Formol APIv1 swagger schema",
-                version: pjson.version
-            }
-        }
+                title: 'Formol APIv1 Swagger schema',
+                version: pjson.version,
+            },
+            host: 'localhost',
+            schemes: ['http', 'https'],
+            consumes: ['application/json'],
+            produces: ['application/json'],
+        },
     });
+
+    // Define v1 routes
+    const controllers = {
+        ...authentication_controller,
+    };
+
+    fastify.register(require('../../helpers/route-declaration'), controllers);
 
     done();
 };
