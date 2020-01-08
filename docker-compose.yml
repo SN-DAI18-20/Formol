@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  # --- General services
+  nginx:
+    image: nginx:alpine
+    restart: on-failure
+
+  postgresql:
+    image: postgres:12-alpine
+    restart: on-failure
+    ports:
+      - 127.0.0.1:5432:5432
+    environment:
+      - POSTGRES_USER=formol
+      - POSTGRES_PASSWORD=ReallyBadPwd
+      - POSTGRES_DB=formol
+    volumes:
+      - ./docker/volumes/psql12:/var/lib/postgresql/data
+
+  redis:
+    image: redis:5-alpine
+    restart: on-failure
+
+  # --- Formol services
+
+  # API
+  api:
+    build: api-server
+    restart: on-failure
+    # depends_on:
+    #   - nginx
+    links:
+      - postgresql:psql.formol.dev
+      - redis:redis.formol.dev
+    volumes:
+      - ./api-server:/opt/formol
