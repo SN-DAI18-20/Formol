@@ -1,2 +1,6 @@
 node_modules/
+docker/volumes/
 *.log
+
+# Avoid pushing config files that are not example files
+**/config/*.js
