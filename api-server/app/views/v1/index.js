@@ -1,9 +1,9 @@
 const pjson = require('../../../package.json');
 const authentication_controller = require('./authentication');
 
-module.exports = function(fastify, opts, done) {
+module.exports = async function(fastify, opts, done) {
     // Define Swagger route
-    fastify.register(require('fastify-swagger'), {
+    await fastify.register(require('fastify-swagger'), {
         routePrefix: '/schema',
         exposeRoute: true,
         swagger: {

@@ -10,7 +10,8 @@
     "start": "node app/server.js",
     "dev": "nodemon",
     "prettier:check": "./node_modules/.bin/prettier --check '**/*.js'",
-    "prettier:write": "./node_modules/.bin/prettier --write '**/*.js'"
+    "prettier:write": "./node_modules/.bin/prettier --write '**/*.js'",
+    "test": "./node_modules/.bin/jest --coverage"
   },
   "dependencies": {
     "bcrypt": "^3.0.7",
