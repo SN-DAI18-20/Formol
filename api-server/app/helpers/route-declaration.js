@@ -1,4 +1,4 @@
-module.exports = function(fastify, opts, done) {
+module.exports = async function(fastify, opts, done) {
     Object.keys(opts).forEach(service => {
         Object.keys(opts[service]).forEach(route => {
             Object.keys(opts[service][route]).forEach(method => {

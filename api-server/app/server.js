@@ -12,8 +12,12 @@ fastify.register(require('fastify-sensible'));
 fastify.register(require('./views/v1'), { prefix: '/v1' });
 
 // Start the Web server
-fastify.listen(HTTP_PORT, HTTP_BIND, (err, addr) => {
-    if (err) throw err;
+if(process.env.NODE_ENV != 'test') {
+    fastify.listen(HTTP_PORT, HTTP_BIND, (err, addr) => {
+        if (err) throw err;
 
-    fastify.log.info(`Formol's API server is listening on ${addr}`);
-});
+        fastify.log.info(`Formol's API server is listening on ${addr}`);
+    });
+}
+
+module.exports = fastify;

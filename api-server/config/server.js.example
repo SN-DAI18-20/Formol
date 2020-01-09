@@ -7,4 +7,8 @@ module.exports = {
     jwt_secret: '', // Example of command for generating one: openssl rand -hex 36
 
     // Task queuing options
+    backend_redis_host: '127.0.0.1',
+    backend_redis_port: 6379,
+    // backend_redis_pass: null,
+    // backend_redis_db: 0
 };
