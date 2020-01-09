@@ -319,6 +319,13 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/ioredis@^4.0.13":
+  version "4.14.3"
+  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.14.3.tgz#6a6089296d6fb90bbaee96d36b19d480efff026a"
+  integrity sha512-WM9xJkP+ckvr8DFy2bFEPWEp7454L/4cBT11qhqPqyzdyZ+8DxUfkf/yo+rQGQJbld0agY2PI5Jb3xxC7KZs6g==
+  dependencies:
+    "@types/node" "*"
+
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.1.tgz#42995b446db9a48a11a07ec083499a860e9138ff"
@@ -754,20 +761,19 @@ buffer-writer@2.0.0:
   resolved "https://registry.yarnpkg.com/buffer-writer/-/buffer-writer-2.0.0.tgz#ce7eb81a38f7829db09c873f2fbb792c0c98ec04"
   integrity sha512-a7ZpuTZU1TRtnwyCNW3I5dc0wWNC3VR9S++Ewyk2HHZdrO3CQJqSpd+95Us590V6AL7JqUAH2IwZ/398PmNFgw==
 
-bull@^3.12.1:
-  version "3.12.1"
-  resolved "https://registry.yarnpkg.com/bull/-/bull-3.12.1.tgz#ced62d0afca81c9264b44f1b6f39243df5d2e73f"
-  integrity sha512-X3bSP7gTqPXLYVSyUtQuTOqZuU0GwVbV304Et84Z8bxYP60R1VD3FUOLsESVRA9LIUEOWVH3hE8MFqlszmO0Gw==
+bullmq@^1.6.6:
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/bullmq/-/bullmq-1.6.6.tgz#b1e2161c83c019df0c63a86c2ba65856d00bae4c"
+  integrity sha512-Tj1BQG7WBmp++bll6Y3xC0omyii4SZ8WJQTTxa0LuPFxvoVyyffRKTqhvKExAdJEQllm20xKSjuDSjMfAH52+Q==
   dependencies:
-    cron-parser "^2.13.0"
-    debuglog "^1.0.0"
+    "@types/ioredis" "^4.0.13"
+    cron-parser "^2.7.3"
     get-port "^5.0.0"
-    ioredis "^4.14.1"
-    lodash "^4.17.15"
-    p-timeout "^3.1.0"
-    promise.prototype.finally "^3.1.1"
+    ioredis "^4.3.0"
+    lodash "^4.17.11"
+    node-uuid "^1.4.8"
     semver "^6.3.0"
-    util.promisify "^1.0.0"
+    tslib "^1.10.0"
     uuid "^3.3.3"
 
 cache-base@^1.0.1:
@@ -1016,7 +1022,7 @@ create-error-class@^3.0.0:
   dependencies:
     capture-stack-trace "^1.0.0"
 
-cron-parser@^2.13.0:
+cron-parser@^2.7.3:
   version "2.13.0"
   resolved "https://registry.yarnpkg.com/cron-parser/-/cron-parser-2.13.0.tgz#6f930bb6f2931790d2a9eec83b3ec276e27a6725"
   integrity sha512-UWeIpnRb0eyoWPVk+pD3TDpNx3KCFQeezO224oJIkktBrcW6RoAPOx5zIKprZGfk6vcYSmA8yQXItejSaDBhbQ==
@@ -1105,11 +1111,6 @@ debug@^4.0.0, debug@^4.1.0, debug@^4.1.1:
   integrity sha512-pYAIzeRo8J6KPEaJ0VWOh5Pzkbw/RetuzehGM7QRRX5he4fPHx2rdKMB256ehJCkX+XRQm16eZLqLNS8RSZXZw==
   dependencies:
     ms "^2.1.1"
-
-debuglog@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/debuglog/-/debuglog-1.0.1.tgz#aa24ffb9ac3df9a2351837cfb2d279360cd78492"
-  integrity sha1-qiT/uaw9+aI1GDfPstJ5NgzXhJI=
 
 decamelize@^1.2.0:
   version "1.2.0"
@@ -1283,7 +1284,7 @@ error-ex@^1.3.1:
   dependencies:
     is-arrayish "^0.2.1"
 
-es-abstract@^1.17.0-next.0, es-abstract@^1.17.0-next.1:
+es-abstract@^1.17.0-next.1:
   version "1.17.0"
   resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.17.0.tgz#f42a517d0036a5591dbb2c463591dc8bb50309b1"
   integrity sha512-yYkE07YF+6SIBmg1MsJ9dlub5L48Ek7X0qz+c/CPCHS9EBXfESorzng4cJQjJW5/pB6vDF41u7F8vUhLVDqIug==
@@ -2054,7 +2055,7 @@ invariant@^2.2.4:
   dependencies:
     loose-envify "^1.0.0"
 
-ioredis@^4.14.1:
+ioredis@^4.14.1, ioredis@^4.3.0:
   version "4.14.1"
   resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-4.14.1.tgz#b73ded95fcf220f106d33125a92ef6213aa31318"
   integrity sha512-94W+X//GHM+1GJvDk6JPc+8qlM7Dul+9K+lg3/aHixPN7ZGkW6qlvX0DG6At9hWtH2v3B32myfZqWoANUJYGJA==
@@ -3006,7 +3007,7 @@ lodash.sortby@^4.7.0:
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
   integrity sha1-7dFMgk4sycHgsKG0K7UhBRakJDg=
 
-lodash@^4.17.13, lodash@^4.17.15, lodash@^4.17.5:
+lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.15, lodash@^4.17.5:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
@@ -3328,6 +3329,11 @@ node-pre-gyp@^0.11.0:
     semver "^5.3.0"
     tar "^4"
 
+node-uuid@^1.4.8:
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/node-uuid/-/node-uuid-1.4.8.tgz#b040eb0923968afabf8d32fb1f17f1167fdab907"
+  integrity sha1-sEDrCSOWivq/jTL7HxfxFn/auQc=
+
 nodemon@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-2.0.2.tgz#9c7efeaaf9b8259295a97e5d4585ba8f0cbe50b0"
@@ -3572,13 +3578,6 @@ p-reduce@^1.0.0:
   resolved "https://registry.yarnpkg.com/p-reduce/-/p-reduce-1.0.0.tgz#18c2b0dd936a4690a529f8231f58a0fdb6a47dfa"
   integrity sha1-GMKw3ZNqRpClKfgjH1ig/bakffo=
 
-p-timeout@^3.1.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/p-timeout/-/p-timeout-3.2.0.tgz#c7e17abc971d2a7962ef83626b35d635acf23dfe"
-  integrity sha512-rhIwUycgwwKcP9yTOOFK/AKsAopjjCakVqLHePO3CC6Mir1Z99xT+R63jZxAT5lFZLa2inS5h+ZS2GvR99/FBg==
-  dependencies:
-    p-finally "^1.0.0"
-
 p-try@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
@@ -3818,15 +3817,6 @@ process-nextick-args@~2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
   integrity sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==
-
-promise.prototype.finally@^3.1.1:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/promise.prototype.finally/-/promise.prototype.finally-3.1.2.tgz#b8af89160c9c673cefe3b4c4435b53cfd0287067"
-  integrity sha512-A2HuJWl2opDH0EafgdjwEw7HysI8ff/n4lW4QEVBCUXFk9QeGecBWv0Deph0UmLe3tTNYegz8MOjsVuE6SMoJA==
-  dependencies:
-    define-properties "^1.1.3"
-    es-abstract "^1.17.0-next.0"
-    function-bind "^1.1.1"
 
 prompts@^2.0.1:
   version "2.3.0"
@@ -4812,6 +4802,11 @@ tr46@^1.0.1:
   integrity sha1-qLE/1r/SSJUZZ0zN5VujaTtwbQk=
   dependencies:
     punycode "^2.1.0"
+
+tslib@^1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
+  integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==
 
 tunnel-agent@^0.6.0:
   version "0.6.0"
