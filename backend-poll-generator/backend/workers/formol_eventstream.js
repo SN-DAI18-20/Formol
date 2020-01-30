@@ -1,4 +1,4 @@
-// This file will create the
+// This file will exposes the worker named 'formol_eventstream'.
 const Worker = require('bullmq').Worker;
 
 const redisConn = require('../conn');
