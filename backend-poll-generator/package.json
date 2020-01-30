@@ -1,0 +1,28 @@
+{
+  "name": "formol-backend-poll-generator",
+  "version": "0.1.0",
+  "description": "Formol's backend for generating polls static pages",
+  "main": "backend/index.js",
+  "repository": "https://github.com/SN-DAI18-20/Formol",
+  "author": "Schola Nova DAI 18-20",
+  "license": "MIT",
+  "scripts": {
+    "start": "node backend/index.js",
+    "dev": "nodemon",
+    "prettier:check": "./node_modules/.bin/prettier --check '**/*.js'",
+    "prettier:write": "./node_modules/.bin/prettier --write '**/*.js'",
+    "test": "NODE_PATH=./ NODE_ENV=test ./node_modules/.bin/jest --coverage"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bcrypt": "^3.0.7",
+    "bullmq": "^1.6.6",
+    "ioredis": "^4.14.1",
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0",
+    "nodemon": "^2.0.2",
+    "prettier": "^1.19.1"
+  }
+}
