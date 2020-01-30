@@ -18,3 +18,18 @@ const tasks = require('../tasks');
 // );
 
 // module.exports = worker;
+const worker = new Worker("queueName",
+    {connection:redisConn},
+    async job =>{
+        if(job.ID === "12test34"){
+            worker.on("completed", (jobId)=>{
+                console.log(`Job ${jobId}, is running.....`);
+            });
+        }else{
+          worker.on("failed", (jobId, err)=>{
+            console.log(`${jobId} has failed with ${err.message}`);
+          });
+        }
+    }
+);
+module.exports = worker;
