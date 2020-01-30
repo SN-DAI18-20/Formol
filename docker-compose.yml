@@ -35,3 +35,12 @@ services:
       - redis:redis.formol.dev
     volumes:
       - ./api-server:/opt/formol
+
+  # Backend Poll generator
+  backend:
+    build: backend-poll-generator
+    restart: on-failure
+    links:
+      - redis:redis.formol.dev
+    volumes:
+      - ./backend-poll-generator:/opt/formol
