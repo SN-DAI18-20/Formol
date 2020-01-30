@@ -1,0 +1,11 @@
+module.exports = {
+    // API informations, for near future uses.
+    api_url: null,
+    api_backend_key: null,
+
+    // Task queuing options
+    backend_redis_host: '127.0.0.1',
+    backend_redis_port: 6379,
+    // backend_redis_pass: null,
+    // backend_redis_db: 0
+};
