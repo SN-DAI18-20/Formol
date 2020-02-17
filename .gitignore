@@ -2,6 +2,9 @@ node_modules/
 docker/volumes/
 coverage/
 *.log
-
+Doc
+*.json
+*.exe
+*.gitignore
 # Avoid pushing config files that are not example files
 **/config/*.js
