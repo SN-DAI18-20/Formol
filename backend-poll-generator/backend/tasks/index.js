@@ -3,5 +3,5 @@
 const pollGeneration = require('./poll-generation');
 
 module.exports = {
-    pollGeneration
-}
+    pollGeneration,
+};
