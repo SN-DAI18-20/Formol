@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.2" last-position="0,0" last-zoom="1" max-obj-count="9"
+<dbmodel pgmodeler-ver="0.9.2" last-position="0,29" last-zoom="1" max-obj-count="8"
 	 default-schema="public" default-owner="postgres">
 <role name="formol"
       superuser="true"
@@ -29,7 +29,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="Users" layer="0" collapse-mode="2" max-obj-count="14">
 	<schema name="public"/>
 	<role name="formol"/>
-	<position x="199" y="173"/>
+	<position x="20" y="20"/>
 	<column name="id" not-null="true">
 		<type name="uuid" length="0"/>
 	</column>
@@ -74,7 +74,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="Polls" layer="0" collapse-mode="2" max-obj-count="13">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="671" y="157"/>
+	<position x="480" y="20"/>
 	<column name="id" not-null="true">
 		<type name="uuid" length="0"/>
 	</column>
@@ -113,16 +113,40 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="Polls_questions" layer="0" collapse-mode="2" max-obj-count="0">
+<table name="Polls_questions" layer="0" collapse-mode="2" max-obj-count="8">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="1105" y="702"/>
+	<position x="1400" y="20"/>
+	<column name="id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="poll_version">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="question" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="type" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="parameters" not-null="true">
+		<type name="json" length="0"/>
+	</column>
+	<column name="required">
+		<type name="bool" length="0"/>
+	</column>
+	<column name="created_at" not-null="true">
+		<type name="timestamp" length="0"/>
+	</column>
+	<constraint name="Polls_questions_pk" type="pk-constr" table="public.&quot;Polls_questions&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
 </table>
 
-<table name="Polls_versions" layer="0" collapse-mode="2" max-obj-count="6">
+<table name="Polls_versions" layer="0" collapse-mode="2" max-obj-count="7">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="1110" y="163"/>
+	<position x="900" y="20"/>
 	<column name="id" not-null="true">
 		<type name="uuid" length="0"/>
 	</column>
@@ -138,38 +162,101 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="updated_at" not-null="true">
 		<type name="timestamp" length="0"/>
 	</column>
+	<column name="deleted_at" not-null="true">
+		<type name="timestamp" length="0"/>
+	</column>
 	<constraint name="Polls_versions_pk" type="pk-constr" table="public.&quot;Polls_versions&quot;">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
 </table>
 
-<table name="Polls_recipients" layer="0" collapse-mode="2" max-obj-count="0">
+<table name="Polls_recipients" layer="0" collapse-mode="2" max-obj-count="4">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="1339" y="316"/>
+	<position x="460" y="440"/>
+	<column name="id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="recipient">
+		<type name="text" length="0"/>
+	</column>
+	<column name="poll">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="created_at">
+		<type name="timestamp" length="0"/>
+	</column>
+	<constraint name="Polls_recipients_pk" type="pk-constr" table="public.&quot;Polls_recipients&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
 </table>
 
-<table name="Polls_answers" layer="0" collapse-mode="2" max-obj-count="0">
+<table name="Polls_answers" layer="0" collapse-mode="2" max-obj-count="7">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="1342" y="553"/>
+	<position x="1380" y="340"/>
+	<column name="id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="client_addr" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="user_agent">
+		<type name="text" length="0"/>
+	</column>
+	<column name="question">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="answer" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="created_at" not-null="true">
+		<type name="timestamp" length="0"/>
+	</column>
+	<constraint name="Polls_answers_pk" type="pk-constr" table="public.&quot;Polls_answers&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
 </table>
 
-<table name="Events_users" layer="0" collapse-mode="2" max-obj-count="0">
+<table name="Events_users" layer="0" collapse-mode="2" max-obj-count="8">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="497" y="163"/>
-</table>
-
-<table name="Events_polls" layer="0" collapse-mode="2" max-obj-count="0">
-	<schema name="public"/>
-	<role name="postgres"/>
-	<position x="498" y="245"/>
+	<position x="40" y="400"/>
+	<column name="id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="user">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="action" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="status" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="client_addr" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="payload">
+		<type name="json" length="0"/>
+	</column>
+	<column name="created_at" not-null="true">
+		<type name="timestamp" length="0"/>
+	</column>
+	<constraint name="Events_users_pk" type="pk-constr" table="public.&quot;Events_users&quot;">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
 </table>
 
 <constraint name="Polls_version_fk" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Polls_versions&quot;" table="public.&quot;Polls&quot;">
 	<columns names="version" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="Polls_questions_poll_version_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Polls_versions&quot;" table="public.&quot;Polls_questions&quot;">
+	<columns names="poll_version" ref-type="src-columns"/>
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
@@ -179,17 +266,71 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<columns names="id" ref-type="dst-columns"/>
 </constraint>
 
-<relationship name="&quot;rel_Polls_Polls_versions&quot;" type="relfk" layer="0"
+<constraint name="Polls_recipients_poll_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Polls&quot;" table="public.&quot;Polls_recipients&quot;">
+	<columns names="poll" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="Polls_answers_question_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Polls_questions&quot;" table="public.&quot;Polls_answers&quot;">
+	<columns names="question" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="Events_users_user_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="public.&quot;Users&quot;" table="public.&quot;Events_users&quot;">
+	<columns names="user" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_Polls_Polls_versions" type="relfk" layer="0"
 	 src-table="public.&quot;Polls&quot;"
 	 dst-table="public.&quot;Polls_versions&quot;" reference-fk="Polls_version_fk"
-	 src-required="false" dst-required="false"/>
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="-12.286" y="-54.4253"/>
+	</label>
+</relationship>
 
 <relationship name="rel_Polls_versions_Polls" type="relfk" layer="0"
 	 src-table="public.&quot;Polls_versions&quot;"
 	 dst-table="public.&quot;Polls&quot;" reference-fk="Poll_version_poll_fk"
 	 src-required="false" dst-required="false">
 	<label ref-type="name-label">
-		<position x="54.7574" y="27.4984"/>
+		<position x="-2.28601" y="10.7884"/>
+	</label>
+</relationship>
+
+<relationship name="rel_Polls_recipients_Polls" type="relfk" layer="0"
+	 src-table="public.&quot;Polls_recipients&quot;"
+	 dst-table="public.&quot;Polls&quot;" reference-fk="Polls_recipients_poll_fk"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="1.21399" y="-23.0164"/>
+	</label>
+</relationship>
+
+<relationship name="rel_Polls_questions_Polls_versions" type="relfk" layer="0"
+	 src-table="public.&quot;Polls_questions&quot;"
+	 dst-table="public.&quot;Polls_versions&quot;" reference-fk="Polls_questions_poll_version_fk"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="-12.7937" y="-21.2152"/>
+	</label>
+</relationship>
+
+<relationship name="&quot;rel_Events_users_Users&quot;" type="relfk" layer="0"
+	 src-table="public.&quot;Events_users&quot;"
+	 dst-table="public.&quot;Users&quot;" reference-fk="Events_users_user_fk"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_Polls_answers_Polls_questions" type="relfk" layer="0"
+	 src-table="public.&quot;Polls_answers&quot;"
+	 dst-table="public.&quot;Polls_questions&quot;" reference-fk="Polls_answers_question_fk"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="18.4003" y="-16.6224"/>
 	</label>
 </relationship>
 
