@@ -72,6 +72,7 @@ const tiers = [
       'Créer vos questionnaires peronnalisés.'
     ],
     buttonText: 'Créer',
+    link: 'formulaire',
     buttonVariant: 'outlined',
   },
   {
@@ -136,9 +137,11 @@ export default function Index() {
                   </div>
                 </CardContent>
                 <CardActions>
-                  <Button fullWidth variant={tier.buttonVariant} color="primary">
-                    {tier.buttonText}
-                  </Button>
+                  <a style={{ textDecoration: 'none' }} href={tier.link}>
+                    <Button fullWidth variant={tier.buttonVariant} color="primary">
+                      {tier.buttonText}
+                    </Button>
+                  </a>
                 </CardActions>
               </Card>
             </Grid>
