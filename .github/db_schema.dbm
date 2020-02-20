@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.2" last-position="0,29" last-zoom="1" max-obj-count="8"
+<dbmodel pgmodeler-ver="0.9.2" last-position="0,0" last-zoom="1" max-obj-count="8"
 	 default-schema="public" default-owner="postgres">
 <role name="formol"
       superuser="true"
@@ -113,7 +113,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="Polls_questions" layer="0" collapse-mode="2" max-obj-count="8">
+<table name="Polls_questions" layer="0" collapse-mode="2" max-obj-count="9">
 	<schema name="public"/>
 	<role name="postgres"/>
 	<position x="1400" y="20"/>
@@ -134,6 +134,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="required">
 		<type name="bool" length="0"/>
+	</column>
+	<column name="order" not-null="true" default-value="0">
+		<type name="smallint" length="0"/>
 	</column>
 	<column name="created_at" not-null="true">
 		<type name="timestamp" length="0"/>
@@ -194,7 +197,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="Polls_answers" layer="0" collapse-mode="2" max-obj-count="7">
 	<schema name="public"/>
 	<role name="postgres"/>
-	<position x="1380" y="340"/>
+	<position x="1400" y="340"/>
 	<column name="id" not-null="true">
 		<type name="uuid" length="0"/>
 	</column>
@@ -320,10 +323,14 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</label>
 </relationship>
 
-<relationship name="&quot;rel_Events_users_Users&quot;" type="relfk" layer="0"
+<relationship name="rel_Events_users_Users" type="relfk" layer="0"
 	 src-table="public.&quot;Events_users&quot;"
 	 dst-table="public.&quot;Users&quot;" reference-fk="Events_users_user_fk"
-	 src-required="false" dst-required="false"/>
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="14.0722" y="-23.8224"/>
+	</label>
+</relationship>
 
 <relationship name="rel_Polls_answers_Polls_questions" type="relfk" layer="0"
 	 src-table="public.&quot;Polls_answers&quot;"
