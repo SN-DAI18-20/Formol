@@ -19,13 +19,23 @@ const useStyles = makeStyles(theme => ({
     submit: {
       margin: theme.spacing(3, 0, 2),
     },
-    space:{
-        height: '15px'
-    }
   }));
 
   export default function RecoveryPasswordConfirmation() {
     const classes = useStyles();
+
+    const [pass1, setPass1] = React.useState('');
+    const [pass2, setPass2] = React.useState('');
+    const [error, setError] = React.useState(true);
+
+    const verifyPassword = () => {
+      if(pass1 != pass2 || pass1 == null || pass2 == null)
+        setError(false)
+      else
+        setError(true) 
+      console.log( 'Password1:', pass1, 'Password2: ', pass2, 'Error: ', error); 
+    }
+
 
     return (
         <React.Fragment>
@@ -36,14 +46,17 @@ const useStyles = makeStyles(theme => ({
                 <Typography component="h3" variant="h4" align="center" color="textPrimary">
                     Récuperation de mot de passe
                 </Typography>
-                <div className={classes.space}></div>
-                <Typography component="h4" variant="h5" align="center" color="textPrimary">
-                    Nouveau mot de passe
-                </Typography>
                 <form className={classes.form} noValidate>         
-                    <TextField id="newPassword" name="newPassword" label="Nouveau mot de passe" variant="outlined" margin="normal" required fullWidth autoFocus></TextField> 
-                    <TextField id="confirmation" name="confirmation" label="Confirmation du mot de passe" variant="outlined" margin="normal" required fullWidth autoFocus></TextField>                              
-                    <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>Confirmer</Button>                                
+                    <TextField error={!error} onBlur={({target})=>{setPass1(target.value)}} id="newPassword" name="newPassword" label="Nouveau mot de passe" variant="outlined" margin="normal" required fullWidth autoFocus></TextField> 
+                    <TextField error={!error} onBlur={({target})=>{setPass2(target.value)}} id="confirmation" name="confirmation" label="Confirmation du mot de passe" variant="outlined" margin="normal" required fullWidth autoFocus></TextField>   
+                    {!error ? 
+                      <Typography component="h4" variant="h5" align="center" color="error">
+                      Mot de passe incorrect.
+                      </Typography> 
+                      : <span></span> 
+                      
+                    }
+                    <Button fullWidth variant="contained" color="primary" onClick={() => verifyPassword()} className={classes.submit}>Confirmer</Button>                            
                 </form>
             </Container>
             </div>            

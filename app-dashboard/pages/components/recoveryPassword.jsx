@@ -24,6 +24,17 @@ const useStyles = makeStyles(theme => ({
   export default function RecoveryPassword() {
     const classes = useStyles();
 
+    const [mail, setEmail] = React.useState('');
+    const [error, setError] = React.useState(true);
+
+    const verifyPassword = () => {
+      if(!mail.includes('@') || mail == null)
+        setError(false)
+      else
+        setError(true) 
+      console.log('Error: ', error); 
+    }
+
     return (
         <React.Fragment>
             <CssBaseline />
@@ -34,8 +45,14 @@ const useStyles = makeStyles(theme => ({
                     Récuperation de mot de passe
                 </Typography>
                 <form className={classes.form} noValidate>         
-                    <TextField id="email" name="email" label="Email" variant="outlined" margin="normal" required fullWidth autoFocus></TextField>                               
-                    <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>Envoyer la confirmation</Button>                                
+                    <TextField error={!error} onBlur={({target})=>{setEmail(target.value)}} id="email" name="email" label="Email" variant="outlined" margin="normal" required fullWidth autoFocus></TextField>                               
+                    {!error ? 
+                      <Typography component="h4" variant="h5" align="center" color="error">
+                      Adresse email incorrect.
+                      </Typography> 
+                      : <span></span> 
+                    }
+                    <Button fullWidth variant="contained" color="primary" onClick={() => verifyPassword()} className={classes.submit}>Envoyer la confirmation</Button>                                
                 </form>
             </Container>
             </div>            
