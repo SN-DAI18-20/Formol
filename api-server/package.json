@@ -14,6 +14,7 @@
     "test": "./node_modules/.bin/jest --coverage"
   },
   "dependencies": {
+    "@sendgrid/mail": "^6.5.4",
     "bcrypt": "^3.0.7",
     "bull": "^3.13.0",
     "fastify": "^2.11.0",
