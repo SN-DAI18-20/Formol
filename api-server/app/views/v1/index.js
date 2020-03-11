@@ -1,5 +1,9 @@
 const pjson = require('../../../package.json');
-const authentication_controller = require('./authentication');
+const authenticationRoutes = require('./authentication');
+const pollsRoutes = require('./polls');
+const pollsEventsRoutes = require('./pollsEvents');
+const pollsFormsRoutes = require('./pollsForms');
+const pollsRecipientsRoutes = require('./pollsRecipients');
 
 module.exports = async function(fastify, opts, done) {
     // Define Swagger route
@@ -19,11 +23,23 @@ module.exports = async function(fastify, opts, done) {
     });
 
     // Define v1 routes
-    const controllers = {
-        ...authentication_controller,
-    };
-
-    fastify.register(require('../../helpers/route-declaration'), controllers);
+    fastify.register(
+        require('../../helpers/route-declaration'),
+        authenticationRoutes
+    );
+    fastify.register(require('../../helpers/route-declaration'), pollsRoutes);
+    fastify.register(
+        require('../../helpers/route-declaration'),
+        pollsFormsRoutes
+    );
+    fastify.register(
+        require('../../helpers/route-declaration'),
+        pollsEventsRoutes
+    );
+    fastify.register(
+        require('../../helpers/route-declaration'),
+        pollsRecipientsRoutes
+    );
 
     done();
 };
