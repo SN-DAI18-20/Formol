@@ -11,4 +11,10 @@ module.exports = {
     backend_redis_port: 6379,
     // backend_redis_pass: null,
     // backend_redis_db: 0
+
+    // Emails configuration (Sendgrid API)
+    email: {
+        apikey: '',  // Use your API Key from Sendgrid dashboard
+        globalEmail: 'noreply@formol.site'
+    }
 };
