@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title Page</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.3/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <style>
+    .poll{
+      padding: 20px;
+      border: 1px solid #ccc;
+    }
+    h3{
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .q-options{
+    
+      margin-bottom: 20px;
+      border-radius: 5px;
+     /* background-color: #f2f2f2; */
+    }
+
+    .q-input-text, .q-date, .q-email, .q-tel, .q-range, .q-option, .q-select, .q-number{
+      width: 50%;
+      height: 40%;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      margin-bottom: 10px;
+    }
+
+    input[type=text],input[type=date],input[type=email],input[type=tel],input[type=number],input[type=range], select {
+      width: 50%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    button[type=submit] {
+      width: 50%;
+      background-color: #4CAF50;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+  <body>
+    <!-- <ul>
+      <li><a href="">questions 1</a></li>
+      <li><a href="">q2</a></li>
+    </ul> -->
+
+    <div class="poll">
+        <div class="questions">
+          <h1>Questionnaires</h1>
+        </div>
+        <form action="" method="POST">
+          <div class="q-options">
+            <div class="q-input-text">
+              <div class="question panel-primary">
+                <div class="panel-heading">
+                <h3>test1?</h3>
+                </div>
+              </div>
+              <div class="">
+                <label for=""></label>
+                <input type="text" class="" name="" id="" aria-describedby="helpId" placeholder="">
+              </div>
+            </div>
+            <div class="q-date">
+              <div class="question panel-primary">
+                <div class="panel-heading">
+                <h3>test date?</h3>
+                </div>
+              </div>
+                <div class="">
+                  <label for=""></label> 
+                  <input type="date" name="" id="input" class="" value="" required="required" title="">
+                </div>
+            </div>
+            <div class="q-email">
+              <div class="question panel-primary">
+                <div class="panel-heading">
+                <h3>test3 email</h3>
+                </div>
+              </div>
+              <div class="">
+                <label for="">Email</label>
+                <input type="email" name="" id="input" class="" width="50" value="" required="required" title=""> 
+              </div>
+            </div>
+            <div class="q-tel">
+              <div class="question panel-primary">
+                <div class="panel-heading">
+                <h3>test 4 tel?</h3>
+                </div>
+              </div>
+              <div class="">
+                <label for="">Tel</label>
+                <input type="tel" name="" id="input" class="" width="50" value="" required="required" title="">
+              </div>
+            </div>
+            <div class="q-number">
+              <div class="question panel-primary">
+                <div class="panel-heading">
+                  <h3>test 5 ?</h3>
+                </div>
+              </div>
+              <div class="">
+                <label for="">number</label>
+                <input type="number" name="" id="input" class="" width="50" value="" required="required" title="">
+              </div>
+            </div>
+            <div class="q-range">
+              <div class="question panel-primary">
+                  <div class="panel-heading">
+                    <h3 class="q-title">test 6 ?</h3>
+                  </div>
+              </div>
+              <div class="">
+                <label for="">range</label>
+                <input type="range" name="" id="input" class="" value="" min="{5"} max="" step="" required="required" title="">
+              </div>
+            </div>
+            <div class="q-option">
+              <div class="question  panel-primary">
+                <div class="panel-heading">
+                <h3> Combien d'équipe y a-il dans la NBA? </h3>
+                </div>
+              </div> 
+              <div class="">
+                <label for=""></label>
+                <select  name="" id="">
+                  <option selected>Selectionne votre réponse</option>
+                  <option value="">30</option>
+                  <option value="">20</option>
+                  <option value="">25</option>
+                </select>
+              </div>
+            </div>
+            <div class="q-select">
+              <div class="question panel-primary">
+                <div class="panel-heading">
+                <h3>Quel est le plus grand océan ? </h3>
+                </div>
+              </div>
+              <div class="">
+                <label for=""></label>
+                <select name="" id="">
+                  <option selected>Selectionne votre réponse</option>
+                  <option value="">Atlantique</option>
+                  <option value="">Pacifique</option>
+                  <option value="">Indien</option>
+                  <option value="">Antarctique</option>
+                  <option value="">Arctique</option>
+                </select>
+              </div>
+            </div>
+        </div>  
+          <button type="submit" class="">Submit</button>
+          <input type="hidden" name="poll" value="1">
+        </form>
+    </div>
+
+    <!-- <div>
+      <h1 class="text-center">Questionnaires</h1>
+      <div class="text-center">
+        <form>
+          <div>
+            <B>Question</B>
+          </div>
+          <div>
+            <label ></label>
+            <input type="text" name="" id="">
+          </div>
+          <div>
+            <label for=""></label>
+            <input type="text" name="" id="">
+          </div>
+          <div>
+            <input type="checkbox" name="" id="">
+          </div>
+          <B>questions</B><P>
+            <INPUT TYPE="radio" NAME="answer" value="1"><BR>
+            <INPUT TYPE="radio" NAME="answer" value="2"><BR>
+            <INPUT TYPE="radio" NAME="answer" value="3"><BR>
+            <INPUT TYPE="radio" NAME="answer" value="4"><P>
+          <div>
+            <label>
+              <input type="checkbox" checked>
+              Display value
+            </label>
+          </div>
+          <div>
+            <label for=""></label>
+            <select multiple name="" id="">
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+            </select>
+          </div>
+        </form>
+      </div>
+    </div> -->
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </body>
+</html>
