@@ -56,7 +56,7 @@ export default () => {
 			</div>
 			<div>
 				{marks.map(({ id, label, value }) => {
-					return <Mark deleteMark={deleteMark} updateMark={updateMark} id={id} label={label} value={value} />;
+					return <Mark key={`mark-${id}`} deleteMark={deleteMark} updateMark={updateMark} id={id} label={label} value={value} />;
 				})}
 				<Button
 					onClick={() => {
