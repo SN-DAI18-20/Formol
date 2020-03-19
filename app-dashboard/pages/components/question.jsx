@@ -1,8 +1,4 @@
-import React from 'react';
-
 import { makeStyles } from '@material-ui/core/styles';
-
-
 
 import Text from './input-type/text';
 import Number from './input-type/number';
@@ -20,7 +16,6 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Create from '@material-ui/icons/Create';
-
 
 const useStyle = makeStyles({
     questionsChoice:{
@@ -40,46 +35,47 @@ const useStyle = makeStyles({
       display:'flex',
       flexDirection:'row',
       justifyContent:'space-between'
+    },
+    questionType: {
+      display: 'flex'
     }
 })
 
 export default ({ deleteQuestion }) => {
 
-    const { selectionSection, header } = useStyle();
+    const { header, questionType } = useStyle();
 
-    const [ChoosedQuestion, setChoosedQuestion] = React.useState(Text);
+    const [ChoosedQuestion, setChoosedQuestion] = React.useState("Text");
     const [selected, setSelected] = React.useState("Text");
 
     const chooseAQuestion = (choosed) => {
-        switch (choosed) {
-            case "Number":
-                setChoosedQuestion(Number)
-                break;
-            case "Text":
-                setChoosedQuestion(Text)
-                break;
-            case "CheckBox":
-                setChoosedQuestion(CheckBox)
-                break;
-            case "Range":
-                setChoosedQuestion(Range)
-                break;
-            case "Radio":
-                setChoosedQuestion(Radio)
-                break;
-            default:
-                break;
-        }
+      setChoosedQuestion(choosed)
+    }
+
+    const renderChoosedQuestion = (choosedQuestion) => {
+      switch (choosedQuestion) {
+        case "Number":
+            return <Number/>;
+        case "Text":
+            return <Text/>;
+        case "CheckBox":
+            return <CheckBox/>;
+        case "Range":
+            return <Range/>;
+        case "Radio":
+            return <Radio/>;
+        default:
+            break;
+    }
     }
 
     const handleSelect = (selectedValue) => {
-      console.log(selectedValue)
         setSelected(selectedValue)
         chooseAQuestion(selectedValue)
     }
 
     return (
-                <Card elevation={8}>
+                <Card elevation={8} style={{ margin:'20px 0px' }}>
                 <CardContent>
                     <div className={header}>
                         <QuestionTitle/>
@@ -96,9 +92,9 @@ export default ({ deleteQuestion }) => {
                         </Select>
                       </FormControl>
                     </div>
-                    <div className={selectionSection}>
+                    <div className={questionType}>
                 {
-                  ChoosedQuestion
+                  renderChoosedQuestion(ChoosedQuestion)
                 }
                   </div>
                 </CardContent>
@@ -127,7 +123,13 @@ const QuestionTitle = () => {
     return (
         <div className={questionTitleStyle}>
             {
-                modifyTitle ? <TextField onKeyDown={({keyCode}) => keyCode === 13 && setModifyTitle(false)} onChange={({ target }) => handleTextFieldChange(target.value)} defaultValue={questionTitle} /> : <Typography variant='h6' children={questionTitle} />
+                modifyTitle
+                ? <TextField
+                    onKeyDown={({keyCode}) => keyCode === 13 && setModifyTitle(false)}
+                    onChange={({ target }) => handleTextFieldChange(target.value)}
+                    defaultValue={questionTitle}
+                  />
+                : <Typography variant='h6' children={questionTitle} />
             }
             <Button onClick={handleClickIcon} >
                 <Create/>

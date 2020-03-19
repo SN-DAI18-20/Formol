@@ -8,7 +8,6 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import { Droppable, Draggable, DragDropContext } from 'react-beautiful-dnd';
 import Create from '@material-ui/icons/Create';
 
 import Question from './question';
@@ -52,39 +51,9 @@ export default ({deleteSection, sectionId, index, provided}) => {
         }))
     }
 
-    const reorder = (list, startIndex, endIndex) => {
-        const result = Array.from(list)
-        const [removed] = result.splice(startIndex, 1)
-        result.splice(endIndex, 0, removed)
-
-        return result
-    }
-
-    const onDragEnd = (result) => {
-        if(!result.destination){
-            return
-        }
-
-        if(!result.destination.index === result.source.index){
-            return
-        }
-
-        setChoosedQuestions(reorder(
-            ChoosedQuestions,
-            result.source.index,
-            result.destination.index
-        ))
-    }
-
     return (
             <div>
-            <DragDropContext
-                onDragEnd={onDragEnd}>
-                <Droppable droppableId="questions">
-                {(provided) => (
                     <Card
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
                     elevation={4}
                     className={paperStyle}>
                 <CardContent>
@@ -92,16 +61,10 @@ export default ({deleteSection, sectionId, index, provided}) => {
                 {
                     ChoosedQuestions.map((choosedQuestion, index) => {
                         return (
-                            <Draggable draggableId={choosedQuestion.id} key={choosedQuestion.id} index={index}>
-                                {provided => (
-                                    <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}>
+                                    <div>
                                         <Question deleteQuestion={() => deleteQuestion(choosedQuestion.id)} />
                                     </div>
                                 )}
-                            </Draggable>
                             )
                         })
                     }
@@ -114,9 +77,6 @@ export default ({deleteSection, sectionId, index, provided}) => {
                 </div>
                 </CardActions>
             </Card>
-            )}
-            </Droppable>
-        </DragDropContext>
         </div>
     )
 }

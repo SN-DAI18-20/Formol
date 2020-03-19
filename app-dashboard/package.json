@@ -4,19 +4,18 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "latest",
-    "@material-ui/icons": "^4.5.1",
+    "@material-ui/icons": "^4.9.1",
     "clsx": "latest",
     "next": "latest",
     "prop-types": "latest",
     "react": "latest",
-    "react-beautiful-dnd": "^12.2.0",
     "react-dom": "latest"
   },
   "scripts": {
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "story": "start-storybook"
+    "story": "start-storybook -p 9000"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
