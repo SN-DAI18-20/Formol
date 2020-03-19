@@ -2,106 +2,118 @@ import React from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 
-import Paper from '@material-ui/core/Paper';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import Create from '@material-ui/icons/Create';
 
-import Section from './section';
+import Question from './question';
 
 const useStyle = makeStyles({
-    paperPadding: {
-        padding:15,
-        display:'flex',
-        justifyContent:'center'
-    },
-    buttonPadding: {
-        padding: 15
-    }
+  paperStyle:{
+      display:'flex',
+      flexDirection:'column',
+      justifyContent:'center',
+      margin: '20px 0px'
+  },
+  option:{
+      display: 'flex',
+      justifyContent: 'space-between'
+  },
+  segmentTitle:{
+      overflowX: 'auto',
+      overflowY: 'hidden',
+      marginBottom: '10px',
+  },
+  title:{
+      display:'flex',
+      flexDirection:'row'
+  },
+  cardHeader:{
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  }
 })
 
 export default () => {
+  const { paperStyle, option, cardHeader } = useStyle();
 
-    const { paperPadding, buttonPadding } = useStyle();
+  const [id, setId] = React.useState(1);
+  const [ChoosedQuestions, setChoosedQuestions] = React.useState([{ id:`question${0}`}]);
 
-    const [sections, setSections] = React.useState([]);
-    const [id, setId] = React.useState(0);
-    const [canAddSection, setCanAddSection] = React.useState(true);
+  const addQuestion = () => {
+      setId(id+1)
+      setChoosedQuestions([...ChoosedQuestions, { id:`question${id}`}])
+  }
 
-    const addSection = () => {
-        setSections([...sections, { id:`section${id}`, Section}])
-        setId(id+1)
-    }
+  const deleteQuestion = (QuestionID) => {
+      setChoosedQuestions(ChoosedQuestions.filter(({id}) => {
+          return id !== QuestionID
+      }))
+  }
 
-    const deleteSection = (SectionID) => {
-        setSections(sections.filter(section => {
-            return section.id !== SectionID.id
-        }))
-    }
+  return (
+          <div>
+                  <Card
+                  elevation={4}
+                  className={paperStyle}>
+              <CardContent>
+                  <InputTitle/>
+              {
+                  ChoosedQuestions.map((choosedQuestion, index) => {
+                      return (
+                                  <div key={`question${index}`}>
+                                      <Question deleteQuestion={() => deleteQuestion(choosedQuestion.id)} />
+                                  </div>
+                          )
+                      })
+                  }
+              </CardContent>
+              <CardActions>
+              <div className={option}>
+                  <Button color='primary' onClick={addQuestion}> add </Button>
+              </div>
+              </CardActions>
+          </Card>
+      </div>
+  )
+}
 
-    const toggleShowAddSection = () => {
-        setCanAddSection(!canAddSection)
-    }
+const InputTitle = () => {
 
-    const reorder = (list, startIndex, endIndex) => {
-        const result = Array.from(list)
-        const [removed] = result.splice(startIndex, 1)
-        result.splice(endIndex, 0, removed)
+  const { segmentTitle, title } = useStyle();
 
-        return result
-    }
+  const [input, setInput] = React.useState(false);
+  const [segmentName, setSegmentName] = React.useState("Segment");
 
-    const onDragEnd = (result) => {
-        if(!result.destination){
-            return
-        }
-        if(!result.destination.index === result.source.index){
-            return
-        }
-
-        setSections(reorder(
-            sections,
-            result.source.index,
-            result.destination.index
-        ))
-        toggleShowAddSection()
-    }
-
-    return (
-            <div>
-                <DragDropContext onDragStart={toggleShowAddSection} onDragEnd={onDragEnd}>
-                    <Droppable droppableId="sections">
-                        {provided => (
-                            <div
-                            ref={provided.innerRef}
-                            {...provided.droppableProps}
-                            >
-                                {sections.map(({Section, id}, index) => {
-                                    console.log(id);
-                                    return (
-                                        <Draggable draggableId={id} key={id} index={index}>
-                                        {provided=>(
-                                                <div
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                key={id}
-                                                >
-                                        <Section
-                                            deleteSection={() => deleteSection({id, Section})}/>
-                                    </div>
-                                    )
-                                }
-                                </Draggable>
-                                )
-                            })}
-                            </div>
-                            )
-                        }
-                    </Droppable>
-                </DragDropContext>
-                    {canAddSection && <Paper elevation={4} className={paperPadding}>
-                        <Button onClick={addSection} className={buttonPadding}>Ajouter une section</Button>
-                    </Paper>}
-            </div>
-    )
+  return (
+      <div className={title}>
+          <div className={segmentTitle}>
+          {
+              input
+              ? (
+                  <TextField
+                  onBlur={({ target }) => {
+                      setSegmentName(target.value)
+                      setInput(false)
+                  }}
+                  onChange={({target}) => setSegmentName(target.value)}
+                  defaultValue={segmentName}
+                  onKeyDown={key => key.keyCode === 13 && setInput(false)}
+                  />
+                  )
+                  : (
+                  <Typography variant='h4' children={segmentName} />
+              )
+          }
+          </div>
+          <Button onClick={() => setInput(!input)}>
+              <Create/>
+          </Button>
+      </div>
+  )
 }
