@@ -41,7 +41,7 @@ export default () => {
 	};
 
 	return (
-		<div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+		<div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
 			<div>
 				<TextField
 					type="number"
