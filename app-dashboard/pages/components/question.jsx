@@ -5,6 +5,7 @@ import Number from './input-type/number';
 import CheckBox from './input-type/checkbox';
 import Selector from './input-type/selector';
 import Range from './input-type/range';
+import Date from './input-type/date';
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -64,6 +65,8 @@ export default ({ deleteQuestion }) => {
             return <Range/>;
         case "Selector":
             return <Selector/>;
+        case "Date":
+            return <Date/>;
         default:
             break;
     }
@@ -89,6 +92,7 @@ export default ({ deleteQuestion }) => {
                           <MenuItem value="CheckBox" children="CheckBox" />
                           <MenuItem value="Selector" children="Selector" />
                           <MenuItem value="Range" children="Range" />
+                          <MenuItem value="Date" children="Date" />
                         </Select>
                       </FormControl>
                     </div>
