@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Text from './input-type/text';
 import Number from './input-type/number';
 import CheckBox from './input-type/checkbox';
-import Radio from './input-type/radio';
+import Selector from './input-type/selector';
 import Range from './input-type/range';
 
 import Card from '@material-ui/core/Card';
@@ -62,8 +62,8 @@ export default ({ deleteQuestion }) => {
             return <CheckBox/>;
         case "Range":
             return <Range/>;
-        case "Radio":
-            return <Radio/>;
+        case "Selector":
+            return <Selector/>;
         default:
             break;
     }
@@ -87,7 +87,7 @@ export default ({ deleteQuestion }) => {
                           <MenuItem value="Text" children="Text" />
                           <MenuItem value="Number" children="Number" />
                           <MenuItem value="CheckBox" children="CheckBox" />
-                          <MenuItem value="Radio" children="Radio" />
+                          <MenuItem value="Selector" children="Selector" />
                           <MenuItem value="Range" children="Range" />
                         </Select>
                       </FormControl>
