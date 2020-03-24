@@ -52,8 +52,10 @@ export default () => {
 						dispatchMarks('maxValue');
 					}}
 				/>
-				<Slider max={maxValue} marks={marks} />
 			</div>
+        <div style={{ width:'50%' }}>
+				  <Slider max={maxValue} marks={marks} />
+        </div>
 			<div>
 				{marks.map(({ id, label, value }) => {
 					return <Mark key={`mark-${id}`} deleteMark={deleteMark} updateMark={updateMark} id={id} label={label} value={value} />;
@@ -73,17 +75,18 @@ const Mark = (markProps) => {
 	const { id, deleteMark, updateMark } = markProps;
 
 	const [ label, setLabel ] = React.useState(markProps.label);
-	const [ value, setValue ] = React.useState(markProps.value);
+  const [ value, setValue ] = React.useState(markProps.value);
 
 	return (
 		<div key={`mark-${id}`}>
 			<TextField
-				type="number"
+				type="text"
 				onChange={({ target }) => {
 					setLabel(target.value);
 				}}
-				label="Label"
-				defaultValue={label}
+        label="Label"
+        defaultValue={label}
+				value={label}
 			/>
 			<TextField
 				type="number"
@@ -102,6 +105,7 @@ const Mark = (markProps) => {
 					children="Supprimer"
 				/>
 				<Button
+          color="primary"
 					onClick={() => {
 						updateMark({
 							id,
