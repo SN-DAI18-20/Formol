@@ -27,7 +27,9 @@ export default () => {
 	const [ checkBoxs, setCheckBoxs ] = React.useState([ { value: '', id: 1, defaultChecked: false } ]);
 
 	const addCheckBox = () => {
-		setCheckBoxs([ ...checkBoxs, { value: '', id: checkBoxs.pop().id + 1, defaultChecked: false } ]);
+    const checkBoxsTable = [...checkBoxs]
+    const id = checkBoxs.length === 0 ? 1 : checkBoxs.pop().id + 1
+		setCheckBoxs([ ...checkBoxsTable, { value: '', id, defaultChecked: false } ]);
 	};
 
 	const updateCheckBox = (checkBoxToUpdate) => {
