@@ -19,6 +19,18 @@ export default () => {
 	const [ min, setMin ] = React.useState(0);
 	const [ max, setMax ] = React.useState();
 
+  const handleMinChange = (minToChange) => {
+    if(minToChange < max){
+      setMin(minToChange)
+    }
+  }
+
+  const handleMaxChange = (maxToChange) => {
+    if(maxToChange > min){
+      setMax(maxToChange)
+    }
+  }
+
 	React.useEffect(
 		() => {
 			setMin(0);
@@ -37,7 +49,7 @@ export default () => {
 					{between && (
 						<FormControl>
 							<TextField
-								onChange={({ target }) => setMin(target.value)}
+								onChange={({ target }) => handleMinChange(parseInt(target.value))}
 								value={min}
 								label="De"
 								type="number"
@@ -46,7 +58,7 @@ export default () => {
 					)}
 					<FormControl>
 						<TextField
-							onChange={({ target }) => setMax(target.value)}
+							onChange={({ target }) => handleMaxChange(parseInt(target.value))}
 							value={max}
 							label={between ? 'À' : 'Limite'}
 							type="number"
