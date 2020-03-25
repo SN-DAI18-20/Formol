@@ -21,7 +21,7 @@ const useStyle = makeStyles({
 	}
 });
 
-export default () => {
+export default ({bringBackState}) => {
 	const { addButton } = useStyle();
 
 	const [ checkBoxs, setCheckBoxs ] = React.useState([ { value: '', id: 1, defaultChecked: false } ]);
@@ -44,7 +44,11 @@ export default () => {
 		const checkboxID = copiedCheckBoxs.findIndex(({ id }) => id === checkBoxToDelete);
 		copiedCheckBoxs.splice(checkboxID, 1);
 		setCheckBoxs(copiedCheckBoxs);
-	};
+  };
+
+  React.useState(() => {
+    bringBackState({checkBoxs})
+  }, [checkBoxs])
 
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column' }}>

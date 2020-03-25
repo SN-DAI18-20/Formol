@@ -16,12 +16,16 @@ const useStyle = makeStyles({
 	}
 });
 
-export default () => {
+export default ({bringBackState}) => {
 	const [ text, setText ] = React.useState('');
-	const [ selectedTextType, setSelectedTextType ] = React.useState('Court');
+	const [ selectedTextRange, setSelectedTextRange ] = React.useState('Court');
   const [ selectedType, setSelectedType ] = React.useState('text');
 
   const { textField, textStyle } = useStyle();
+
+  React.useEffect(() => {
+    bringBackState({text, selectedTextRange, selectedType})
+  }, [text, selectedTextRange, selectedType])
 
 	return (
 		<div className={textStyle}>
@@ -39,9 +43,9 @@ export default () => {
 				}}
 			/>
 			<Select
-				value={selectedTextType}
+				value={selectedTextRange}
 				onChange={({ target }) => {
-					setSelectedTextType(target.value);
+					setSelectedTextRange(target.value);
 				}}
 			>
 				<MenuItem value="Court" children="Court" />
