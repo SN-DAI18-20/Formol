@@ -4,7 +4,7 @@ import Slider from '@material-ui/core/Slider';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
-export default () => {
+export default ({bringBackState}) => {
 	const [ maxValue, setMaxValue ] = React.useState(20);
 
 	const [ marks, setMarks ] = React.useState([
@@ -38,7 +38,11 @@ export default () => {
 		const marksToUpdate = [ ...marks ];
 		marksToUpdate.splice(findedIndex, 1, markToUpdate);
 		setMarks([ ...marksToUpdate ]);
-	};
+  };
+
+  React.useEffect(() => {
+    bringBackState({maxValue, marks})
+  }, [maxValue, marks])
 
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>

@@ -13,7 +13,7 @@ const useStyle = makeStyles({
   }
 })
 
-export default () => {
+export default ({bringBackState}) => {
 
   const { minDateStyle } = useStyle();
 
@@ -32,6 +32,10 @@ export default () => {
     const {checked} = target
     setBetween(checked)
   }
+
+  React.useEffect(() => {
+    bringBackState({between, minDate, maxDate})
+  }, [between, minDate, maxDate])
 
 	return (
 		<div>

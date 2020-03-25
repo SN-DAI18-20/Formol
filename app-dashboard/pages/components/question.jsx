@@ -42,12 +42,12 @@ const useStyle = makeStyles({
     }
 })
 
-export default ({ deleteQuestion }) => {
+export default ({ deleteQuestion, changeType, type, id, bringBackState }) => {
 
     const { header, questionType } = useStyle();
 
-    const [ChoosedQuestion, setChoosedQuestion] = React.useState("Text");
-    const [selected, setSelected] = React.useState("Text");
+    const [ChoosedQuestion, setChoosedQuestion] = React.useState(type);
+    const [selected, setSelected] = React.useState(type);
 
     const chooseAQuestion = (choosed) => {
       setChoosedQuestion(choosed)
@@ -56,17 +56,17 @@ export default ({ deleteQuestion }) => {
     const renderChoosedQuestion = (choosedQuestion) => {
       switch (choosedQuestion) {
         case "Number":
-            return <Number/>;
+            return <Number bringBackState={state => bringBackState(state, id, type)} />;
         case "Text":
-            return <Text/>;
+            return <Text bringBackState={state => bringBackState(state, id)} />;
         case "CheckBox":
-            return <CheckBox/>;
+            return <CheckBox bringBackState={state => bringBackState(state, id)} />;
         case "Range":
-            return <Range/>;
+            return <Range bringBackState={state => bringBackState(state, id)} />;
         case "Selector":
-            return <Selector/>;
+            return <Selector bringBackState={state => bringBackState(state, id)} />;
         case "Date":
-            return <Date/>;
+            return <Date bringBackState={state => bringBackState(state, id)} />;
         default:
             break;
     }
@@ -75,6 +75,7 @@ export default ({ deleteQuestion }) => {
     const handleSelect = (selectedValue) => {
         setSelected(selectedValue)
         chooseAQuestion(selectedValue)
+        changeType(selectedValue)
     }
 
     return (
