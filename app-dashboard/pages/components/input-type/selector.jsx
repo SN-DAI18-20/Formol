@@ -20,7 +20,7 @@ const useStyle = makeStyles({
   }
 })
 
-export default () => {
+export default ({bringBackState}) => {
 
   const { addButton } = useStyle();
 
@@ -49,6 +49,10 @@ export default () => {
 		copiedSelectors.splice(selectorID, 1);
 		setSelectors(copiedSelectors);
   }
+
+  React.useEffect(() => {
+    bringBackState({defaultChecked, selectors})
+  }, [defaultChecked,selectors])
 
   return (
     <div>
