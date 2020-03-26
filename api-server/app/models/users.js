@@ -20,9 +20,6 @@ module.exports = (sequelize, DataTypes) => {
             },
             is_suspended: DataTypes.BOOLEAN,
             suspend_reason: DataTypes.TEXT,
-            created_at: DataTypes.DATE,
-            updated_at: DataTypes.DATE,
-            deleted_at: DataTypes.DATE,
         },
         {
             tableName: 'Users',
