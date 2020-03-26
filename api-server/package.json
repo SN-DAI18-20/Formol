@@ -10,14 +10,16 @@
     "start": "node app/server.js",
     "dev": "nodemon",
     "prettier:check": "./node_modules/.bin/prettier --check '**/*.js'",
-    "prettier:write": "./node_modules/.bin/prettier --write '**/*.js'"
+    "prettier:write": "./node_modules/.bin/prettier --write '**/*.js'",
+    "test": "./node_modules/.bin/jest --coverage"
   },
   "dependencies": {
     "bcrypt": "^3.0.7",
-    "bull": "^3.12.1",
+    "bullmq": "^1.6.6",
     "fastify": "^2.11.0",
     "fastify-sensible": "^2.1.1",
     "fastify-swagger": "^2.5.0",
+    "ioredis": "^4.14.1",
     "jsonwebtoken": "^8.5.1",
     "pg": "^7.17.0",
     "sequelize": "^5.21.3",

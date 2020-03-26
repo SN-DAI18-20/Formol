@@ -1,10 +1,7 @@
 module.exports = {
-    // Web server options
-    bind_ip: '[::1]',
-    bind_port: 3001,
-
-    // Security settings
-    jwt_secret: '', // Example of command for generating one: openssl rand -hex 36
+    // API informations, for near future uses.
+    api_url: null,
+    api_backend_key: null,
 
     // Task queuing options
     backend_redis_host: '127.0.0.1',
