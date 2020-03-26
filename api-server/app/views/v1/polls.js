@@ -1,3 +1,5 @@
+const db = require('../../models');
+
 const GenericSchema = require('./genericSchema');
 
 const PollGetGenericSchema = {
@@ -60,9 +62,26 @@ const PollsPostSchema = {
             form: {
                 type: 'array',
                 items: {
-                    type: 'object', // TODO: Fill this part.
+                    type: 'object',
+                    required: ['question', 'type', 'parameters'],
+                    properties: {
+                        question: { type: 'string' },
+                        type: {
+                            type: 'string',
+                            enum: [
+                                'checkbox',
+                                'date',
+                                'number',
+                                'radio',
+                                'range',
+                                'text',
+                            ],
+                        },
+                        parameters: { type: 'object' },
+                        required: { type: 'boolean', default: false },
+                    },
                 },
-                minItems: 1
+                minItems: 1,
             },
         },
     },
