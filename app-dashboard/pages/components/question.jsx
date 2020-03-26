@@ -1,12 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-import Text from './input-type/text';
-import Number from './input-type/number';
-import CheckBox from './input-type/checkbox';
-import Selector from './input-type/selector';
-import Range from './input-type/range';
-import Date from './input-type/date';
-
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
@@ -17,6 +10,13 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Create from '@material-ui/icons/Create';
+
+import Text from './input-type/text';
+import Number from './input-type/number';
+import CheckBox from './input-type/checkbox';
+import Selector from './input-type/selector';
+import Range from './input-type/range';
+import Date from './input-type/date';
 
 const useStyle = makeStyles({
     questionsChoice:{
