@@ -45,17 +45,15 @@ export default () => {
 	const [ id, setId ] = React.useState(1);
   const [ questions, setQuestions ] = React.useState([ { id: 0, type: 'Number' } ]);
 
-  const [forms, setForms] = React.useState();
-
   const bringBackState = (state, id, type) => {
     const findedStateIndex = questions.findIndex(question => question.id === id)
     questions.splice(findedStateIndex, 1, { id, type, state })
-    setForms([...questions])
+    setQuestions([...questions])
   }
 
 
   const handleSend = () => {
-    console.info("all that shit", forms)
+    console.info("all that shit", questions)
   }
 
   const changeType = (type, id) => {
@@ -70,11 +68,10 @@ export default () => {
 	};
 
 	const deleteQuestion = (QuestionID) => {
-		setQuestions(
-			questions.filter(({ id }) => {
-				return id !== QuestionID;
-			})
-		);
+    const questionWithDeletedOne = questions.filter(({ id }) => {
+      return id !== QuestionID;
+    })
+		setQuestions([...questionWithDeletedOne]);
 	};
 
 	return (

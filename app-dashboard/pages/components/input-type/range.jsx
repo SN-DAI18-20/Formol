@@ -89,7 +89,6 @@ const Mark = (markProps) => {
 					setLabel(target.value);
 				}}
         label="Label"
-        defaultValue={label}
 				value={label}
 			/>
 			<TextField
