@@ -2,7 +2,7 @@ import React from 'react';
 
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
-import CheckBox from '@material-ui/core/CheckBox';
+import CheckBox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
