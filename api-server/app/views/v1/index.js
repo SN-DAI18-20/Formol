@@ -1,9 +1,8 @@
 const pjson = require('../../../package.json');
 const authenticationRoutes = require('./authentication');
 const pollsRoutes = require('./polls');
-const pollsEventsRoutes = require('./pollsEvents');
-const pollsFormsRoutes = require('./pollsForms');
 const pollsRecipientsRoutes = require('./pollsRecipients');
+const config = require('../../../config/server');
 
 module.exports = async function(fastify, opts, done) {
     // Define Swagger route
@@ -15,7 +14,7 @@ module.exports = async function(fastify, opts, done) {
                 title: 'Formol APIv1 Swagger schema',
                 version: pjson.version,
             },
-            host: 'localhost',
+            host: config.exposed_uri,
             schemes: ['http', 'https'],
             consumes: ['application/json'],
             produces: ['application/json'],
@@ -28,14 +27,10 @@ module.exports = async function(fastify, opts, done) {
         authenticationRoutes
     );
     fastify.register(require('../../helpers/route-declaration'), pollsRoutes);
-    fastify.register(
-        require('../../helpers/route-declaration'),
-        pollsFormsRoutes
-    );
-    fastify.register(
-        require('../../helpers/route-declaration'),
-        pollsEventsRoutes
-    );
+    // fastify.register(
+    //     require('../../helpers/route-declaration'),
+    //     pollsEventsRoutes
+    // ); // Not enough time for making this part.
     fastify.register(
         require('../../helpers/route-declaration'),
         pollsRecipientsRoutes
