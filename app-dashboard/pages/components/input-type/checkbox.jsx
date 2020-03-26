@@ -29,24 +29,22 @@ export default ({bringBackState}) => {
 	const addCheckBox = () => {
     const checkBoxsTable = [...checkBoxs]
     const id = checkBoxs.length === 0 ? 1 : checkBoxs.pop().id + 1
-		setCheckBoxs([ ...checkBoxsTable, { value: '', id, defaultChecked: false } ]);
+    setCheckBoxs([ ...checkBoxsTable, { value: '', id, defaultChecked: false } ]);
 	};
 
 	const updateCheckBox = (checkBoxToUpdate) => {
 		const findedCheckBoxIndex = checkBoxs.findIndex((checkbox) => checkbox.id === checkBoxToUpdate.id);
-		const checkBoxsToUpdate = [ ...checkBoxs ];
-		checkBoxsToUpdate.splice(findedCheckBoxIndex, 1, checkBoxToUpdate);
-		setCheckBoxs(checkBoxsToUpdate);
+		checkBoxs.splice(findedCheckBoxIndex, 1, checkBoxToUpdate);
+		setCheckBoxs([...checkBoxs]);
 	};
 
 	const deleteCheckBox = (checkBoxToDelete) => {
-		const copiedCheckBoxs = [ ...checkBoxs ];
-		const checkboxID = copiedCheckBoxs.findIndex(({ id }) => id === checkBoxToDelete);
-		copiedCheckBoxs.splice(checkboxID, 1);
-		setCheckBoxs(copiedCheckBoxs);
+		const checkboxID = checkBoxs.findIndex(({ id }) => id === checkBoxToDelete);
+		checkBoxs.splice(checkboxID, 1);
+		setCheckBoxs([...checkBoxs]);
   };
 
-  React.useState(() => {
+  React.useEffect(() => {
     bringBackState({checkBoxs})
   }, [checkBoxs])
 

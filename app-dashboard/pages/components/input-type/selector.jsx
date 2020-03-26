@@ -58,7 +58,6 @@ export default ({bringBackState}) => {
     <div>
       {selectors.map(({ id, value }) => {
         return (
-          <div>
             <Selector
               key={`selector-${id}`}
               id={id}
@@ -67,7 +66,6 @@ export default ({bringBackState}) => {
               updateSelector={updateSelector}
               deleteSelector={deleteSelector}
             />
-          </div>
         )
       })}
       <div className={addButton}>
