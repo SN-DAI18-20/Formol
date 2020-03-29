@@ -17,12 +17,12 @@ export default ({bringBackState}) => {
 
   const { minDateStyle } = useStyle();
 
-	const [ maxDate, setMaxDate ] = React.useState();
+	const [ maxDate, setMaxDate ] = React.useState(new Date());
 	const handleMaxDateChange = (maxDate) => {
 		setMaxDate(maxDate);
 	};
 
-	const [ minDate, setMinDate ] = React.useState();
+	const [ minDate, setMinDate ] = React.useState(new Date());
 	const handleMinDateChange = (minDate) => {
 		setMinDate(minDate);
   };

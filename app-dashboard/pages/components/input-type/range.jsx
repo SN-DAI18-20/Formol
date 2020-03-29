@@ -53,7 +53,6 @@ export default ({bringBackState}) => {
 					defaultValue={maxValue}
 					onChange={({ target }) => {
 						setMaxValue(target.value);
-						dispatchMarks('maxValue');
 					}}
 				/>
 			</div>
@@ -62,7 +61,7 @@ export default ({bringBackState}) => {
         </div>
 			<div>
 				{marks.map(({ id, label, value }) => {
-					return <Mark key={`mark-${id}`} deleteMark={deleteMark} updateMark={updateMark} id={id} label={label} value={value} />;
+					return <Mark maxValue={maxValue} key={`mark-${id}`} deleteMark={deleteMark} updateMark={updateMark} id={id} label={label} value={value} />;
 				})}
 				<Button
 					onClick={() => {
@@ -76,7 +75,7 @@ export default ({bringBackState}) => {
 };
 
 const Mark = (markProps) => {
-	const { id, deleteMark, updateMark } = markProps;
+	const { id, deleteMark, updateMark, maxValue } = markProps;
 
 	const [ label, setLabel ] = React.useState(markProps.label);
   const [ value, setValue ] = React.useState(markProps.value);
@@ -94,10 +93,12 @@ const Mark = (markProps) => {
 			<TextField
 				type="number"
 				onChange={({ target }) => {
-					setValue(target.value);
+          if(target.value <= maxValue){
+            setValue(target.value);
+          }
 				}}
-				label="Valeur"
-				defaultValue={value}
+        label="Valeur"
+				value={value}
 			/>
 			<div>
 				<Button

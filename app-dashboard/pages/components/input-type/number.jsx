@@ -17,7 +17,7 @@ export default ({bringBackState}) => {
 	const { number } = useStyle();
 	const [ between, setBetween ] = React.useState(false);
 	const [ min, setMin ] = React.useState(0);
-	const [ max, setMax ] = React.useState();
+	const [ max, setMax ] = React.useState(10);
 
   const handleMinChange = (minToChange) => {
     if(minToChange < max){
