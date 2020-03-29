@@ -43,11 +43,11 @@ export default () => {
 	const { paperStyle, option } = useStyle();
 
 	const [ id, setId ] = React.useState(1);
-  const [ questions, setQuestions ] = React.useState([ { id: 0, type: 'Number' } ]);
+  const [ questions, setQuestions ] = React.useState([ { id: 0, type: 'Text', required:false } ]);
 
-  const bringBackState = (state, id, type) => {
+  const bringBackState = (state, id, type, required) => {
     const findedStateIndex = questions.findIndex(question => question.id === id)
-    questions.splice(findedStateIndex, 1, { id, type, state })
+    questions.splice(findedStateIndex, 1, { id, type, state, required })
     setQuestions([...questions])
   }
 
@@ -56,15 +56,19 @@ export default () => {
     console.info("all that shit", questions)
   }
 
-  const changeType = (type, id) => {
+  const changeType = (type, id, required) => {
     const findedQuestionIndex = questions.findIndex(choosed => choosed.id === id)
-    questions.splice(findedQuestionIndex, 1, { id, type })
+    questions.splice(findedQuestionIndex, 1, { id, type, required })
     setQuestions([...questions])
+  }
+  const toggleRequired = (required, type, id) => {
+    const findedQuestionIndex = questions.findIndex(choosed => choosed.id === id)
+    questions.splice(findedQuestionIndex, 1, { id, type, required })
   }
 
 	const addQuestion = () => {
 		setId(id + 1);
-		setQuestions([ ...questions, { id, type: 'Number' } ]);
+		setQuestions([ ...questions, { id, type: 'Text', required: false } ]);
 	};
 
 	const deleteQuestion = (QuestionID) => {
@@ -72,7 +76,8 @@ export default () => {
       return id !== QuestionID;
     })
 		setQuestions([...questionWithDeletedOne]);
-	};
+  };
+
 
 	return (
 		<div style={{height: '100%'}} >
@@ -80,13 +85,15 @@ export default () => {
 				<CardContent>
 					<InputTitle />
 					{questions.map((choosedQuestion, index) => {
-            const { id, type } = choosedQuestion;
+            const { id, type, required } = choosedQuestion;
 						return (
                 <Question
-                  bringBackState={(stateToBringBack) => bringBackState(stateToBringBack, id, type)}
+                  bringBackState={(stateToBringBack, required) => bringBackState(stateToBringBack, id, type, required)}
                   key={`question-${index}`}
                   id={id}
-                  changeType={typeToChange => changeType(typeToChange, id)}
+                  required={required}
+                  toggleRequired={(checked) => toggleRequired(checked, type, id)}
+                  changeType={(typeToChange, id, required) => changeType(typeToChange, id, required)}
                   type={type}
                   deleteQuestion={() => deleteQuestion(id)}
                 />
