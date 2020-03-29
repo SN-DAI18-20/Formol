@@ -9,7 +9,9 @@ import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Create from '@material-ui/icons/Create';
+import Switch from '@material-ui/core/Switch';
 
 import Text from './input-type/text';
 import Number from './input-type/number';
@@ -42,7 +44,7 @@ const useStyle = makeStyles({
     }
 })
 
-export default ({ deleteQuestion, changeType, type, id, bringBackState }) => {
+export default ({ deleteQuestion, changeType, type, id, bringBackState, required, toggleRequired }) => {
 
     const { header, questionType } = useStyle();
 
@@ -56,17 +58,17 @@ export default ({ deleteQuestion, changeType, type, id, bringBackState }) => {
     const renderChoosedQuestion = (choosedQuestion) => {
       switch (choosedQuestion) {
         case "Number":
-            return <Number bringBackState={state => bringBackState(state, id, type)} />;
+            return <Number bringBackState={state => bringBackState(state, required, id, type)} />;
         case "Text":
-            return <Text bringBackState={state => bringBackState(state, id)} />;
+            return <Text bringBackState={state => bringBackState(state, required, id, type)} />;
         case "CheckBox":
-            return <CheckBox bringBackState={state => bringBackState(state, id)} />;
+            return <CheckBox bringBackState={state => bringBackState(state, required, id, type)} />;
         case "Range":
-            return <Range bringBackState={state => bringBackState(state, id)} />;
+            return <Range bringBackState={state => bringBackState(state, required, id, type)} />;
         case "Selector":
-            return <Selector bringBackState={state => bringBackState(state, id)} />;
+            return <Selector bringBackState={state => bringBackState(state, required, id, type)} />;
         case "Date":
-            return <Date bringBackState={state => bringBackState(state, id)} />;
+            return <Date bringBackState={state => bringBackState(state, required, id, type)} />;
         default:
             break;
     }
@@ -75,7 +77,7 @@ export default ({ deleteQuestion, changeType, type, id, bringBackState }) => {
     const handleSelect = (selectedValue) => {
         setSelected(selectedValue)
         chooseAQuestion(selectedValue)
-        changeType(selectedValue)
+        changeType(selectedValue, id, required)
     }
 
     return (
@@ -83,19 +85,22 @@ export default ({ deleteQuestion, changeType, type, id, bringBackState }) => {
                 <CardContent>
                     <div className={header}>
                         <QuestionTitle/>
-                      <FormControl>
-                        <Select
-                          value={selected}
-                          onChange={({target}) => handleSelect(target.value)}
-                        >
-                          <MenuItem value="Text" children="Text" />
-                          <MenuItem value="Number" children="Number" />
-                          <MenuItem value="CheckBox" children="CheckBox" />
-                          <MenuItem value="Selector" children="Selector" />
-                          <MenuItem value="Range" children="Range" />
-                          <MenuItem value="Date" children="Date" />
-                        </Select>
-                      </FormControl>
+                        <div>
+                          <FormControlLabel label="Required" control={<Switch onChange={({target}) => toggleRequired(target.checked, type, id)} value={required} />} />
+                          <FormControl>
+                            <Select
+                              value={selected}
+                              onChange={({target}) => handleSelect(target.value)}
+                            >
+                              <MenuItem value="Text" children="Text" />
+                              <MenuItem value="Number" children="Number" />
+                              <MenuItem value="CheckBox" children="CheckBox" />
+                              <MenuItem value="Selector" children="Selector" />
+                              <MenuItem value="Range" children="Range" />
+                              <MenuItem value="Date" children="Date" />
+                            </Select>
+                          </FormControl>
+                        </div>
                     </div>
                     <div className={questionType}>
                 {
