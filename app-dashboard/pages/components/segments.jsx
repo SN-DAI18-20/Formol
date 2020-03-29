@@ -43,60 +43,73 @@ export default () => {
 	const { paperStyle, option } = useStyle();
 
 	const [ id, setId ] = React.useState(1);
-  const [ questions, setQuestions ] = React.useState([ { id: 0, type: 'Text', required:false } ]);
+	const [ description, setDescription ] = React.useState('');
+	const [ name, setName ] = React.useState('Segment');
+  const [ form, setForm ] = React.useState([ { id: 0, type: 'Text', required: false } ]);
+  const [ formToSend, setFormToSend ] = React.useState();
 
-  const bringBackState = (state, id, type, required) => {
-    const findedStateIndex = questions.findIndex(question => question.id === id)
-    questions.splice(findedStateIndex, 1, { id, type, state, required })
-    setQuestions([...questions])
-  }
+	const bringBackState = (state, id, type, required) => {
+		const findedStateIndex = form.findIndex((question) => question.id === id);
+		form.splice(findedStateIndex, 1, { id, type, state, required });
+		setForm([ ...form ]);
+	};
 
+	const handleSend = async () => {
+    console.log("form", form)
+    setFormToSend({
+      name,
+      description,
+      form
+    })
+		console.info('all that shit', formToSend);
+  };
 
-  const handleSend = () => {
-    console.info("all that shit", questions)
-  }
-
-  const changeType = (type, id, required) => {
-    const findedQuestionIndex = questions.findIndex(choosed => choosed.id === id)
-    questions.splice(findedQuestionIndex, 1, { id, type, required })
-    setQuestions([...questions])
-  }
-  const toggleRequired = (required, type, id) => {
-    const findedQuestionIndex = questions.findIndex(choosed => choosed.id === id)
-    questions.splice(findedQuestionIndex, 1, { id, type, required })
-  }
+	const changeType = (type, id, required) => {
+		const findedQuestionIndex = form.findIndex((choosed) => choosed.id === id);
+		form.splice(findedQuestionIndex, 1, { id, type, required });
+		setForm([ ...form ]);
+	};
+	const toggleRequired = (required, type, id) => {
+		const findedQuestionIndex = form.findIndex((choosed) => choosed.id === id);
+		form.splice(findedQuestionIndex, 1, { id, type, required });
+	};
 
 	const addQuestion = () => {
 		setId(id + 1);
-		setQuestions([ ...questions, { id, type: 'Text', required: false } ]);
+		setForm([ ...form, { id, type: 'Text', required: false } ]);
 	};
 
 	const deleteQuestion = (QuestionID) => {
-    const questionWithDeletedOne = questions.filter(({ id }) => {
-      return id !== QuestionID;
-    })
-		setQuestions([...questionWithDeletedOne]);
-  };
-
+		const questionWithDeletedOne = form.filter(({ id }) => {
+			return id !== QuestionID;
+		});
+		setForm([ ...questionWithDeletedOne ]);
+	};
 
 	return (
-		<div style={{height: '100%'}} >
+		<div style={{ height: '100%' }}>
 			<Card elevation={4} className={paperStyle}>
 				<CardContent>
-					<InputTitle />
-					{questions.map((choosedQuestion, index) => {
-            const { id, type, required } = choosedQuestion;
+					<InputTitle
+						description={description}
+						setDescription={setDescription}
+						name={name}
+						setname={setName}
+					/>
+					{form.map((choosedQuestion, index) => {
+						const { id, type, required } = choosedQuestion;
 						return (
-                <Question
-                  bringBackState={(stateToBringBack, required) => bringBackState(stateToBringBack, id, type, required)}
-                  key={`question-${index}`}
-                  id={id}
-                  required={required}
-                  toggleRequired={(checked) => toggleRequired(checked, type, id)}
-                  changeType={(typeToChange, id, required) => changeType(typeToChange, id, required)}
-                  type={type}
-                  deleteQuestion={() => deleteQuestion(id)}
-                />
+							<Question
+								bringBackState={(stateToBringBack, required) =>
+									bringBackState(stateToBringBack, id, type, required)}
+								key={`question-${index}`}
+								id={id}
+								required={required}
+								toggleRequired={(checked) => toggleRequired(checked, type, id)}
+								changeType={(typeToChange, id, required) => changeType(typeToChange, id, required)}
+								type={type}
+								deleteQuestion={() => deleteQuestion(id)}
+							/>
 						);
 					})}
 				</CardContent>
@@ -108,37 +121,44 @@ export default () => {
 					</div>
 				</CardActions>
 			</Card>
-      <Button children="Envoyer" onClick={handleSend} />
+			<Button children="Envoyer" onClick={handleSend} />
 		</div>
 	);
 };
 
-const InputTitle = () => {
+const InputTitle = ({ name, setname, description, setDescription }) => {
 	const { segmentTitle, title } = useStyle();
 
 	const [ input, setInput ] = React.useState(false);
-	const [ segmentName, setSegmentName ] = React.useState('Segment');
 
 	return (
-		<div className={title}>
-			<div className={segmentTitle}>
-				{input ? (
-					<TextField
-						onBlur={({ target }) => {
-							setSegmentName(target.value);
-							setInput(false);
-						}}
-						onChange={({ target }) => setSegmentName(target.value)}
-						defaultValue={segmentName}
-						onKeyDown={(key) => key.keyCode === 13 && setInput(false)}
-					/>
-				) : (
-					<Typography variant="h4" children={segmentName} />
-				)}
+		<div>
+			<div className={title}>
+				<div className={segmentTitle}>
+					{input ? (
+						<TextField
+							onBlur={({ target }) => {
+								setname(target.value);
+								setInput(false);
+							}}
+							onChange={({ target }) => setname(target.value)}
+							defaultValue={name}
+							onKeyDown={(key) => key.keyCode === 13 && setInput(false)}
+						/>
+					) : (
+						<Typography variant="h4" children={name} />
+					)}
+				</div>
+				<Button onClick={() => setInput(!input)}>
+					<Create />
+				</Button>
 			</div>
-			<Button onClick={() => setInput(!input)}>
-				<Create />
-			</Button>
+			<TextField
+				label="Description"
+				value={description}
+				onChange={({ target }) => setDescription(target.value)}
+				multiline
+			/>
 		</div>
 	);
 };
