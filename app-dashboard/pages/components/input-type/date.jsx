@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import DateFnsUtils from '@date-io/date-fns';
@@ -16,12 +17,14 @@ export default ({bringBackState}) => {
 
   const { minDateStyle } = useStyle();
 
+
 	const [ maxDate, setMaxDate ] = React.useState(new Date());
 	const handleMaxDateChange = (maxDate) => {
 		setMaxDate(maxDate);
 	};
 
 	const [ minDate, setMinDate ] = React.useState(new Date());
+
 	const handleMinDateChange = (minDate) => {
 		setMinDate(minDate);
   };

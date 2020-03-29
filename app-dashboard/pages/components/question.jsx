@@ -44,6 +44,7 @@ const useStyle = makeStyles({
     }
 })
 
+
 export default ({ deleteQuestion, changeType, type, id, bringBackState, required, toggleRequired }) => {
 
     const { header, questionType } = useStyle();

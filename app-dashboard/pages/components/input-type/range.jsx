@@ -53,6 +53,7 @@ export default ({bringBackState}) => {
 					defaultValue={maxValue}
 					onChange={({ target }) => {
 						setMaxValue(target.value);
+						dispatchMarks('maxValue');
 					}}
 				/>
 			</div>
@@ -75,8 +76,8 @@ export default ({bringBackState}) => {
 };
 
 const Mark = (markProps) => {
-	const { id, deleteMark, updateMark, maxValue } = markProps;
 
+	const { id, deleteMark, updateMark, maxValue } = markProps;
 	const [ label, setLabel ] = React.useState(markProps.label);
   const [ value, setValue ] = React.useState(markProps.value);
 
