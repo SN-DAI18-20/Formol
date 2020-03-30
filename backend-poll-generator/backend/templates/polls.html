@@ -8,23 +8,28 @@
     <title>Title Page</title>
 
     <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.3/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
+
   </head>
   <style>
+  
     .poll{
       padding: 20px;
       border: 1px solid #ccc;
     }
-    h3{
+    h3,h1{
       font-weight: bold;
+      font-size: large ;
       margin-bottom: 20px;
+      background-color: lightslategrey;
+      text-align: center;
+
     }
 
     .q-options{
@@ -35,11 +40,13 @@
     }
 
     .q-input-text, .q-date, .q-email, .q-tel, .q-range, .q-option, .q-select, .q-number{
-      width: 50%;
+      width: 75%;
       height: 40%;
       border: 1px solid #ccc;
       border-radius: 2px;
       margin-bottom: 10px;
+      border-radius: 5px;
+      margin-left: 10%;
     }
 
     input[type=text],input[type=date],input[type=email],input[type=tel],input[type=number],input[type=range], select {
@@ -54,176 +61,147 @@
 
     button[type=submit] {
       width: 50%;
-      background-color: #4CAF50;
+      background-color: lightslategrey;;
       color: white;
       padding: 14px 20px;
       margin: 8px 0;
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      margin-left: 12%;
+    }
+    form{
+      width: 60%;
+      height: auto;
+      border: 2px solid;
+      margin-left: 12%;
+      border-radius: 3px;
     }
   </style>
   <body>
-    <!-- <ul>
-      <li><a href="">questions 1</a></li>
-      <li><a href="">q2</a></li>
-    </ul> -->
-
-    <div class="poll">
-        <div class="questions">
-          <h1>Questionnaires</h1>
+    <form class="form-horizontal" action="" method="POST">
+      <h1>Questionnaires</h1>
+      <div class="q-options">
+        <div class="q-input-text">
+          <div class="question panel-primary">
+            <div class="panel-heading">
+            <h3>test1?</h3>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="control-label col-sm-2">input text </label>
+            <input type="text" class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+          </div>
         </div>
-        <form action="" method="POST">
-          <div class="q-options">
-            <div class="q-input-text">
-              <div class="question panel-primary">
-                <div class="panel-heading">
-                <h3>test1?</h3>
-                </div>
-              </div>
-              <div class="">
-                <label for=""></label>
-                <input type="text" class="" name="" id="" aria-describedby="helpId" placeholder="">
-              </div>
+        <div class="q-date">
+          <div class="question panel-primary">
+            <div class="panel-heading">
+            <h3>test date ?</h3>
             </div>
-            <div class="q-date">
-              <div class="question panel-primary">
-                <div class="panel-heading">
-                <h3>test date?</h3>
-                </div>
-              </div>
-                <div class="">
-                  <label for=""></label> 
-                  <input type="date" name="" id="input" class="" value="" required="required" title="">
-                </div>
-            </div>
-            <div class="q-email">
-              <div class="question panel-primary">
-                <div class="panel-heading">
-                <h3>test3 email</h3>
-                </div>
-              </div>
-              <div class="">
-                <label for="">Email</label>
-                <input type="email" name="" id="input" class="" width="50" value="" required="required" title=""> 
-              </div>
-            </div>
-            <div class="q-tel">
-              <div class="question panel-primary">
-                <div class="panel-heading">
-                <h3>test 4 tel?</h3>
-                </div>
-              </div>
-              <div class="">
-                <label for="">Tel</label>
-                <input type="tel" name="" id="input" class="" width="50" value="" required="required" title="">
-              </div>
-            </div>
-            <div class="q-number">
-              <div class="question panel-primary">
-                <div class="panel-heading">
-                  <h3>test 5 ?</h3>
-                </div>
-              </div>
-              <div class="">
-                <label for="">number</label>
-                <input type="number" name="" id="input" class="" width="50" value="" required="required" title="">
-              </div>
-            </div>
-            <div class="q-range">
-              <div class="question panel-primary">
-                  <div class="panel-heading">
-                    <h3 class="q-title">test 6 ?</h3>
-                  </div>
-              </div>
-              <div class="">
-                <label for="">range</label>
-                <input type="range" name="" id="input" class="" value="" min="{5"} max="" step="" required="required" title="">
-              </div>
-            </div>
-            <div class="q-option">
-              <div class="question  panel-primary">
-                <div class="panel-heading">
-                <h3> Combien d'équipe y a-il dans la NBA? </h3>
-                </div>
-              </div> 
-              <div class="">
-                <label for=""></label>
-                <select  name="" id="">
-                  <option selected>Selectionne votre réponse</option>
-                  <option value="">30</option>
-                  <option value="">20</option>
-                  <option value="">25</option>
-                </select>
-              </div>
-            </div>
-            <div class="q-select">
-              <div class="question panel-primary">
-                <div class="panel-heading">
-                <h3>Quel est le plus grand océan ? </h3>
-                </div>
-              </div>
-              <div class="">
-                <label for=""></label>
-                <select name="" id="">
-                  <option selected>Selectionne votre réponse</option>
-                  <option value="">Atlantique</option>
-                  <option value="">Pacifique</option>
-                  <option value="">Indien</option>
-                  <option value="">Antarctique</option>
-                  <option value="">Arctique</option>
-                </select>
-              </div>
-            </div>
-        </div>  
-          <button type="submit" class="">Submit</button>
-          <input type="hidden" name="poll" value="1">
-        </form>
-    </div>
-
-    <!-- <div>
-      <h1 class="text-center">Questionnaires</h1>
-      <div class="text-center">
-        <form>
-          <div>
-            <B>Question</B>
           </div>
-          <div>
-            <label ></label>
-            <input type="text" name="" id="">
+          <div class="form-group ">
+            <label class="control-label col-sm-2" for="date">Date</label>
+            <input class="form-control" id="date" name="date" width="50" placeholder="MM/DD/YYYY" type="text"/>
           </div>
-          <div>
-            <label for=""></label>
-            <input type="text" name="" id="">
+        </div>
+        <div class="q-email">
+          <div class="question panel-primary">
+            <div class="panel-heading">
+              <h3>test3 email</h3>
+            </div>
           </div>
-          <div>
-            <input type="checkbox" name="" id="">
+          <div class="form-group">
+            <label class="control-label col-sm-2 requiredField" for="email">Email</label>
+            <input type="email" name="" id="input" class="form-control" width="50" value="" required="required" title=""> 
           </div>
-          <B>questions</B><P>
-            <INPUT TYPE="radio" NAME="answer" value="1"><BR>
-            <INPUT TYPE="radio" NAME="answer" value="2"><BR>
-            <INPUT TYPE="radio" NAME="answer" value="3"><BR>
-            <INPUT TYPE="radio" NAME="answer" value="4"><P>
-          <div>
-            <label>
-              <input type="checkbox" checked>
-              Display value
-            </label>
+        </div>
+        <div class="q-tel">
+          <div class="question panel-primary">
+            <div class="panel-heading">
+            <h3>test 4 tel ?</h3>
+            </div>
           </div>
-          <div>
-            <label for=""></label>
-            <select multiple name="" id="">
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
+          <div class="form-group">
+            <label for="" class="control-label col-sm-2">Tel</label>
+            <input type="tel" name="" id="input" class="form-control" width="50" value="" required="required" title="">
+          </div>
+        </div>
+        <div class="q-number">
+          <div class="question panel-primary">
+            <div class="panel-heading">
+              <h3>test 5 ?</h3>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="control-label col-sm-2">number</label>
+            <input type="number" name="" id="input" class="form-control" width="50" value="" required="required" title="">
+          </div>
+        </div>
+        <div class="q-range">
+          <div class="question panel-primary">
+              <div class="panel-heading">
+                <h3 class="q-title">test 6 ?</h3>
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="" class="control-label col-sm-2">range</label>
+            <input type="range" name="" id="input" class="form-control" value="" min="{5"} max="" step="" required="required" title="">
+          </div>
+        </div>
+        <div class="q-option">
+          <div class="question  panel-primary">
+            <div class="panel-heading">
+            <h3> Combien d'équipe y a-il dans la NBA? </h3>
+            </div>
+          </div> 
+          <div class="form-group ">
+            <label class="control-label col-sm-4" for="select">Select a Choice</label>
+            <div class="col-sm-8">
+            <select class="select form-control" id="select" name="select">
+                  <option value="First Choice">First Choice</option>
+                  <option value="Second Choice">Second Choice</option>
+                  <option value="Third Choice">Third Choice</option>
             </select>
+            </div>
           </div>
-        </form>
-      </div>
-    </div> -->
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <!-- Bootstrap JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        </div>
+        <div class="q-select">
+          <div class="question panel-primary">
+            <div class="panel-heading">
+            <h3>Quel est le plus grand océan ? </h3>
+            </div>
+          </div>
+          <div class="form-group ">
+            <label class="control-label col-sm-4" for="select">Select a Choice</label>
+            <div class="col-sm-8">
+            <select class="select form-control" id="select" name="select">
+                <option value="First Choice"> First Choice</option>
+                <option value="Second Choice">Second Choice</option>
+                <option value="Third Choice">Third Choice</option>
+            </select>
+            </div>
+          </div>
+        </div>
+      </div>  
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <input type="hidden" name="poll" value="1">
+    </form>
+        
+    <script>
+      $(document).ready(function(){
+        var date_input=$('input[name="date"]'); //our date input has the name "date"
+        var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        date_input.datepicker({
+          format: 'mm/dd/yyyy',
+          container: container,
+          todayHighlight: true,
+          autoclose: true,
+        })
+      })
+    </script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+    
   </body>
 </html>
