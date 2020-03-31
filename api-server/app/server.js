@@ -1,4 +1,17 @@
-const fastify = require('fastify')({ logger: true });
+const fastify = require('fastify')({
+    logger: true,
+    ajv: {
+        customOptions: {
+            removeAdditional: 'all',
+            useDefaults: 'empty',
+            coerceTypes: true,
+            allErrors: true,
+            nullable: true,
+            strictDefaults: true,
+            strictKeywords: true,
+        },
+    },
+});
 const app_config = require('../config/server');
 
 // Specify const variables for the Webserver
@@ -12,7 +25,7 @@ fastify.register(require('fastify-sensible'));
 fastify.register(require('./views/v1'), { prefix: '/v1' });
 
 // Start the Web server
-if(process.env.NODE_ENV != 'test') {
+if (process.env.NODE_ENV != 'test') {
     fastify.listen(HTTP_PORT, HTTP_BIND, (err, addr) => {
         if (err) throw err;
 
