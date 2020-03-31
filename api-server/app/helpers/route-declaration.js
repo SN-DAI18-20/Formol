@@ -34,7 +34,7 @@ module.exports = async function(fastify, opts, done) {
         const rootPath = key === 'root' ? '/' : `/${key}`;
         const routes = discoverObject(opts[key], rootPath);
 
-        for(let i = 0; i < routes.length; i++) {
+        for (let i = 0; i < routes.length; i++) {
             fastify.route({
                 method: routes[i].method,
                 url: routes[i].url,

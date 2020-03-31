@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
             id: {
                 type: DataTypes.UUID,
                 primaryKey: true,
-                defaultValue: uuid(),
+                defaultValue: DataTypes.UUIDV4,
             },
             name: {
                 type: DataTypes.TEXT,
@@ -34,8 +34,8 @@ module.exports = (sequelize, DataTypes) => {
     );
     Polls.associate = function(models) {
         // associations can be defined here
-        Polls.hasMany(models.PollsVersions);
-
+        Polls.hasMany(models.PollsVersions, { foreignKey: 'poll' });
+        // Polls.belongsTo(models.PollsVersions);
     };
     return Polls;
 };

@@ -1,6 +1,7 @@
 const pjson = require('../../../package.json');
 const authenticationRoutes = require('./authentication');
 const pollsRoutes = require('./polls');
+const PollsVersionsRoutes = require('./pollsVersions');
 const pollsRecipientsRoutes = require('./pollsRecipients');
 const config = require('../../../config/server');
 
@@ -31,6 +32,10 @@ module.exports = async function(fastify, opts, done) {
     //     require('../../helpers/route-declaration'),
     //     pollsEventsRoutes
     // ); // Not enough time for making this part.
+    fastify.register(
+        require('../../helpers/route-declaration'),
+        PollsVersionsRoutes
+    );
     fastify.register(
         require('../../helpers/route-declaration'),
         pollsRecipientsRoutes

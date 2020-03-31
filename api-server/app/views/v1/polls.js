@@ -1,5 +1,9 @@
-const db = require('../../models');
+const { sequelize } = require('../../models');
+const { Op } = require('sequelize');
 
+const { Polls, PollsVersions, PollsQuestions } = require('../../models');
+const generate_uid = require('../../helpers/uid-creation');
+const QuestionsValidators = require('./validators/questionTypes');
 const GenericSchema = require('./genericSchema');
 
 const PollGetGenericSchema = {
@@ -7,10 +11,16 @@ const PollGetGenericSchema = {
     name: { type: 'string' },
     description: { type: 'string' },
     location: { type: 'string' },
-    is_published: { type: 'boolean' },
-    version: { type: 'string' },
-    published_at: { type: 'string' },
-    depublished_at: { type: 'string' },
+    draft: { type: 'boolean' },
+    version: {
+        type: 'object',
+        properties: {
+            id: { type: 'string', format: 'uuid' },
+            name: { type: 'string' },
+        },
+    },
+    published_at: { type: 'string', format: 'date-time' },
+    depublished_at: { type: 'string', format: 'date-time' },
     created_at: { type: 'string' },
     updated_at: { type: 'string' },
 };
@@ -74,6 +84,7 @@ const PollsPostSchema = {
                                 'number',
                                 'radio',
                                 'range',
+                                'selector',
                                 'text',
                             ],
                         },
@@ -105,10 +116,9 @@ const PollsPatchSchema = {
         properties: {
             name: { type: 'string' },
             description: { type: 'string' },
-            is_published: { type: 'boolean' },
-            version: { type: 'string' },
-            published_at: { type: 'string' },
-            depublished_at: { type: 'string' },
+            draft: { type: 'boolean' },
+            published_at: { type: 'string', format: 'date-time' },
+            depublished_at: { type: 'string', format: 'date-time' },
         },
     },
     response: {
@@ -129,16 +139,242 @@ const PollsDeleteSchema = {
         },
     },
     response: {
+        202: GenericSchema.DeletedReturn,
         403: GenericSchema.ForbiddenReturn,
         404: GenericSchema.RessourceNotFoundReturn,
     },
 };
 
-async function PollsCollectionGet(request, reply) {}
-async function PollsGet(request, reply) {}
-async function PollsPost(request, reply) {}
-async function PollsPatch(request, reply) {}
-async function PollsDelete(request, reply) {}
+async function PollsCollectionGet(request, reply) {
+    const pollsQuery = await Polls.findAll({
+        where: {
+            '$PollsVersions.active$': {
+                [Op.eq]: true,
+            },
+        },
+        include: [PollsVersions],
+    });
+
+    const pollsMap = pollsQuery.map(poll => poll.toJSON());
+    const polls = [];
+
+    pollsMap.forEach(el => {
+        polls.push({
+            id: el.id,
+            name: el.name,
+            description: el.description,
+            version: {
+                id: el.PollsVersions[0].id,
+                name: el.PollsVersions[0].name,
+            },
+            draft: el.is_published,
+            published_at: el.published_at,
+            depublished_at: el.depublished_at,
+            created_at: el.createdAt,
+            updated_at: el.updatedAt,
+        });
+    });
+
+    reply.header('X-Total-Count', polls.length).send(JSON.stringify(polls));
+}
+
+async function PollsGet(request, reply) {
+    const pollsQuery = await Polls.findOne({
+        where: {
+            id: request.params.pollId,
+            '$PollsVersions.active$': {
+                [Op.eq]: true,
+            },
+        },
+        include: [PollsVersions],
+    });
+
+    if (pollsQuery === null) {
+        return reply
+            .notFound(`Ressource '${request.params.pollId}' not exists.`)
+            .sent();
+    }
+
+    const poll = {
+        id: pollsQuery.id,
+        name: pollsQuery.name,
+        description: pollsQuery.description,
+        version: {
+            id: pollsQuery.PollsVersions[0].id,
+            name: pollsQuery.PollsVersions[0].name,
+        },
+        draft: pollsQuery.is_published,
+        // TODO: add download link and view link of the active version
+        published_at: pollsQuery.published_at,
+        depublished_at: pollsQuery.depublished_at,
+        created_at: pollsQuery.createdAt,
+        updated_at: pollsQuery.updatedAt,
+    };
+
+    reply.send(JSON.stringify(poll));
+}
+
+async function PollsPost(request, reply) {
+    const body = request.body;
+    const validationErrors = [];
+
+    // Validate parameters for each question
+    request.body.form.forEach((el, it) => {
+        try {
+            const values = QuestionsValidators[el.type](el);
+        } catch (error) {
+            validationErrors.push([error.message, it]);
+        }
+    });
+
+    if (validationErrors.length != 0) {
+        let errorMessage = '';
+
+        validationErrors.forEach((el, it) => {
+            const msg = `body.form[${el[1]}].parameters.${el[0]}`;
+            errorMessage += it != 0 ? ', ' + msg : msg;
+        });
+
+        return reply.badRequest(errorMessage).sent();
+    }
+
+    // Beginning of the creation process
+    const transaction = await sequelize.transaction();
+    let poll_id = '';
+
+    try {
+        const poll = await Polls.create(
+            {
+                name: body.name,
+                description: body.description,
+                is_published: false,
+            },
+            { transaction }
+        );
+
+        poll_id = poll.id;
+
+        const version = await PollsVersions.create(
+            {
+                name: generate_uid(),
+                poll: poll.id,
+                active: true,
+            },
+            { transaction }
+        );
+
+        const questions = [];
+        body.form.forEach(async el => {
+            questions.push({
+                poll_version: version.id,
+                question: el.question,
+                type: el.type,
+                parameters: el.parameters,
+                required: el.required || false,
+            });
+        });
+
+        await PollsQuestions.bulkCreate(questions, { transaction });
+
+        await transaction.commit();
+    } catch (error) {
+        request.log.error(error);
+        request.log.trace('Unable to create the poll');
+
+        await transaction.rollback();
+
+        return reply.internalServerError();
+    }
+
+    return reply.code(201).send(
+        JSON.stringify({
+            message: 'Ressource created',
+            ressource_id: poll_id,
+        })
+    );
+}
+
+async function PollsPatch(request, reply) {
+    const poll = await Polls.findOne({
+        where: { id: request.params.pollId },
+    });
+
+    if (poll === null) {
+        return reply
+            .notFound(`Ressource '${request.params.pollId}' not exists.`)
+            .sent();
+    }
+
+    if (
+        (request.body.draft === true || poll.is_published === true) &&
+        (Object.keys(request.body).includes('published_at') ||
+            Object.keys(request.body).includes('depublished_at'))
+    ) {
+        reply.badRequest(
+            "You cannot specify a 'published_at' or a 'depublished_at' if " +
+                'the poll is still a draft.'
+        );
+    }
+
+    const validatedParams = Object.assign({}, request.body);
+    validatedParams.is_published = validatedParams.draft;
+    delete validatedParams.draft;
+
+    if (validatedParams.is_published === true) {
+        validatedParams['published_at'] = null;
+        validatedParams['depublished_at'] = null;
+    }
+
+    await Polls.update(validatedParams, {
+        where: { id: request.params.pollId },
+    });
+
+    reply.code(202).send(JSON.stringify({ message: 'Request accepted' }));
+}
+
+async function PollsDelete(request, reply) {
+    const pollsQuery = await Polls.findOne({
+        where: { id: request.params.pollId },
+    });
+
+    if (pollsQuery === null) {
+        return reply
+            .notFound(`Ressource '${request.params.pollId}' not exists.`)
+            .sent();
+    }
+
+    const transaction = await sequelize.transaction();
+
+    try {
+        await PollsVersions.destroy(
+            {
+                where: { poll: request.params.pollId },
+            },
+            { transaction }
+        );
+
+        await Polls.destroy(
+            {
+                where: { id: request.params.pollId },
+            },
+            { transaction }
+        );
+
+        await transaction.commit();
+    } catch (error) {
+        request.log.trace(`Unable to delete poll '${request.params.pollId}'`);
+
+        await transaction.rollback();
+
+        return reply.internalServerError();
+    }
+
+    return reply.code(202).send(
+        JSON.stringify({
+            message: 'Ressource deleted.',
+        })
+    );
+}
 
 module.exports = {
     polls: {
