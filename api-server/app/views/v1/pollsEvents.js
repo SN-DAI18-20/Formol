@@ -1,22 +1,18 @@
 const PollsEventsGetCollectionSchema = {
     tags: [{ name: 'Polls' }],
     body: {},
-    response: {}
+    response: {},
 };
 
 const PollsEventsGetSchema = {
     tags: [{ name: 'Polls' }],
     body: {},
-    response: {}
+    response: {},
 };
 
-async function PollsEventsCollectionGet(request, reply) {
+async function PollsEventsCollectionGet(request, reply) {}
 
-}
-
-async function PollsEventsGet(request, reply) {
-
-}
+async function PollsEventsGet(request, reply) {}
 
 module.exports = {
     polls: {
@@ -30,9 +26,9 @@ module.exports = {
                     GET: {
                         handler: PollsEventsGet,
                         schema: PollsEventsGetSchema,
-                    }
-                }
-            }
-        }
-    }
+                    },
+                },
+            },
+        },
+    },
 };

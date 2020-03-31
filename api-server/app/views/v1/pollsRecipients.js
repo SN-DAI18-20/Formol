@@ -1,39 +1,38 @@
 const PollsRecipientsGetCollectionSchema = {
     tags: [{ name: 'Polls' }],
     body: {},
-    response: {}
+    response: {},
 };
 
 const PollsRecipientsGetSchema = {
     tags: [{ name: 'Polls' }],
     body: {},
-    response: {}
+    response: {},
 };
 
 const PollsRecipientsPostSchema = {
     tags: [{ name: 'Polls' }],
     body: {},
-    response: {}
+    response: {},
 };
 
 const PollsRecipientsPostReinviteSchema = {
     tags: [{ name: 'Polls' }],
     body: {},
-    response: {}
+    response: {},
 };
 
 const PollsRecipientsPutSchema = {
     tags: [{ name: 'Polls' }],
     body: {},
-    response: {}
+    response: {},
 };
 
 const PollsRecipientsDeleteSchema = {
     tags: [{ name: 'Polls' }],
     body: {},
-    response: {}
+    response: {},
 };
-
 
 async function PollsRecipientsCollectionGet(request, reply) {}
 async function PollsRecipientsGet(request, reply) {}
