@@ -4,7 +4,15 @@ const AcceptedReturn = {
     properties: {
         message: { type: 'string' },
     },
-}
+};
+
+const DeletedReturn = {
+    description: 'Ressource deleted.',
+    type: 'object',
+    properties: {
+        message: { type: 'string' },
+    },
+};
 
 const RessourceNotFoundReturn = {
     description: 'Ressource not found.',
@@ -37,6 +45,7 @@ const RessourceCreatedReturn = {
 
 module.exports = {
     AcceptedReturn,
+    DeletedReturn,
     ForbiddenReturn,
     RessourceNotFoundReturn,
     RessourceCreatedReturn,
