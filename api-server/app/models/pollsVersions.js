@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
             id: {
                 type: DataTypes.UUID,
                 primaryKey: true,
-                defaultValue: uuid(),
+                defaultValue: DataTypes.UUIDV4,
             },
             name: {
                 type: DataTypes.TEXT,
@@ -24,15 +24,6 @@ module.exports = (sequelize, DataTypes) => {
                 },
             },
             active: DataTypes.BOOLEAN,
-            created_at: {
-                allowNull: false,
-                type: DataTypes.DATE,
-            },
-            updated_at: {
-                allowNull: false,
-                type: DataTypes.DATE,
-            },
-            deleted_at: DataTypes.DATE,
         },
         {
             tableName: 'Polls_versions',
@@ -48,7 +39,8 @@ module.exports = (sequelize, DataTypes) => {
         }
     );
     PollsVersions.associate = function(models) {
-        PollsVersions.belongsTo(models.Polls);
+        PollsVersions.belongsTo(models.Polls, { foreignKey: 'poll' });
+        // PollsVersions.hasOne(models.Polls, {foreignKey: 'poll'});
     };
 
     return PollsVersions;
