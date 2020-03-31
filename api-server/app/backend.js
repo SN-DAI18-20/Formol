@@ -11,7 +11,7 @@ const redisConn = new Redis({
 });
 
 module.exports = {
-    'formol_eventsteam': new mq.Queue('formol_eventsteam', {
+    formol_eventsteam: new mq.Queue('formol_eventsteam', {
         connection: redisConn,
     }),
 };

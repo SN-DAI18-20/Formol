@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
 /**
  * Middleware that verify if the received JWT token is valid or not.
@@ -11,10 +11,8 @@ const jwt = require("jsonwebtoken");
  * @param {*} reply
  * @param {*} next
  */
-const jwt_verify = (req, reply, next) => {
-
-};
+const jwt_verify = (req, reply, next) => {};
 
 module.exports = {
-    jwt_verify
+    jwt_verify,
 };
