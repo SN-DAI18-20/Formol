@@ -22,12 +22,16 @@ export default ({bringBackState}) => {
   const handleMinChange = (minToChange) => {
     if(minToChange < max){
       setMin(minToChange)
+    } else {
+      setMin(max-1)
     }
   }
 
   const handleMaxChange = (maxToChange) => {
-    if(maxToChange > min){
+    if(maxToChange > min && maxToChange != NaN){
       setMax(maxToChange)
+    } else{
+      setMax(min+1)
     }
   }
 
@@ -53,7 +57,8 @@ export default ({bringBackState}) => {
 					{between && (
 						<FormControl>
 							<TextField
-								onChange={({ target }) => handleMinChange(parseInt(target.value))}
+                onChange={({ target }) => setMin(target.value)}
+                onBlur={({target}) => handleMinChange(parseInt(target.value))}
 								value={min}
 								label="De"
 								type="number"
@@ -62,7 +67,8 @@ export default ({bringBackState}) => {
 					)}
 					<FormControl>
 						<TextField
-							onChange={({ target }) => handleMaxChange(parseInt(target.value))}
+              onChange={({ target }) => setMax(target.value)}
+              onBlur={({target}) => handleMaxChange(parseInt(target.value))}
 							value={max}
 							label={between ? 'À' : 'Limite'}
 							type="number"
