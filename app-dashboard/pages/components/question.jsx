@@ -44,7 +44,8 @@ const useStyle = makeStyles({
     }
 })
 
-export default ({ deleteQuestion, changeType, type, id, bringBackState, required, toggleRequired }) => {
+
+export default ({ deleteQuestion, changeType, type, id, bringBackState, required, toggleRequired, bringBackName }) => {
 
     const { header, questionType } = useStyle();
 
@@ -58,35 +59,35 @@ export default ({ deleteQuestion, changeType, type, id, bringBackState, required
     const renderChoosedQuestion = (choosedQuestion) => {
       switch (choosedQuestion) {
         case "Number":
-            return <Number bringBackState={state => bringBackState(state, required, id, type)} />;
+            return <Number bringBackState={parameters => bringBackState(parameters, id)} />;
         case "Text":
-            return <Text bringBackState={state => bringBackState(state, required, id, type)} />;
+            return <Text bringBackState={parameters => bringBackState(parameters, id)} />;
         case "CheckBox":
-            return <CheckBox bringBackState={state => bringBackState(state, required, id, type)} />;
+            return <CheckBox bringBackState={parameters => bringBackState(parameters, id)} />;
         case "Range":
-            return <Range bringBackState={state => bringBackState(state, required, id, type)} />;
+            return <Range bringBackState={parameters => bringBackState(parameters, id)} />;
         case "Selector":
-            return <Selector bringBackState={state => bringBackState(state, required, id, type)} />;
+            return <Selector bringBackState={parameters => bringBackState(parameters, id)} />;
         case "Date":
-            return <Dates bringBackState={state => bringBackState(state, required, id, type)} />;
+            return <Dates bringBackState={parameters => bringBackState(parameters, id)} />;
         default:
             break;
-    }
+      }
     }
 
     const handleSelect = (selectedValue) => {
         setSelected(selectedValue)
         chooseAQuestion(selectedValue)
-        changeType(selectedValue, id, required)
+        changeType(selectedValue, id)
     }
 
     return (
                 <Card elevation={8} style={{ margin:'20px 0px' }}>
                 <CardContent>
                     <div className={header}>
-                        <QuestionTitle/>
+                        <QuestionTitle id={id} bringBackName={bringBackName} />
                         <div>
-                          <FormControlLabel label="Required" control={<Switch onChange={({target}) => toggleRequired(target.checked, type, id)} value={required} />} />
+                          <FormControlLabel label="Required" control={<Switch onChange={({target}) => toggleRequired(target.checked, id)} value={required} />} />
                           <FormControl>
                             <Select
                               value={selected}
@@ -115,12 +116,14 @@ export default ({ deleteQuestion, changeType, type, id, bringBackState, required
     )
 }
 
-const QuestionTitle = () => {
+const QuestionTitle = ({id, bringBackName}) => {
 
     const { questionTitleStyle } = useStyle();
 
     const [modifyTitle, setModifyTitle] = React.useState(false);
     const [questionTitle, setQuestionTitle] = React.useState("Question");
+    const questionNameEffect = () => bringBackName(id, questionTitle)
+    React.useEffect(questionNameEffect, [questionTitle])
 
     const handleClickIcon = () => {
         setModifyTitle(!modifyTitle)

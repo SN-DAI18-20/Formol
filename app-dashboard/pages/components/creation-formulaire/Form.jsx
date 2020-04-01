@@ -8,29 +8,34 @@ import Button from '@material-ui/core/Button';
 export const Form = () => {
 
   const {state, dispatch} = React.useContext(FormulaireContext)
-  const [form, setForm] = React.useState(state || new Map([[0, { type: 'Text', required: false, state: {} }]]));
+  const [form, setForm] = React.useState(state || new Map([[0, { type: 'Text', required: false, parameters: {}, name: 'Question' }]]));
 
   const effect = () => {
-    dispatch({type:'updateQuestions', payload:[...form.values()]})
+    dispatch({type:'setForm', payload:[...form.values()]})
   }
   React.useEffect(effect, [form])
+
+  const updateQuestionName = (id, name) => {
+    form.set(id, {...form.get(id), name})
+    setForm(new Map(form))
+  }
 
   const deleteQuestion = (QuestionID) => {
     form.delete(QuestionID);
     setForm(new Map(form));
   };
 
-  const bringBackState = (state, id, type, required) => {
-    form.set(id, { type, state, required });
+  const bringBackState = (parameters, id) => {
+    form.set(id, { ...form.get(id), parameters });
     setForm(new Map(form));
   };
 
-  const changeType = (type, id, required, state) => {
-    form.set(id, { type, required, state });
+  const changeType = (type, id) => {
+    form.set(id, { ...form.get(id), type });
     setForm(new Map(form));
   };
-  const toggleRequired = (required, type, id, state) => {
-    form.set(id, { type, required, state });
+  const toggleRequired = (required, id) => {
+    form.set(id, { ...form.get(id), required });
     setForm(new Map(form));
   };
 
@@ -43,16 +48,17 @@ export const Form = () => {
   return (
     <div>
       {Array.from(form).map(([id, question]) => {
-        const { type, required, state } = question;
+        const { type, required, parameters } = question;
         return (
           <Question
+            bringBackName={updateQuestionName}
             bringBackState={(stateToBringBack, required) =>
-              bringBackState(stateToBringBack, id, type, required)}
+              bringBackState(stateToBringBack, id)}
             key={`question-${id}`}
             id={id}
             required={required}
-            toggleRequired={(checked) => toggleRequired(checked, type, id, state)}
-            changeType={(typeToChange, id, required) => changeType(typeToChange, id, required, state)}
+            toggleRequired={(checked) => toggleRequired(checked, id)}
+            changeType={(typeToChange, id) => changeType(typeToChange, id)}
             type={type}
             deleteQuestion={() => deleteQuestion(id)}
           />
