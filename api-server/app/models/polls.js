@@ -16,11 +16,10 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             description: DataTypes.TEXT,
-            location: DataTypes.TEXT,
-            is_published: {
+            draft: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,
-                defaultValue: false,
+                defaultValue: true,
             },
             published_at: DataTypes.DATE,
             depublished_at: DataTypes.DATE,

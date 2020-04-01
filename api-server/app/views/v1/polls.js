@@ -10,8 +10,9 @@ const PollGetGenericSchema = {
     id: { type: 'string', format: 'uuid' },
     name: { type: 'string' },
     description: { type: 'string' },
-    location: { type: 'string' },
     draft: { type: 'boolean' },
+    view_url: { type: 'string' },
+    download_url: { type: 'string' },
     version: {
         type: 'object',
         properties: {
@@ -167,7 +168,9 @@ async function PollsCollectionGet(request, reply) {
                 id: el.PollsVersions[0].id,
                 name: el.PollsVersions[0].name,
             },
-            draft: el.is_published,
+            draft: el.draft,
+            view_url: el.PollsVersions[0].view_url,
+            download_url: el.PollsVersions[0].download_url,
             published_at: el.published_at,
             depublished_at: el.depublished_at,
             created_at: el.createdAt,
@@ -203,8 +206,9 @@ async function PollsGet(request, reply) {
             id: pollsQuery.PollsVersions[0].id,
             name: pollsQuery.PollsVersions[0].name,
         },
-        draft: pollsQuery.is_published,
-        // TODO: add download link and view link of the active version
+        draft: pollsQuery.draft,
+        view_url: pollsQuery.PollsVersions[0].view_url,
+        download_url: pollsQuery.PollsVersions[0].download_url,
         published_at: pollsQuery.published_at,
         depublished_at: pollsQuery.depublished_at,
         created_at: pollsQuery.createdAt,
@@ -247,7 +251,7 @@ async function PollsPost(request, reply) {
             {
                 name: body.name,
                 description: body.description,
-                is_published: false,
+                draft: false,
             },
             { transaction }
         );
@@ -306,7 +310,7 @@ async function PollsPatch(request, reply) {
     }
 
     if (
-        (request.body.draft === true || poll.is_published === true) &&
+        (request.body.draft === true || poll.draft === true) &&
         (Object.keys(request.body).includes('published_at') ||
             Object.keys(request.body).includes('depublished_at'))
     ) {
@@ -317,10 +321,8 @@ async function PollsPatch(request, reply) {
     }
 
     const validatedParams = Object.assign({}, request.body);
-    validatedParams.is_published = validatedParams.draft;
-    delete validatedParams.draft;
 
-    if (validatedParams.is_published === true) {
+    if (validatedParams.draft === true) {
         validatedParams['published_at'] = null;
         validatedParams['depublished_at'] = null;
     }

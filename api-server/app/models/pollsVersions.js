@@ -23,6 +23,12 @@ module.exports = (sequelize, DataTypes) => {
                     key: 'id',
                 },
             },
+            view_url: {
+                type: DataTypes.TEXT,
+            },
+            download_url: {
+                type: DataTypes.TEXT,
+            },
             active: DataTypes.BOOLEAN,
         },
         {
