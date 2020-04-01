@@ -3,7 +3,7 @@ import React from 'react';
 import Slider from '@material-ui/core/Slider';
 import TextField from '@material-ui/core/TextField';
 
-export default ({bringBackState}) => {
+export const Range = ({bringBackState}) => {
   const [ maxValue, setMaxValue ] = React.useState(20);
   const [minValue, setMinValue] = React.useState(-20);
   const [defaultValue, setDefaultValue] = React.useState(0);

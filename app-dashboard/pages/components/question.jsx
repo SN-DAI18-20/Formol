@@ -13,12 +13,12 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Create from '@material-ui/icons/Create';
 import Switch from '@material-ui/core/Switch';
 
-import Text from './input-type/text';
-import Number from './input-type/number';
-import CheckBox from './input-type/checkbox';
-import Selector from './input-type/selector';
-import Range from './input-type/range';
-import Date from './input-type/date';
+import { Text } from './input-type/text';
+import { Number } from './input-type/number';
+import { CheckBox } from './input-type/checkbox';
+import { Selector } from './input-type/selector';
+import { Range } from './input-type/range';
+import { Dates } from './input-type/date';
 
 const useStyle = makeStyles({
     questionsChoice:{
@@ -69,7 +69,7 @@ export default ({ deleteQuestion, changeType, type, id, bringBackState, required
         case "Selector":
             return <Selector bringBackState={state => bringBackState(state, required, id, type)} />;
         case "Date":
-            return <Date bringBackState={state => bringBackState(state, required, id, type)} />;
+            return <Dates bringBackState={state => bringBackState(state, required, id, type)} />;
         default:
             break;
     }
