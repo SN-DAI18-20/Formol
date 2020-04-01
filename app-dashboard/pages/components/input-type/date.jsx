@@ -3,68 +3,120 @@ import React from 'react';
 
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Typography from '@material-ui/core/Typography';
 import DateFnsUtils from '@date-io/date-fns';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 import { makeStyles } from '@material-ui/core/styles';
 const useStyle = makeStyles({
-  minDateStyle: {
-    marginRight: '10px'
-  }
-})
+	minDateStyle: {
+		marginRight: '10px'
+	}
+});
 
-export default ({bringBackState}) => {
+export default ({ bringBackState }) => {
+	const { minDateStyle } = useStyle();
 
-  const { minDateStyle } = useStyle();
-
-	const [ maxDate, setMaxDate ] = React.useState(new Date());
-	const handleMaxDateChange = (maxDate) => {
-		setMaxDate(maxDate);
+	const [ limit, setLimit ] = React.useState(false);
+	const handleToggleLimit = ({ target }) => {
+		const { checked } = target;
+		setLimit(checked);
 	};
 
-	const [ minDate, setMinDate ] = React.useState(new Date());
-	const handleMinDateChange = (minDate) => {
-		setMinDate(minDate);
-  };
 
-  const [between, setBetween] = React.useState(false);
-  const handleToggleBetween = ({target}) => {
-    const {checked} = target
-    setBetween(checked)
+	const [ maxDate, setMaxDate ] = React.useState(new Date(Date.now()));
+	const handleMaxDateChange = (maxDate) => {
+		setMaxDate(new Date());
+  };
+  const [maxDateActive, setMaxDateActive] = React.useState(true);
+  const handleToggleMaxDateActive = ({target}) => {
+    const { checked } = target;
+    setMaxDateActive(checked)
+    setMaxDate(false)
+  }
+
+	const [ minDate, setMinDate ] = React.useState(new Date(Date.now()));
+	const handleMinDateChange = (minDate) => {
+		setMinDate(new Date());
+  };
+  const [minDateActive, setMinDateActive] = React.useState(true);
+  const handleToggleMinDateActive = ({target}) => {
+    const { checked } = target;
+    setMinDateActive(checked)
+    setMinDate(false)
   }
 
   React.useEffect(() => {
-    bringBackState({between, minDate, maxDate})
-  }, [between, minDate, maxDate])
+    if(limit){
+      setMaxDateActive(true)
+      setMinDateActive(true)
+    }
+  }, [limit])
+
+  React.useEffect(() => {
+    if(maxDateActive === false && minDateActive === false) {
+      setLimit(false)
+    }
+  }, [maxDateActive, minDateActive])
+
+	React.useEffect(
+		() => {
+			bringBackState({ minDate, maxDate });
+		},
+		[ minDate, maxDate ]
+	);
 
 	return (
 		<div>
-			<FormControlLabel control={<Switch color="primary" onChange={handleToggleBetween} />} label="Between" />
-			<div>
-        {between && <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDatePicker
-            className={minDateStyle}
-						value={minDate}
-						onChange={handleMinDateChange}
-						disableToolbar
-						variant="inline"
-						format="MM/dd/yyyy"
-						margin="normal"
-						label="Min date"
-					/>
-        </MuiPickersUtilsProvider>}
-				<MuiPickersUtilsProvider utils={DateFnsUtils}>
-					<KeyboardDatePicker
-						value={maxDate}
-						onChange={handleMaxDateChange}
-						disableToolbar
-						variant="inline"
-						format="MM/dd/yyyy"
-						margin="normal"
-						label="Max date"
-					/>
-				</MuiPickersUtilsProvider>
-			</div>
+			<FormControlLabel
+				control={<Switch value={limit} color="primary" onChange={handleToggleLimit} />}
+        label="Limit date"
+			/>
+			{limit ? (
+				<div>
+					<div style={{display:'flex', flexDirection:'column'}} >
+            <FormControlLabel control={<Switch onChange={handleToggleMinDateActive} checked={minDateActive} />} label="Min Date" />
+						{minDateActive && (
+							<MuiPickersUtilsProvider utils={DateFnsUtils}>
+								<KeyboardDatePicker
+                  className={minDateStyle}
+                  maxDate={maxDateActive && maxDate}
+									value={minDate}
+									onChange={handleMinDateChange}
+									disableToolbar
+									variant="inline"
+									format="MM/dd/yyyy"
+									margin="normal"
+									label="Min date"
+								/>
+							</MuiPickersUtilsProvider>
+						)}
+					</div>
+					<div>
+            <div style={{display:'flex', flexDirection:'column'}} >
+            <FormControlLabel control={<Switch onChange={handleToggleMaxDateActive} checked={maxDateActive} />} label="Max Date" />
+						{maxDateActive && (
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+								<KeyboardDatePicker
+                  value={maxDate}
+                  minDate={minDateActive && minDate}
+									onChange={handleMaxDateChange}
+									disableToolbar
+									variant="inline"
+									format="MM/dd/yyyy"
+									margin="normal"
+									label="Max date"
+                  />
+							</MuiPickersUtilsProvider>
+						)}
+            </div>
+					</div>
+				</div>
+			) : (
+				<div>
+					<Typography>Il n'y à pas de limite de date</Typography>
+				</div>
+			)}
 		</div>
 	);
 };
