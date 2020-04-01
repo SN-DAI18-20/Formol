@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 function items_validator(payload) {
     if (!Object.keys(payload.parameters).includes('items')) {
         throw new Error('items should be present.');
@@ -13,8 +15,8 @@ function items_validator(payload) {
 function sanitize_additionnals(keys, payload) {
     const parameters = {};
 
-    Object.keys(keys).forEach(key => {
-        if (payload.parameters.includes(key)) {
+    keys.forEach(key => {
+        if (Object.keys(payload.parameters).includes(key)) {
             parameters[key] = payload.parameters[key];
         }
     });
@@ -36,27 +38,33 @@ function date(payload) {
     const allowed_keys = ['min_date', 'max_date'];
 
     if (Object.keys(payload.parameters).includes('min_date')) {
-        const date = Date.parse(payload.parameters.min_date);
+        const date = moment(
+            payload.parameters.min_date,
+            moment.ISO_8601
+        ).format();
 
         if (
             payload.parameters.min_date == null ||
             payload.parameters.min_date == false
         ) {
             delete payload.parameters.min_date;
-        } else if (date == NaN) {
+        } else if (date == 'Invalid date') {
             throw new Error(`min_date is not in ISO8601 format.`);
         }
     }
 
     if (Object.keys(payload.parameters).includes('max_date')) {
-        const date = Date.parse(payload.parameters.max_date);
+        const date = moment(
+            payload.parameters.max_date,
+            moment.ISO_8601
+        ).format();
 
         if (
             payload.parameters.max_date == null ||
             payload.parameters.max_date == false
         ) {
             delete payload.parameters.max_date;
-        } else if (date == NaN) {
+        } else if (date == 'Invalid date') {
             throw new Error(`max_date is not in ISO8601 format.`);
         }
     }
@@ -83,6 +91,7 @@ function number(payload) {
         }
     }
 
+    console.error(payload);
     return sanitize_additionnals(allowed_keys, payload);
 }
 
@@ -118,7 +127,7 @@ function text(payload) {
     if (!Object.keys(payload.parameters).includes('multiline')) {
         throw new Error(`multiline should be present.`);
     } else if (typeof payload.parameters.multiline !== 'boolean') {
-        throw new Error(`multiline is not a number.`);
+        throw new Error(`multiline is not a boolean.`);
     }
 
     return sanitize_additionnals(allowed_keys, payload);
