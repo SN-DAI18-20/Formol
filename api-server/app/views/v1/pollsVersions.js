@@ -32,6 +32,13 @@ const VersionCollectionGetSchema = {
             pollId: { type: 'string', format: 'uuid' },
         },
     },
+    body: {
+        type: 'array',
+        items: {
+            type: 'object',
+            properties: PollVersionGenericSchema,
+        },
+    },
     response: {
         200: {
             description: 'Return a list of versions',
