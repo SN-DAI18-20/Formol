@@ -10,17 +10,17 @@ export const FormulaireContext = React.createContext()
  *  questions: Array
  * } } state
  * @param { {
- *  type: "updateQuestions" | "updateTitle" | "updateDescription",
+ *  type: "updateQuestions" | "updateName" | "updateDescription",
  *  payload: any
  * } } action
  */
 export const reducer = (state, action) => {
   const { type, payload } = action;
   switch (type) {
-    case 'updateQuestions':
-      return {...state, questions: [...payload] }
-    case 'updateTitle':
-      return {...state, title: payload}
+    case 'setForm':
+      return {...state, form: [...payload] }
+    case 'updateName':
+      return {...state, name: payload}
     case 'updateDescription':
       return {...state, description: payload}
     default:

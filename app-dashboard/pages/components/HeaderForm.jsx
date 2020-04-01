@@ -20,12 +20,12 @@ const useStyle = makeStyles({
 		display: 'flex',
 		justifyContent: 'space-between'
 	},
-	segmentTitle: {
+	segmentname: {
 		overflowX: 'auto',
 		overflowY: 'hidden',
 		marginBottom: '10px'
 	},
-	titleStyle: {
+	nameStyle: {
 		display: 'flex',
 		flexDirection: 'row'
 	},
@@ -40,9 +40,9 @@ export const HeaderForm = () => {
 
   const { state, dispatch } = React.useContext(FormulaireContext);
 
-  const [ title, setTitle ] = React.useState(state?.title || 'Title');
-  const titleEffect = () => dispatch({type:'updateTitle', payload:title})
-  React.useEffect(titleEffect, [title])
+  const [ name, setName ] = React.useState(state?.name || 'Name');
+  const nameEffect = () => dispatch({type:'updateName', payload:name})
+  React.useEffect(nameEffect, [name])
 
   const [ description, setDescription ] = React.useState(state?.description || '');
   const descriptionEffect = () => dispatch({ type: 'updateDescription', payload:description })
@@ -52,37 +52,37 @@ export const HeaderForm = () => {
 
 	return (
 		<div style={{ height: '100%' }}>
-					<InputTitle
+					<Inputname
 						description={description}
 						setDescription={setDescription}
-						title={title}
-						setTitle={setTitle}
+						name={name}
+						setName={setName}
 					/>
 		</div>
 	);
 };
 
-const InputTitle = ({ title, setTitle, description, setDescription }) => {
-	const { segmentTitle, titleStyle } = useStyle();
+const Inputname = ({ name, setName, description, setDescription }) => {
+	const { segmentname, nameStyle } = useStyle();
 
 	const [ input, setInput ] = React.useState(false);
 
 	return (
 		<div>
-			<div className={titleStyle}>
-				<div className={segmentTitle}>
+			<div className={nameStyle}>
+				<div className={segmentname}>
 					{input ? (
 						<TextField
 							onBlur={({ target }) => {
-								setTitle(target.value);
+								setName(target.value);
 								setInput(false);
 							}}
-							onChange={({ target }) => setTitle(target.value)}
-							defaultValue={title}
+							onChange={({ target }) => setName(target.value)}
+							defaultValue={name}
 							onKeyDown={(key) => key.keyCode === 13 && setInput(false)}
 						/>
 					) : (
-						<Typography variant="h4" children={title} />
+						<Typography variant="h4" children={name} />
 					)}
 				</div>
 				<Button onClick={() => setInput(!input)}>
