@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useDebugValue } from 'react';
 
 
 import Switch from '@material-ui/core/Switch';
@@ -14,7 +14,7 @@ const useStyle = makeStyles({
 	}
 });
 
-export default ({ bringBackState }) => {
+export const Dates = ({ bringBackState }) => {
 	const { minDateStyle } = useStyle();
 
 	const [ limit, setLimit ] = React.useState(false);
@@ -26,24 +26,24 @@ export default ({ bringBackState }) => {
 
 	const [ maxDate, setMaxDate ] = React.useState(new Date(Date.now()));
 	const handleMaxDateChange = (maxDate) => {
-		setMaxDate(new Date());
+		setMaxDate(new Date(maxDate));
   };
   const [maxDateActive, setMaxDateActive] = React.useState(true);
   const handleToggleMaxDateActive = ({target}) => {
     const { checked } = target;
     setMaxDateActive(checked)
-    setMaxDate(false)
+    setMaxDate(checked ? new Date(Date.now()) : false)
   }
 
 	const [ minDate, setMinDate ] = React.useState(new Date(Date.now()));
 	const handleMinDateChange = (minDate) => {
-		setMinDate(new Date());
+		setMinDate(new Date(minDate));
   };
   const [minDateActive, setMinDateActive] = React.useState(true);
   const handleToggleMinDateActive = ({target}) => {
     const { checked } = target;
     setMinDateActive(checked)
-    setMinDate(false)
+    setMinDate(checked ? new Date(Date.now()) : false)
   }
 
   React.useEffect(() => {

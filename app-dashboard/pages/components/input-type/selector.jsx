@@ -18,7 +18,7 @@ const useStyle = makeStyles({
   }
 })
 
-export default ({bringBackState}) => {
+export const Selector = ({bringBackState}) => {
 
   const { addButton } = useStyle();
 
@@ -52,7 +52,7 @@ export default ({bringBackState}) => {
     <div>
       {selectors.map(({ id, value }) => {
         return (
-            <Selector
+            <SelectorComponent
               key={`selector-${id}`}
               id={id}
               value={value}
@@ -68,7 +68,7 @@ export default ({bringBackState}) => {
   )
 }
 
-const Selector = ({ id, value, updateSelector, deleteSelector }) => {
+const SelectorComponent = ({ id, value, updateSelector, deleteSelector }) => {
 
   const { selectorStyle } = useStyle();
 
