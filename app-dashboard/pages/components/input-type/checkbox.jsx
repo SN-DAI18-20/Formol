@@ -20,7 +20,7 @@ const useStyle = makeStyles({
 	}
 });
 
-export default ({bringBackState}) => {
+export const CheckBox = ({bringBackState}) => {
 	const { addButton } = useStyle();
 
 	const [ checkBoxs, setCheckBoxs ] = React.useState([ { value: '', id: 1 } ]);

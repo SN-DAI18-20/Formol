@@ -13,7 +13,7 @@ const useStyle = makeStyles({
 	}
 });
 
-export default ({bringBackState}) => {
+export const Number = ({bringBackState}) => {
 	const { number } = useStyle();
 	const [ between, setBetween ] = React.useState(false);
 	const [ min, setMin ] = React.useState(0);

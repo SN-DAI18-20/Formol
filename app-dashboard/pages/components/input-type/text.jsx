@@ -16,7 +16,7 @@ const useStyle = makeStyles({
 	}
 });
 
-export default ({bringBackState}) => {
+export const Text = ({bringBackState}) => {
 	const [ text, setText ] = React.useState('');
 	const [ selectedTextRange, setSelectedTextRange ] = React.useState('Court');
   const [ selectedType, setSelectedType ] = React.useState('text');
