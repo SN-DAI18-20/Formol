@@ -1,7 +1,5 @@
 import React from 'react';
 
-import Radio from '@material-ui/core/Radio';
-import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
@@ -25,7 +23,6 @@ export default ({bringBackState}) => {
   const { addButton } = useStyle();
 
   const [selectors, setSelectors] = React.useState([{id:1, value:'' } ]);
-  const [defaultChecked, setDefaultChecked] = React.useState(1)
 
   const addSelector = () => {
     const selectorsTable = [...selectors]
@@ -38,9 +35,6 @@ export default ({bringBackState}) => {
     const selectorsToUpdate = [ ...selectors ];
 		selectorsToUpdate.splice(findedSelectorsIndex, 1, selectorToUpdate);
     setSelectors(selectorsToUpdate);
-    if(clicked){
-      setDefaultChecked(selectorToUpdate.id)
-    }
   }
 
   const deleteSelector = (selectorIdToDelete) => {
@@ -51,8 +45,8 @@ export default ({bringBackState}) => {
   }
 
   React.useEffect(() => {
-    bringBackState({defaultChecked, selectors})
-  }, [defaultChecked,selectors])
+    bringBackState({selectors})
+  }, [selectors])
 
   return (
     <div>
@@ -62,7 +56,6 @@ export default ({bringBackState}) => {
               key={`selector-${id}`}
               id={id}
               value={value}
-              defaultChecked={defaultChecked === id}
               updateSelector={updateSelector}
               deleteSelector={deleteSelector}
             />
@@ -75,25 +68,18 @@ export default ({bringBackState}) => {
   )
 }
 
-const Selector = ({ defaultChecked, id, value, updateSelector, deleteSelector }) => {
+const Selector = ({ id, value, updateSelector, deleteSelector }) => {
 
   const { selectorStyle } = useStyle();
 
-  const handleRadioChange = () => {
-    updateSelector({ id, value }, true)
-  }
-
   const handleTextFieldChange = ({target}) => {
     const { value } = target;
-    updateSelector({id, value}, false)
+    updateSelector({id, value})
   }
 
   return (
     <div className={selectorStyle}>
-      <FormControl>
-        <Radio checked={defaultChecked} onChange={handleRadioChange} />
-      </FormControl>
-        <TextField label="Placeholder" value={value} onChange={handleTextFieldChange} />
+        <TextField label="Label" value={value} onChange={handleTextFieldChange} />
       <IconButton onClick={() => deleteSelector(id)} children={<DeleteForever/>} />
     </div>
   )
