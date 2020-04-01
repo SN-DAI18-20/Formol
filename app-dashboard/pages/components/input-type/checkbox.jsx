@@ -2,7 +2,6 @@ import React from 'react';
 
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
-import CheckBox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
@@ -24,12 +23,12 @@ const useStyle = makeStyles({
 export default ({bringBackState}) => {
 	const { addButton } = useStyle();
 
-	const [ checkBoxs, setCheckBoxs ] = React.useState([ { value: '', id: 1, defaultChecked: false } ]);
+	const [ checkBoxs, setCheckBoxs ] = React.useState([ { value: '', id: 1 } ]);
 
 	const addCheckBox = () => {
     const checkBoxsTable = [...checkBoxs]
     const id = checkBoxs.length === 0 ? 1 : checkBoxs.pop().id + 1
-    setCheckBoxs([ ...checkBoxsTable, { value: '', id, defaultChecked: false } ]);
+    setCheckBoxs([ ...checkBoxsTable, { value: '', id } ]);
 	};
 
 	const updateCheckBox = (checkBoxToUpdate) => {
@@ -50,11 +49,11 @@ export default ({bringBackState}) => {
 
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column' }}>
-			{checkBoxs.map(({ id, value, defaultChecked }) => {
+			{checkBoxs.map(({ id, value }) => {
 				return (
 					<UpdateCheckBox
 						key={`checkbox-${id}`}
-						props={{ id, value, defaultChecked }}
+						props={{ id, value }}
 						deleteCheckBox={deleteCheckBox}
 						updateCheckBox={updateCheckBox}
 					/>
@@ -71,24 +70,16 @@ const UpdateCheckBox = ({ props, deleteCheckBox, updateCheckBox }) => {
 	const { checkBoxStyle } = useStyle();
 	const { id } = props;
 	const [ value, setValue ] = React.useState(props.value);
-  const [ defaultChecked, setDefaultChecked ] = React.useState(props.defaultChecked);
 
 	return (
 		<div className={checkBoxStyle}>
-			<CheckBox
-				checked={defaultChecked}
-				onChange={({ target }) => {
-					setDefaultChecked(target.checked);
-					updateCheckBox({ id, value, defaultChecked });
-				}}
-			/>
 			<TextField
 				value={value}
 				onChange={({ target }) => {
 					setValue(target.value);
-					updateCheckBox({ id, value, defaultChecked });
+					updateCheckBox({ id, value });
 				}}
-				label="Placeholder"
+				label="Label"
 			/>
 			<IconButton onClick={() => deleteCheckBox(id)} children={<DeleteForever />} />
 		</div>
