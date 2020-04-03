@@ -24,7 +24,7 @@ export const Text = ({bringBackState}) => {
   const { textField, textStyle } = useStyle();
 
   React.useEffect(() => {
-    bringBackState({text, selectedTextRange, selectedType})
+    bringBackState({text, multiline:selectedTextRange === 'Long' , selectedType})
   }, [text, selectedTextRange, selectedType])
 
 	return (
