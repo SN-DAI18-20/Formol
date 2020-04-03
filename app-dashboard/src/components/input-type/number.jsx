@@ -43,8 +43,8 @@ export const Number = ({bringBackState}) => {
   );
 
   React.useEffect(() => {
-    bringBackState({ between, min, max })
-  }, [between, min, max])
+    bringBackState({ min, max })
+  }, [min, max])
 
 	return (
 		<div>

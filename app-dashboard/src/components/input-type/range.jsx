@@ -9,8 +9,8 @@ export const Range = ({bringBackState}) => {
   const [defaultValue, setDefaultValue] = React.useState(0);
 
   React.useEffect(() => {
-    bringBackState({defaultValue, minValue, maxValue})
-  }, [defaultValue,minValue, maxValue])
+    bringBackState({minValue, maxValue})
+  }, [minValue, maxValue])
 
 	return (
 		<div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
