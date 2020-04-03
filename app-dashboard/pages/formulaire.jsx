@@ -4,10 +4,10 @@ import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 
-import { Form } from './components/creation-formulaire/Form'
-import { HeaderForm } from './components/HeaderForm';
+import { Form } from '../src/components/creation-formulaire/Form'
+import { HeaderForm } from '../src/components/HeaderForm';
 
-import { FormulaireContext, reducer } from './components/creation-formulaire/Contexts';
+import { FormulaireContext, reducer } from '../src/components/creation-formulaire/Contexts';
 
 export default () => {
 
