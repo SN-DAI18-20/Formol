@@ -15,8 +15,8 @@ const fastify = require('fastify')({
 const app_config = require('../config/server');
 
 // Specify const variables for the Webserver
-const HTTP_BIND = process.env.HTTP_BIND | app_config.bind_ip | '[::]';
-const HTTP_PORT = process.env.HTTP_PORT | app_config.bind_port | 3001;
+const HTTP_BIND = process.env.HTTP_BIND || app_config.bind_ip || '0.0.0.0';
+const HTTP_PORT = process.env.HTTP_PORT || app_config.bind_port || 3001;
 
 // Register middlewares and utils
 fastify.register(require('fastify-sensible'));
