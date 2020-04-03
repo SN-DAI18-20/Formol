@@ -18,6 +18,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
+    "docker:dev": "next --hostname 0.0.0.0",
+    "docker:start": "next start --hostname 0.0.0.0",
     "story": "start-storybook -p 9000"
   },
   "devDependencies": {
