@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const FormulaireContext = React.createContext()
+export const FormulaireContext = React.createContext();
 
 /**
  *
@@ -15,15 +15,15 @@ export const FormulaireContext = React.createContext()
  * } } action
  */
 export const reducer = (state, action) => {
-  const { type, payload } = action;
-  switch (type) {
-    case 'setForm':
-      return {...state, form: [...payload] }
-    case 'updateName':
-      return {...state, name: payload}
-    case 'updateDescription':
-      return {...state, description: payload}
-    default:
-      break;
-  }
-}
+    const { type, payload } = action;
+    switch (type) {
+        case 'setForm':
+            return { ...state, form: [...payload] };
+        case 'updateName':
+            return { ...state, name: payload };
+        case 'updateDescription':
+            return { ...state, description: payload };
+        default:
+            break;
+    }
+};
