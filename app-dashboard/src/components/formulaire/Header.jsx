@@ -39,7 +39,8 @@ const useStyle = makeStyles({
 export const Header = () => {
 
   const { state, dispatch } = React.useContext(FormulaireContext);
-  const [ name, setName ] = React.useState(state?.name || '');
+
+  const [ name, setName ] = React.useState(state?.name);
   const nameEffect = () => dispatch({type:'updateName', payload:name})
   React.useEffect(nameEffect, [name])
 
