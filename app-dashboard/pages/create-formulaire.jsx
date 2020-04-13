@@ -5,7 +5,7 @@ import { Layout } from '../src/components/Layout'
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 
-import { Formulaire } from '../src/components/formulaire/Formulaire';
+import Formulaire from '../src/components/formulaire/Formulaire';
 
 export default () => {
 
