@@ -3,8 +3,7 @@ import React from 'react';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 
-import { Layout } from '../src/components/Layout'
-import { Formulaire } from '../src/components/formulaire/Formulaire';
+import Formulaire from '../src/components/formulaire/Formulaire';
 
 export default () => {
 
