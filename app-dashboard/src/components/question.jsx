@@ -3,14 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Create from '@material-ui/icons/Create';
 import Switch from '@material-ui/core/Switch';
 
 import { Text } from './input-type/text';
@@ -21,6 +19,9 @@ import { Range } from './input-type/range';
 import { Dates } from './input-type/date';
 
 const useStyle = makeStyles({
+    inputButton: {
+      marginBottom: '20px'
+    },
     questionsChoice:{
         display:'flex',
         flexDirection:'row',
@@ -118,16 +119,11 @@ export default ({ deleteQuestion, changeType, type, id, bringBackState, required
 
 const QuestionTitle = ({id, bringBackName}) => {
 
-    const { questionTitleStyle } = useStyle();
+    const { questionTitleStyle, inputButton } = useStyle();
 
-    const [modifyTitle, setModifyTitle] = React.useState(false);
-    const [questionTitle, setQuestionTitle] = React.useState("Question");
+    const [questionTitle, setQuestionTitle] = React.useState();
     const questionNameEffect = () => bringBackName(id, questionTitle)
     React.useEffect(questionNameEffect, [questionTitle])
-
-    const handleClickIcon = () => {
-        setModifyTitle(!modifyTitle)
-    }
 
     const handleTextFieldChange = (textToChange) => {
         setQuestionTitle(textToChange)
@@ -135,18 +131,13 @@ const QuestionTitle = ({id, bringBackName}) => {
 
     return (
         <div className={questionTitleStyle}>
-            {
-                modifyTitle
-                ? <TextField
-                    onKeyDown={({keyCode}) => keyCode === 13 && setModifyTitle(false)}
-                    onChange={({ target }) => handleTextFieldChange(target.value)}
-                    defaultValue={questionTitle}
-                  />
-                : <Typography variant='h6' children={questionTitle} />
-            }
-            <Button onClick={handleClickIcon} >
-                <Create/>
-            </Button>
+          <TextField
+            className={inputButton}
+            onChange={({ target }) => handleTextFieldChange(target.value)}
+            defaultValue={questionTitle}
+            variant="outlined"
+            label="Nom de la question"
+          />
         </div>
     )
 }
