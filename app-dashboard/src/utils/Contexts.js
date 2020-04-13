@@ -23,6 +23,8 @@ export const reducer = (state, action) => {
             return { ...state, name: payload };
         case 'updateDescription':
             return { ...state, description: payload };
+        case 'setDraft':
+            return { ...state, draft: payload }
         default:
             break;
     }
