@@ -5,31 +5,35 @@ import { useRouter } from 'next/router'
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 
-import { getVersion } from '../src/utils/Requests';
+import { Questions } from '../src/components/formulaire/Questions';
+import { Header } from '../src/components/formulaire/Header';
+import { Draft } from '../src/components/formulaire/Draft';
 
-import { Formulaire } from '../src/components/formulaire/Formulaire';
+import { FormulaireContext, reducer } from '../src/utils/Contexts';
+import { Divider } from '@material-ui/core';
+
+import { makeStyles } from '@material-ui/core/styles';
+const useStyle = makeStyles({
+  dividerStyle:{
+    margin: "40px 0px"
+  }
+})
 
 export default () => {
 
-  const router = useRouter()
+  const { dividerStyle } = useStyle();
 
-  const { pollId, id } = router.query
-  const [specificPollData, setSpecificPollData] = React.useState()
-
-  React.useEffect(() => {
-    (async () => {
-      if(id && pollId){
-        const specificPollData = await getVersion(pollId, id)
-        console.log({specificPollData})
-        setSpecificPollData(specificPollData)
-      }
-    })()
-  }, [router])
+  const [state, dispatch] = React.useReducer(reducer);
 
   return (
     <Container maxWidth="md">
       <Box my={4}>
-        <Formulaire modify={true} defaultData={specificPollData} />
+        <FormulaireContext.Provider value={{state, dispatch}}>
+          <Header/>
+          <Questions/>
+          <Divider className={dividerStyle} />
+          <Draft/>
+        </FormulaireContext.Provider>
       </Box>
     </Container>
   )
