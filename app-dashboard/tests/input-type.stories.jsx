@@ -1,16 +1,16 @@
 import React from 'react';
 
-import Text from '../pages/components/input-type/text';
-import Number from '../pages/components/input-type/number';
-import Selector from '../pages/components/input-type/selector';
-import Checkbox from '../pages/components/input-type/checkbox';
-import Range from '../pages/components/input-type/range';
-import Date from '../pages/components/input-type/date';
+import { Text } from '../src/components/input-type/text';
+import { Number } from '../src/components/input-type/number';
+import { Selector } from '../src/components/input-type/selector';
+import { CheckBox } from '../src/components/input-type/checkbox';
+import { Range } from '../src/components/input-type/range';
+import { Dates } from '../src/components/input-type/date';
 
 export default {title: 'Input Types'}
 export const TextInput = () => <Text/>
 export const NumberInput = () => <Number/>
 export const SelectorInput = () => <Selector/>
-export const CheckboxInput = () => <Checkbox/>
+export const CheckboxInput = () => <CheckBox/>
 export const RangeInput = () => <Range/>
-export const DateInput = () => <Date/>
+export const DateInput = () => <Dates/>
