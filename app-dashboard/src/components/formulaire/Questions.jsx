@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { FormulaireContext } from './Contexts';
+import { FormulaireContext } from '../../utils/Contexts';
 import Question from '../question';
 
 import Button from '@material-ui/core/Button';
 
-export const Form = () => {
+export const Questions = () => {
 
   const {state, dispatch} = React.useContext(FormulaireContext)
   const [form, setForm] = React.useState(state || new Map([[0, { type: 'Text', required: false, parameters: {}, name: 'Question' }]]));
@@ -41,7 +41,7 @@ export const Form = () => {
 
   const addQuestion = () => {
     const lastKey = Array.from(form.keys()).pop()+1
-    form.set(lastKey, {type:'Text', required:false})
+    form.set(lastKey || 1, {type:'Text', required:false})
     setForm(new Map(form))
 	};
 
@@ -65,9 +65,9 @@ export const Form = () => {
         );
       })}
       <div>
-		    <Button color="primary" onClick={addQuestion}>
-			    add
-			  </Button>
+        <Button variant="outlined" color="primary" onClick={addQuestion}>
+          Ajouter une question
+        </Button>
 		  </div>
     </div>
   );
