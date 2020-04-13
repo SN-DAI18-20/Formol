@@ -72,7 +72,7 @@ const tiers = [
       'Créer vos questionnaires peronnalisés.'
     ],
     buttonText: 'Créer',
-    link: 'formulaire',
+    link: 'create-formulaire',
     buttonVariant: 'outlined',
   },
   {
