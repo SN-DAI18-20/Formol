@@ -134,7 +134,7 @@ const QuestionTitle = ({id, bringBackName, defaultName}) => {
 
     const { questionTitleStyle, inputButton } = useStyle();
 
-    const [questionTitle, setQuestionTitle] = React.useState(defaultName || "");
+    const [questionTitle, setQuestionTitle] = React.useState();
     const questionNameEffect = () => bringBackName(id, questionTitle)
     React.useEffect(questionNameEffect, [questionTitle])
 
@@ -147,7 +147,7 @@ const QuestionTitle = ({id, bringBackName, defaultName}) => {
           <TextField
             className={inputButton}
             onChange={({ target }) => handleTextFieldChange(target.value)}
-            defaultValue={questionTitle || ""}
+            defaultValue={questionTitle}
             variant="outlined"
             label="Nom de la question"
           />
