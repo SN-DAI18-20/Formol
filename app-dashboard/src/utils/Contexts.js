@@ -17,8 +17,8 @@ export const FormulaireContext = React.createContext();
 export const reducer = (state, action) => {
     const { type, payload } = action;
     switch (type) {
-        case 'setForm':
-            return { ...state, form: [...payload] };
+        case 'setQuestions':
+            return { ...state, questions: [...payload] };
         case 'updateName':
             return { ...state, name: payload };
         case 'updateDescription':
