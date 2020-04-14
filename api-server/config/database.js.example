@@ -3,7 +3,7 @@ module.exports = {
       "username": "formol",
       "password": "ReallyBadPwd",
       "database": "formol",
-      "host": "127.0.0.1",
+      "host": "psql.formol.dev",
       "dialect": "postgres"
     },
     "test": {
