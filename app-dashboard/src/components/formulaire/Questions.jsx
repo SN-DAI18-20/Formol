@@ -8,23 +8,16 @@ import Button from '@material-ui/core/Button';
 export const Questions = () => {
 
   const {state, dispatch} = React.useContext(FormulaireContext)
-  const arrayToMap = questions => {
-      const mapToPush = questions.map((question, index) => [index, question])
-      return new Map(mapToPush)
-    }
-  const [questions, setQuestions] = React.useState(state?.questions
-  ? arrayToMap(state.questions)
-  : new Map([[0, { type: 'text', required: false, parameters: {}, name: 'Question' }]])
-  );
 
+  const [questions, setQuestions] = React.useState(state?.questions || new Map([[0, { type: 'Text', required: false, parameters: {}, name: 'Question' }]]));
 
   const effect = () => {
     dispatch({type:'setQuestions', payload:[...questions.values()]})
   }
   React.useEffect(effect, [questions])
 
-  const updateQuestionName = (id, question) => {
-    questions.set(id, {...questions.get(id), question})
+  const updateQuestionName = (id, name) => {
+    questions.set(id, {...questions.get(id), name})
     setQuestions(new Map(questions))
   }
 
@@ -49,7 +42,7 @@ export const Questions = () => {
 
   const addQuestion = () => {
     const lastKey = Array.from(questions.keys()).pop()+1
-    questions.set(lastKey || 1, {type:'text', required:false})
+    questions.set(lastKey || 1, {type:'Text', required:false})
     setQuestions(new Map(questions))
 	};
 
@@ -59,7 +52,6 @@ export const Questions = () => {
         const { type, required, parameters } = question;
         return (
           <Question
-            question={question}
             deleteDisabled={questions.size === 1}
             bringBackName={updateQuestionName}
             bringBackState={(stateToBringBack, required) =>
