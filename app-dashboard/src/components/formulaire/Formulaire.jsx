@@ -4,24 +4,35 @@ import Button from '@material-ui/core/Button';
 
 import { Questions } from './Questions'
 import { Header } from './Header';
+import { Draft } from './Draft';
 
-import { FormulaireContext, reducer } from '../../utils/Contexts';
+import { FormulaireProvider } from '../../utils/Contexts';
+import Divider from '@material-ui/core/Divider';
 
-const Formulaire = () => {
+import { makeStyles } from '@material-ui/core/styles';
+const useStyle = makeStyles({
+  dividerStyle:{
+    margin: '40px 0px'
+  }
+})
 
-    const [state, dispatch] = React.useReducer(reducer);
+export const Formulaire = () => {
+
+    const { dividerStyle } = useStyle();
 
     return (
-      <FormulaireContext.Provider value={{ state, dispatch }}>
-        <Header/>
-        <Questions/>
-        <div style={{ display:'flex', flexDirection: 'row-reverse' }}>
-          <Button color="primary" variant="contained">
-            Valider formulaire
-          </Button>
+      <FormulaireProvider>
+        <div>
+          <Header />
+          <Questions />
+          <Divider className={dividerStyle} />
+          <Draft />
+          <div style={{ display:'flex', flexDirection: 'row-reverse' }}>
+            <Button style={{ marginBottom: '40px' }} onClick={() => console.info({state})} color="primary" variant="contained">
+              Valider formulaire
+            </Button>
+          </div>
         </div>
-      </FormulaireContext.Provider>
+      </FormulaireProvider>
     )
 }
-
-export default Formulaire;
