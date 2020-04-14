@@ -9,7 +9,7 @@ RUN adduser -D formol
 RUN apk add python make g++
 # RUN chmod 775 /docker-entrypoint.sh
 # USER formol
-RUN npm install
+RUN npm install && npm install -g sequelize-cli
 
 EXPOSE 3001
 
