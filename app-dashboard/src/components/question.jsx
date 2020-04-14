@@ -55,11 +55,8 @@ export default ({
   required,
   toggleRequired,
   bringBackName,
-  deleteDisabled,
-  question
+  deleteDisabled
 }) => {
-
-    console.log({question})
 
     const { header, questionType } = useStyle();
 
