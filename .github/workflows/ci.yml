@@ -1,0 +1,63 @@
+name: Continuous integration
+
+on: [push]
+
+jobs:
+  # pretty:
+  #   runs-on: [ubuntu-latest]
+
+  #   steps:
+  #     - uses: actions/checkout@v1
+
+  #     - name: Use Node.js 12.x
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: 12.x
+
+  #     - name: Install NodeJS dependencies
+  #       run: npm install
+
+  #     - name: Run prettier on API Server project
+  #       run: |
+  #         cd api-server
+  #         npm run prettier:check
+
+  # tests:
+  #   runs-on: [ubuntu-latest]
+
+  #   steps:
+  #     - uses: actions/checkout@v1
+
+  #     - name: Use Node.js 12.x and install dependencies
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: 12.x
+
+  #     - name: Install NodeJS dependencies
+  #       run: npm install
+
+  #     - name: Run Test suite on API Server project
+  #       run: |
+  #         cd api-server
+  #         npm test
+
+  #     - name: Push coverage to Coveralls
+  #       uses: coverallsapp/github-action@master
+  #       with:
+  #         github-token: ${{ secrets.coveralls_token }}
+
+  build:
+    name: Build docker images
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Build API Server container
+      run: docker-compose build api
+
+    - name: Build Backend container
+      run: docker-compose build backend
+
+    - name: Build Dashboard container
+      run: docker-compose build dashboard
