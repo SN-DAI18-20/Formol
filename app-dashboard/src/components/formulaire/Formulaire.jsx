@@ -5,10 +5,16 @@ import Button from '@material-ui/core/Button';
 import { createPoll, createNewVersion } from '../../utils/Requests'
 import { Questions } from './Questions'
 import { Header } from './Header';
+import { Draft } from './Draft';
 
 import { FormulaireContext, FormulaireProvider } from '../../utils/Contexts';
 
-const Formulaire = () => {
+import { makeStyles } from '@material-ui/core/styles';
+const useStyle = makeStyles({
+  dividerStyle:{
+    margin: '40px 0px'
+  }
+})
 
 export const Formulaire = () => {
 
