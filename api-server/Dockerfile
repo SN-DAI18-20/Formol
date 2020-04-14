@@ -11,8 +11,6 @@ RUN apk add python make g++
 # USER formol
 RUN npm install && npm install -g sequelize-cli
 
-COPY . .
-
 EXPOSE 3001
 
 ENTRYPOINT [ "sh", "/docker-entrypoint.sh" ]
