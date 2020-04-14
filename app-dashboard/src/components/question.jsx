@@ -46,7 +46,17 @@ const useStyle = makeStyles({
 })
 
 
-export default ({ deleteQuestion, changeType, type, id, bringBackState, required, toggleRequired, bringBackName }) => {
+export default ({
+  deleteQuestion,
+  changeType,
+  type,
+  id,
+  bringBackState,
+  required,
+  toggleRequired,
+  bringBackName,
+  deleteDisabled
+}) => {
 
     const { header, questionType } = useStyle();
 
@@ -111,7 +121,7 @@ export default ({ deleteQuestion, changeType, type, id, bringBackState, required
                   </div>
                 </CardContent>
                 <CardActions>
-            <Button color='secondary' onClick={deleteQuestion} children="delete" />
+            <Button disabled={deleteDisabled} color='secondary' onClick={deleteQuestion} children="delete" />
                     </CardActions>
             </Card>
     )
