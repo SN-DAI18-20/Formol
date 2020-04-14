@@ -1,7 +1,12 @@
-# Formol
-Note : _This is a school project._
+<div style="text-align: center">
+    <h1>Formol</h1>
+    <a href="https://github.com/SN-DAI18-20/Formol/actions"><img alt="Language grade: JavaScript" src="https://github.com/SN-DAI18-20/Formol/workflows/Continuous%20integration/badge.svg?branch=master"/></a> <a href="https://lgtm.com/projects/g/SN-DAI18-20/Formol/alerts/"><img alt="Total alerts" src="https://img.shields.io/lgtm/alerts/g/SN-DAI18-20/Formol.svg?logo=lgtm&logoWidth=18"/></a> <a href="https://lgtm.com/projects/g/SN-DAI18-20/Formol/context:javascript"><img alt="Language grade: JavaScript" src="https://img.shields.io/lgtm/grade/javascript/g/SN-DAI18-20/Formol.svg?logo=lgtm&logoWidth=18"/></a>
+</div>
 
 **Formol** is a poll system generator built in NodeJS.
+
+**Note:** this project is as scholar project. Is not intended to be a usable
+solution in production environments.
 
 ## Goal
 The goal of this project is to:
