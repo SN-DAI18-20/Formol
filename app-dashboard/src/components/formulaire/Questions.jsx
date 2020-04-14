@@ -12,9 +12,9 @@ export const Questions = () => {
   const [questions, setQuestions] = React.useState(state?.questions || new Map([[0, { type: 'Text', required: false, parameters: {}, name: 'Question' }]]));
 
   const effect = () => {
-    dispatch({type:'setForm', payload:[...form.values()]})
+    dispatch({type:'setQuestions', payload:[...questions.values()]})
   }
-  React.useEffect(effect, [form])
+  React.useEffect(effect, [questions])
 
   const updateQuestionName = (id, name) => {
     questions.set(id, {...questions.get(id), name})
@@ -22,22 +22,22 @@ export const Questions = () => {
   }
 
   const deleteQuestion = (QuestionID) => {
-    form.delete(QuestionID);
-    setForm(new Map(form));
+    questions.delete(QuestionID);
+    setQuestions(new Map(questions));
   };
 
   const bringBackState = (parameters, id) => {
-    form.set(id, { ...form.get(id), parameters });
-    setForm(new Map(form));
+    questions.set(id, { ...questions.get(id), parameters });
+    setQuestions(new Map(questions));
   };
 
   const changeType = (type, id) => {
-    form.set(id, { ...form.get(id), type });
-    setForm(new Map(form));
+    questions.set(id, { ...questions.get(id), type });
+    setQuestions(new Map(questions));
   };
   const toggleRequired = (required, id) => {
-    form.set(id, { ...form.get(id), required });
-    setForm(new Map(form));
+    questions.set(id, { ...questions.get(id), required });
+    setQuestions(new Map(questions));
   };
 
   const addQuestion = () => {
@@ -48,7 +48,7 @@ export const Questions = () => {
 
   return (
     <div>
-      {Array.from(form).map(([id, question]) => {
+      {Array.from(questions).map(([id, question]) => {
         const { type, required, parameters } = question;
         return (
           <Question
