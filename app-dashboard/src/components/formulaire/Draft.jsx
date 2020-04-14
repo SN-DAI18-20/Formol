@@ -9,21 +9,21 @@ import InputLabel from '@material-ui/core/InputLabel';
 import DateFnsUtils from '@date-io/date-fns';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
-export const Draft = (props) => {
+export const Draft = () => {
 
   const {state, dispatch} = React.useContext(FormulaireContext);
 
-  const [status, setStatus] = React.useState(state?.draft || props?.draft || false);
+  const [status, setStatus] = React.useState(state?.draft?.status || false);
   const handleStatus = event => {
     setStatus(event.target.value)
   }
 
-  const [startPublication, setStartPublication] = React.useState(props?.startPublication || new Date(Date.now()));
+  const [startPublication, setStartPublication] = React.useState(state?.draft?.startPulication || new Date(Date.now()));
   const handleStartPublication = startDate => {
     setStartPublication(new Date(startDate))
   }
 
-  const [endPublication, setEndPublication] = React.useState(props?.endPublication || new Date(Date.now()));
+  const [endPublication, setEndPublication] = React.useState(state?.draft?.endPublication || new Date(Date.now()));
   const handleEndPublication = endDate => {
     setEndPublication(new Date(endDate))
   }
@@ -35,6 +35,12 @@ export const Draft = (props) => {
     })
   }
   React.useEffect(effect, [status, startPublication, endPublication])
+
+  const statusUpdate = () => {
+    setEndPublication(status && new Date(Date.now()))
+    setStartPublication(status && new Date(Date.now()))
+  }
+  React.useEffect(statusUpdate, [status])
 
   return (
     <div>
