@@ -65,7 +65,8 @@ services:
   api:
     build: api-server
     restart: on-failure
-    # environment:
+    environment:
+      - RUN_MIGRATIONS=true
     #   - NODE_ENV=PRODUCTION
     depends_on:
       - caddy
