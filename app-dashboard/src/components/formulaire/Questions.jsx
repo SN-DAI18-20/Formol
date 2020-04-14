@@ -8,49 +8,51 @@ import Button from '@material-ui/core/Button';
 export const Questions = () => {
 
   const {state, dispatch} = React.useContext(FormulaireContext)
-  const [form, setForm] = React.useState(state || new Map([[0, { type: 'Text', required: false, parameters: {}, name: 'Question' }]]));
+
+  const [questions, setQuestions] = React.useState(state?.questions || new Map([[0, { type: 'Text', required: false, parameters: {}, name: 'Question' }]]));
 
   const effect = () => {
-    dispatch({type:'setForm', payload:[...form.values()]})
+    dispatch({type:'setQuestions', payload:[...questions.values()]})
   }
-  React.useEffect(effect, [form])
+  React.useEffect(effect, [questions])
 
   const updateQuestionName = (id, name) => {
-    form.set(id, {...form.get(id), name})
-    setForm(new Map(form))
+    questions.set(id, {...questions.get(id), name})
+    setQuestions(new Map(questions))
   }
 
   const deleteQuestion = (QuestionID) => {
-    form.delete(QuestionID);
-    setForm(new Map(form));
+    questions.delete(QuestionID);
+    setQuestions(new Map(questions));
   };
 
   const bringBackState = (parameters, id) => {
-    form.set(id, { ...form.get(id), parameters });
-    setForm(new Map(form));
+    questions.set(id, { ...questions.get(id), parameters });
+    setQuestions(new Map(questions));
   };
 
   const changeType = (type, id) => {
-    form.set(id, { ...form.get(id), type });
-    setForm(new Map(form));
+    questions.set(id, { ...questions.get(id), type });
+    setQuestions(new Map(questions));
   };
   const toggleRequired = (required, id) => {
-    form.set(id, { ...form.get(id), required });
-    setForm(new Map(form));
+    questions.set(id, { ...questions.get(id), required });
+    setQuestions(new Map(questions));
   };
 
   const addQuestion = () => {
-    const lastKey = Array.from(form.keys()).pop()+1
-    form.set(lastKey || 1, {type:'Text', required:false})
-    setForm(new Map(form))
+    const lastKey = Array.from(questions.keys()).pop()+1
+    questions.set(lastKey || 1, {type:'Text', required:false})
+    setQuestions(new Map(questions))
 	};
 
   return (
     <div>
-      {Array.from(form).map(([id, question]) => {
+      {Array.from(questions).map(([id, question]) => {
         const { type, required, parameters } = question;
         return (
           <Question
+            deleteDisabled={questions.size === 1}
             bringBackName={updateQuestionName}
             bringBackState={(stateToBringBack, required) =>
               bringBackState(stateToBringBack, id)}
