@@ -1,17 +1,26 @@
-// This file will import all workers for initialize them and make the backend
-// working.
 const logger = require('./logger');
+const config = require('../config/backend');
 
 const BACKEND_VERSION = require('../package.json').version;
+const CONFIGURED_QUEUES = config.backend_queues || [];
 
-logger.info(
-    `Formol Poll generation backend version ${BACKEND_VERSION} in ` +
-        `${process.env.NODE_ENV || 'development'} environment.`
-);
+(async function() {
+    logger.info(
+        `Formol Poll generation backend version ${BACKEND_VERSION} in ` +
+            `${process.env.NODE_ENV || 'development'} environment.`
+    );
 
-// Here the rest of the code...
+    // Import all queues set in the configuration file
+    for (queue in CONFIGURED_QUEUES) {
+        logger.info(`Configuring '${CONFIGURED_QUEUES[queue]}' queue ...`);
 
-// XXX: This seems to loop and it doesn't work.
-// process.on('beforeExit', code => {
-//     logger.info('Backend is shutting down...');
-// });
+        try {
+            await require(`./queues/${CONFIGURED_QUEUES[queue]}`);
+        } catch (err) {
+            logger.error(
+                `Unable to configure '${CONFIGURED_QUEUES[queue]}' queue ` +
+                `because it not exists.`
+            );
+        }
+    }
+})();

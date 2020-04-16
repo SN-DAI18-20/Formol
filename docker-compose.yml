@@ -26,6 +26,9 @@ services:
   redis:
     image: redis:5-alpine
     restart: on-failure
+    # Uncomment if you want to use a redis client for debugging purposes
+    # ports:
+    #   - 127.0.0.1:6379:6379
 
   minio:
     image: minio/minio

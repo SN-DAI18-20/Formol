@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "bcrypt": "^3.0.7",
-    "bullmq": "^1.6.6",
+    "bull": "^3.13.0",
     "fastify": "^2.11.0",
     "fastify-sensible": "^2.1.1",
     "fastify-swagger": "^2.5.0",
