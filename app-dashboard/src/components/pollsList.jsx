@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -24,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
   },
   header: {
     padding: 10
+  },
+  favButton:{
+    borderRadius: 10
   }
 }));
 
@@ -46,7 +50,6 @@ function getComparator(order, orderBy) {
 }
 
 function stableSort(array, comparator, search) {
-  console.log(search);
   if(search != null && search != '')
   {
     array = array.filter( element => element.name.toLowerCase().includes(search.toLowerCase()) || element.description.toLowerCase().includes(search.toLowerCase()));
@@ -83,7 +86,6 @@ export default function SimpleTable() {
 
   const handleChangeSearch = (event) => {
     setSearch(event.target.value);
-    console.log("test event : " + search);
   }
 
   function handleNewPoll(){
@@ -92,12 +94,6 @@ export default function SimpleTable() {
 
   function handleSeePoll(id){
     //ajouter redirection vers la page de poll
-  }
-  function IsPublished(pollIsPublished){
-    if(pollIsPublished == true)
-      return "Non";
-    else
-      return "Oui";
   }
 
   React.useEffect(() => {
@@ -108,6 +104,13 @@ export default function SimpleTable() {
       })  
     });
   }, [])
+
+  function IsPublished(pollIsPublished){
+    if(pollIsPublished == true)
+      return "Non";
+    else
+      return "Oui";
+  }
 
   return (
     <div>
@@ -124,10 +127,12 @@ export default function SimpleTable() {
               <Grid item xs={6}>
                 <TextField fullWidth size="small" id="outlined-search" label="Search field" type="search" variant="outlined" value={search} onChange={handleChangeSearch}/>
               </Grid>
-              <Grid item xs={3} align="right">
-                <Button onClick={() => handleNewPoll()} variant="contained" color="primary" className={classes.button} startIcon={<AddBoxIcon />}>
+              <Grid item xs={3} align="center">
+              <Fab className={classes.favButton} variant="extended" color="primary" aria-label="add" onClick={() => handleNewPoll()} style={{position: 'fixed'}}>
+                <AddBoxIcon />
                   Nouveau
-                </Button>
+              </Fab>
+               
               </Grid>          
             </Grid>
 
