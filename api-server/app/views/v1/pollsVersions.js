@@ -151,8 +151,37 @@ const VersionDeleteSchema = {
     },
 };
 
-async function VersionCollectionGet(request, reply) {}
-async function VersionCollectionPost(request, reply) {}
+async function VersionCollectionGet(request, reply) {
+    const versionCollectionQuerry = await PollsVersions.findAll({
+        where : {
+            poll: request.params.pollId,
+        },
+    });
+    if (versionCollectionQuerry === null) {
+        return reply
+        .notFound(`Ressource '${request.params.pollId}' not exists.`)
+        .sent();
+    }
+    const versions = [];
+    const versionsMap =versionCollectionQuerry.map(Polls_versions => Polls_versions.toJson());
+    console.log(Polls_versions);
+
+    versionsMap.forEach(element =>{
+        versions.push({
+            id : element.id,
+            name: element.name,
+            poll: element.poll, 
+            view_url: element.view_url,
+            download_url: element.download_url,
+            active: element.active,
+        })
+    });
+    reply.send(JSON.stringify(versions));
+}
+async function VersionCollectionPost(request, reply) {
+    const body = request.body;
+    const validationErrors
+}
 
 async function VersionActiveGet(request, reply) {}
 
