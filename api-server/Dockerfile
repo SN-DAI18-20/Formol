@@ -2,7 +2,7 @@ FROM node:alpine
 
 WORKDIR /opt/formol
 
-COPY . /opt/formol
+
 COPY --chown=root:root docker/docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN adduser -D formol
@@ -14,3 +14,5 @@ RUN npm install && npm install -g sequelize-cli nodemon
 EXPOSE 3001
 
 ENTRYPOINT [ "sh", "/docker-entrypoint.sh" ]
+
+COPY . /opt/formol
