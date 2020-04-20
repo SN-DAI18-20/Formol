@@ -180,7 +180,7 @@ async function VersionCollectionGet(request, reply) {
 }
 async function VersionCollectionPost(request, reply) {
     const body = request.body;
-    const validationErrors
+    const validationErrors = [];
 }
 
 async function VersionActiveGet(request, reply) {}
