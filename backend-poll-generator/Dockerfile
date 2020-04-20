@@ -9,7 +9,7 @@ RUN adduser -D formol
 # RUN chmod 775 /docker-entrypoint.sh
 
 # USER formol
-RUN npm install
+RUN npm install && npm i -g nodemon
 
 EXPOSE 3001
 
