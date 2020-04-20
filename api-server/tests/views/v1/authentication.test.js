@@ -11,9 +11,9 @@ describe('Test /v1/authentication/signup route', () => {
 
         expect(request.statusCode).toEqual(400);
         expect(JSON.parse(request.body).message).toEqual(
-            `body should have required property 'username', body `+
-            `should have required property 'email', body should have `+
-            `required property 'password'`
+            `body should have required property 'username', body ` +
+                `should have required property 'email', body should have ` +
+                `required property 'password'`
         );
 
         // Test with only one params in body
@@ -28,7 +28,7 @@ describe('Test /v1/authentication/signup route', () => {
         expect(request.statusCode).toEqual(400);
         expect(JSON.parse(request.body).message).toEqual(
             `body should have required property 'email', body should ` +
-            `have required property 'password'`
+                `have required property 'password'`
         );
     });
 
@@ -39,12 +39,11 @@ describe('Test /v1/authentication/signup route', () => {
             body: {
                 username: 'lapin',
                 password: 'blablabla!',
-                email: 'bla@bla.fr'
+                email: 'bla@bla.fr',
             },
         });
 
         expect(request.statusCode).toEqual(201);
         expect(JSON.parse(request.body).message).toEqual(`User createddd.`);
     });
-
 });

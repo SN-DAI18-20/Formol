@@ -1,3 +1,3 @@
-module.exports= {
-  stories: ['../tests/**/*.stories.jsx']
-}
+module.exports = {
+    stories: ['../tests/**/*.stories.jsx'],
+};

@@ -1,0 +1,18 @@
+{
+    debug
+    local_certs
+    experimental_http3
+}
+
+api.dev.formol.site {
+    reverse_proxy api.formol.dev:3001
+}
+
+dashboard.dev.formol.site {
+    reverse_proxy dashboard.formol.dev:3000
+}
+
+s3.dev.formol.site {
+    reverse_proxy s3.formol.dev:9000
+}
+

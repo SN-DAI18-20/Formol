@@ -2,9 +2,14 @@ version: '3'
 
 services:
   # --- General services
-  nginx:
-    image: nginx:alpine
+  caddy:
+    image: caddy/caddy:alpine
     restart: on-failure
+    volumes:
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+    ports:
+      - 127.0.0.1:80:80
+      - 127.0.0.1:443:443
 
   postgresql:
     image: postgres:12-alpine
@@ -21,26 +26,78 @@ services:
   redis:
     image: redis:5-alpine
     restart: on-failure
+    # Uncomment if you want to use a redis client for debugging purposes
+    # ports:
+    #   - 127.0.0.1:6379:6379
+
+  minio:
+    image: minio/minio
+    command: minio server /data --address [::]:9000
+    restart: on-failure
+    depends_on:
+      - caddy
+    volumes:
+      - ./docker/volumes/minio:/data
+    ports:
+      - 127.0.0.1:9000:9000
+    networks:
+      default:
+        aliases:
+          - s3.formol.dev
 
   # --- Formol services
+
+  # Dashboard
+  dashboard:
+    build: app-dashboard
+    restart: on-failure
+    # environment:
+    #   - NODE_ENV=PRODUCTION
+    depends_on:
+      - caddy
+    links:
+      - api:api.formol.dev
+    volumes:
+      - ./app-dashboard/src:/opt/formol/src
+      - ./app-dashboard/pages:/opt/formol/pages
+    networks:
+      default:
+        aliases:
+          - dashboard.formol.dev
 
   # API
   api:
     build: api-server
     restart: on-failure
-    # depends_on:
-    #   - nginx
+    environment:
+      - RUN_MIGRATIONS=true
+    #   - NODE_ENV=PRODUCTION
+    depends_on:
+      - caddy
+      - backend
     links:
       - postgresql:psql.formol.dev
       - redis:redis.formol.dev
     volumes:
-      - ./api-server:/opt/formol
+      - ./api-server/app:/opt/formol/app
+      - ./api-server/config:/opt/formol/config
+    networks:
+      default:
+        aliases:
+          - api.formol.dev
 
   # Backend Poll generator
   backend:
     build: backend-poll-generator
     restart: on-failure
+    depends_on:
+      - caddy
     links:
       - redis:redis.formol.dev
+      - minio:s3.formol.dev
     volumes:
-      - ./backend-poll-generator:/opt/formol
+      - ./backend-poll-generator/backend:/opt/formol/backend
+      - ./backend-poll-generator/config:/opt/formol/config
+
+networks:
+  default:
