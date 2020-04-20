@@ -364,19 +364,17 @@ async function VersionActivePut(request, reply) {
                 [{poll: pollId}, 
                 {activate : true}]
             },
-        })
-        .success(function(){
-            await PollsVersions.update({
+        });
+        
+        await PollsVersions.update({
                 active: true,},
                 {where:{ [OP.and]: 
                     [{poll: pollId}, 
                     {id : versionId}]
                     }
-            })
-            .success(function(){
-                reply.code(200).send(JSON.stringify({ message: 'Request accepted' }));
-            });
         });
+            
+        reply.code(200).send(JSON.stringify({ message: 'Request accepted' }));
     }catch(error){
         request.log.trace(error);
         request.log.trace(`Unable to update poll '${versionId}'`);
