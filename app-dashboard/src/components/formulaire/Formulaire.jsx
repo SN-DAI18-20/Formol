@@ -28,29 +28,19 @@ export const Formulaire = ({defaultData, modify, updateVersion, pollId}) => {
           <Questions />
           <Divider className={dividerStyle} />
           <Draft />
-          <SendButton updateVersion={updateVersion} pollId={pollId} />
+          <SendButton/>
         </div>
       </FormulaireProvider>
     )
 }
 
-const SendButton = ({updateVersion, pollId}) => {
+const SendButton = () => {
 
   const {state} = React.useContext(FormulaireContext);
 
-  const handleClick = async () => {
-      if(updateVersion){
-        const response = await createNewVersion(pollId, state.form)
-        window.history.back()
-      } else {
-        const response = await createPoll(state)
-        window.history.back()
-      }
-  }
-
   return (
     <div style={{ display:'flex', flexDirection: 'row-reverse' }}>
-      <Button style={{ marginBottom: '40px' }} onClick={handleClick} color="primary" variant="contained">
+      <Button style={{ marginBottom: '40px' }} onClick={() => console.info({state})} color="primary" variant="contained">
         Valider formulaire
       </Button>
     </div>
