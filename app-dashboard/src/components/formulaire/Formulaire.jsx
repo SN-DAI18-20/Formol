@@ -6,7 +6,7 @@ import { Questions } from './Questions'
 import { Header } from './Header';
 import { Draft } from './Draft';
 
-import { FormulaireProvider } from '../../utils/Contexts';
+import { FormulaireProvider, FormulaireContext } from '../../utils/Contexts';
 import Divider from '@material-ui/core/Divider';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -27,12 +27,21 @@ export const Formulaire = () => {
           <Questions />
           <Divider className={dividerStyle} />
           <Draft />
-          <div style={{ display:'flex', flexDirection: 'row-reverse' }}>
-            <Button style={{ marginBottom: '40px' }} onClick={() => console.info({state})} color="primary" variant="contained">
-              Valider formulaire
-            </Button>
-          </div>
+          <SendButton/>
         </div>
       </FormulaireProvider>
+    )
+}
+
+const SendButton = () => {
+
+  const {state} = React.useContext(FormulaireContext);
+
+  return (
+    <div style={{ display:'flex', flexDirection: 'row-reverse' }}>
+      <Button style={{ marginBottom: '40px' }} onClick={() => console.info({state})} color="primary" variant="contained">
+        Valider formulaire
+      </Button>
+    </div>
     )
 }
