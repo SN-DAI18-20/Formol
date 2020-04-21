@@ -1,5 +1,4 @@
 const { sequelize } = require('../../models');
-const { Op } = require('sequelize');
 
 const { Polls, PollsVersions, PollsQuestions } = require('../../models');
 const generate_uid = require('../../helpers/uid-creation');
@@ -36,13 +35,6 @@ const VersionCollectionGetSchema = {
         required: ['pollId'],
         properties: {
             pollId: { type: 'string', format: 'uuid' },
-        },
-    },
-    body: {
-        type: 'array',
-        items: {
-            type: 'object',
-            properties: PollVersionGenericSchema,
         },
     },
     response: {
@@ -152,44 +144,59 @@ const VersionDeleteSchema = {
     },
     response: {
         202: GenericSchema.DeletedReturn,
-        403: GenericSchema.ForbiddenReturn,
+        403: {
+            description: 'Forbidden',
+            type: 'object',
+            properties: {
+                statusCode: { type: 'integer' },
+                error: { type: 'string' },
+                message: { type: 'string' },
+            },
+        },
         404: GenericSchema.RessourceNotFoundReturn,
     },
 };
 
 async function VersionCollectionGet(request, reply) {
-    const versionCollectionQuerry = await PollsVersions.findAll({
-        where : {
+    const pollId = request.params.pollId;
+
+    const poll = await Polls.findByPk(pollId);
+
+    if (poll === null) {
+        return reply
+            .notFound(`Poll ressource '${request.params.pollId}' not exists.`)
+            .sent();
+    }
+
+    const versionCollectionQuery = await PollsVersions.findAll({
+        where: {
             poll: request.params.pollId,
         },
     });
-    if (versionCollectionQuerry === null) {
-        return reply
-        .notFound(`Ressource '${request.params.pollId}' not exists.`)
-        .sent();
-    }
-    const versions = [];
-    const versionsMap =versionCollectionQuerry.map(Polls_versions => Polls_versions.toJson());
-    console.log(Polls_versions);
 
-    versionsMap.forEach(element =>{
+    const versions = [];
+    const versionsMap = versionCollectionQuery.map(poll => poll.toJSON());
+
+    versionsMap.forEach(element => {
         versions.push({
-            id : element.id,
+            id: element.id,
             name: element.name,
-            poll: element.poll, 
+            poll: element.poll,
             view_url: element.view_url,
             download_url: element.download_url,
-            active: element.active,
-        })
+            active: element.active || false,
+        });
     });
+
     reply.send(JSON.stringify(versions));
 }
 async function VersionCollectionPost(request, reply) {
+    const pollId = request.params.pollId;
     const body = request.body;
     const validationErrors = [];
 
     // Validate parameters for each question
-    request.body.form.forEach((el, it) => {
+    request.body.forEach((el, it) => {
         try {
             const values = QuestionsValidators[el.type](el);
         } catch (error) {
@@ -208,11 +215,32 @@ async function VersionCollectionPost(request, reply) {
         return reply.badRequest(errorMessage).sent();
     }
 
+
+    const poll = await Polls.findByPk(pollId);
+
+    if (poll === null) {
+        return reply
+            .notFound(`Poll ressource '${request.params.pollId}' not exists.`)
+            .sent();
+    }
+
     // Beginning of the creation process
     const transaction = await sequelize.transaction();
     let poll_id = request.params.pollId;
+    let version_id;
 
     try {
+        // Remove active status to other versions
+        await PollsVersions.update(
+            { active: null },
+            {
+                where: {
+                    poll: poll_id,
+                },
+            },
+            { transaction }
+        );
+
         const version = await PollsVersions.create(
             {
                 name: generate_uid(),
@@ -222,8 +250,10 @@ async function VersionCollectionPost(request, reply) {
             { transaction }
         );
 
+        version_id = version.id;
+
         const questions = [];
-        body.form.forEach(async el => {
+        body.forEach(async el => {
             questions.push({
                 poll_version: version.id,
                 question: el.question,
@@ -248,181 +278,211 @@ async function VersionCollectionPost(request, reply) {
     return reply.code(201).send(
         JSON.stringify({
             message: 'Ressource created',
-            ressource_id: poll_id,
+            ressource_id: version_id,
         })
     );
 }
 
 async function VersionActiveGet(request, reply) {
     const poll_id = request.params.pollId;
-    const questions = [];
-    const version = await PollsVersions.findOne({
-        where :{ [OP.and]: 
-        [{poll: poll_id}, 
-        {active: true}]
-        }
-        
-    });
-    if (version === null) {
+
+    const poll = await Polls.findByPk(poll_id);
+
+    if (poll === null) {
         return reply
-        .notFound(`Ressource '${request.params.pollId}' not exists.`)
-        .sent();
+            .notFound(`Poll ressource '${request.params.pollId}' not exists.`)
+            .sent();
     }
 
-    const questionsQuerry = await PollsQuestions.findAll({
-        where : {
-            poll_version : version.id,
-        }
+    const version = await PollsVersions.findOne({
+        where: { poll: poll_id, active: true },
     });
-    const questionMap = questionsQuerry.map(PollsQuestions => PollsQuestions.toJson());
-    questionMap.forEach(element => {
-        // const param = [];
-        // element.parameters.forEach(par =>{
-        //     param.push(par);
-        // });
+
+    if (version === null) {
+        return reply
+            .notFound(`Ressource '${request.params.pollId}' not exists.`)
+            .sent();
+    }
+
+    const questionsQuery = await PollsQuestions.findAll({
+        where: {
+            poll_version: version.id,
+        },
+    });
+
+    const questions = [];
+    const questionMap = questionsQuery.map(question => question.toJSON());
+
+    questionMap.forEach(el => {
         questions.push({
-            question: element.question,
-            type: element.type,
-            parameters: element.parameters, 
-            required: element.required,
+            question: el.question,
+            type: el.type,
+            parameters: el.parameters,
+            required: el.required,
         });
     });
+
     const result = {
-        id: version.id, 
+        id: version.id,
         name: version.name,
         poll: poll_id,
         questions: questions,
         view_href: version.view_url,
         download_href: version.download_url,
     };
+
     return reply.send(JSON.stringify(result));
 }
 
 async function VersionGet(request, reply) {
     const poll_id = request.params.pollId;
     const version_id = request.params.versionId;
-    const questions = [];
-    const version = await PollsVersions.findOne({
-        where :{ [OP.and]: 
-        [{poll: poll_id}, 
-        {id : version_id}]
-        }
-        
-    });
-    if (version === null) {
+
+    const poll = await Polls.findByPk(poll_id);
+
+    if (poll === null) {
         return reply
-        .notFound(`Ressource '${request.params.pollId}' not exists.`)
-        .sent();
+            .notFound(`Poll ressource '${request.params.pollId}' not exists.`)
+            .sent();
     }
 
-    const questionsQuerry = await PollsQuestions.findAll({
-        where : {
-            poll_version : version.id,
-        }
+    const version = await PollsVersions.findByPk(version_id);
+
+    if (version === null) {
+        return reply
+            .notFound(`Ressource '${request.params.pollId}' not exists.`)
+            .sent();
+    }
+
+    const questionsQuery = await PollsQuestions.findAll({
+        where: {
+            poll_version: version.id,
+        },
     });
-    const questionMap = questionsQuerry.map(PollsQuestions => PollsQuestions.toJson());
-    questionMap.forEach(element => {
-        // const param = [];
-        // element.parameters.forEach(par =>{
-        //     param.push(par);
-        // });
+
+    const questions = [];
+    const questionMap = questionsQuery.map(question => question.toJSON());
+
+    questionMap.forEach(el => {
         questions.push({
-            question: element.question,
-            type: element.type,
-            parameters: element.parameters, 
-            required: element.required,
+            question: el.question,
+            type: el.type,
+            parameters: el.parameters,
+            required: el.required,
         });
     });
+
     const result = {
-        id: version.id, 
+        id: version.id,
         name: version.name,
         poll: poll_id,
         questions: questions,
         view_href: version.view_url,
         download_href: version.download_url,
     };
+
     reply.send(JSON.stringify(result));
 }
 async function VersionActivePut(request, reply) {
-    // This route doesn't have parameters in body. When the route is called,
-    // we disable the current version and set the given version as active.
     const pollId = request.params.pollId;
     const versionId = request.params.versionId;
-    try{
-        const versionget = await PollsVersions.findOne({
-            where: { [OP.and]: 
-                [{poll: pollId}, 
-                {id : versionId}]
-            }
-        });
-        if (versionget == null){
-            return reply.notFound(`Ressource '${versionId}' not exists.`)
-        }
-        await PollsVersions.update({
-            active: true,},
-            {where:{ [OP.and]: 
-                [{poll: pollId}, 
-                {activate : true}]
-            },
-        });
-        
-        await PollsVersions.update({
-                active: true,},
-                {where:{ [OP.and]: 
-                    [{poll: pollId}, 
-                    {id : versionId}]
-                    }
-        });
-            
-        reply.code(200).send(JSON.stringify({ message: 'Request accepted' }));
-    }catch(error){
-        request.log.trace(error);
-        request.log.trace(`Unable to update poll '${versionId}'`);
-        return reply.internalServerError();
-    }  
 
-}
-async function VersionDelete(request, reply) {
-    const pollId = request.params.pollId;
-    const versionId = request.params.versionId;
-    const transaction = sequelize.transaction();
-    //Doit delete questions ? 
-    const versionget = await PollsVersions.findOne({
-        where: { [OP.and]: 
-            [{poll: pollId}, 
-            {id : versionId}]
-        }
-    });
-    if (versionget == null){
-        return reply.notFound(`Ressource '${versionId}' not exists.`)
+    const poll = await Polls.findByPk(pollId);
+
+    if (poll === null) {
+        return reply
+            .notFound(`Poll ressource '${request.params.pollId}' not exists.`)
+            .sent();
     }
-    try{
+
+    const version = await PollsVersions.findByPk(versionId, {
+        where: { poll: pollId },
+    });
+
+    if (version == null) {
+        return reply.notFound(`Ressource '${versionId}' not exists.`);
+    }
+
+    const transaction = await sequelize.transaction();
+
+    try {
+        // Remove active status to other versions
+        await PollsVersions.update(
+            { active: null },
+            {
+                where: {
+                    poll: pollId,
+                },
+            },
+            { transaction }
+        );
+
+        // // Set itself as active
+        await PollsVersions.update(
+            { active: true },
+            {
+                where: { id: versionId },
+            },
+            { transaction }
+        );
+
+        await transaction.commit();
+    } catch (error) {
+        request.log.error(error);
+        request.log.trace(`Unable to update poll version '${versionId}'`);
+
+        await transaction.rollback();
+        return reply.internalServerError();
+    }
+
+    return reply
+        .code(202)
+        .send(JSON.stringify({ message: 'Request accepted' }));
+}
+
+async function VersionDelete(request, reply) {
+    const versionId = request.params.versionId;
+    const pollId = request.params.pollId;
+
+    const poll = await Polls.findByPk(pollId);
+
+    if (poll === null) {
+        return reply
+            .notFound(`Poll ressource '${request.params.pollId}' not exists.`)
+            .sent();
+    }
+
+    const version = await PollsVersions.findByPk(versionId);
+
+    if (version == null) {
+        return reply.notFound(`Ressource '${versionId}' not exists.`);
+    }
+
+    if (version.active == true) {
+        return reply.forbidden(`You can't delete an active version.`);
+    }
+
+    const transaction = await sequelize.transaction();
+
+    try {
         await PollsVersions.destroy(
             {
-                where: { [OP.and]: 
-                    [{poll: pollId}, 
-                    {id : versionId}]
-                }
+                where: { id: versionId },
             },
-            {transaction}
+            { transaction }
         );
-//        await PollsQuestions.destroy(
-//            {
-//                where: {poll_version : versionId}
-//            },
-//            {transaction}
-//        );
+
         await transaction.commit();
-    }catch(error){
+    } catch (error) {
         request.log.trace(`Unable to delete version '${versionId}'`);
 
         await transaction.rollback();
-
         return reply.internalServerError();
     }
 
-    return reply.code(200).send(JSON.stringify({ message: 'Request accepted' }));
-
+    return reply
+        .code(202)
+        .send(JSON.stringify({ message: 'Ressource deleted.' }));
 }
 
 module.exports = {

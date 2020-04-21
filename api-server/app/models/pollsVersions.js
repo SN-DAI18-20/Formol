@@ -29,7 +29,10 @@ module.exports = (sequelize, DataTypes) => {
             download_url: {
                 type: DataTypes.TEXT,
             },
-            active: DataTypes.BOOLEAN,
+            active: {
+                type: DataTypes.BOOLEAN,
+                allowNull: true,
+            },
         },
         {
             tableName: 'Polls_versions',
