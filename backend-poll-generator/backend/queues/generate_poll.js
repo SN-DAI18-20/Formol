@@ -7,7 +7,8 @@ const queue = new Bull('generate_poll', { redis: redisConn });
 
 queue.process((job, done) => {
     logger.info(
-        `Job ${job.id} with payload ${JSON.stringify(job.data)} received on queue generate_poll`
+        `Job ${job.id} with payload ${JSON.stringify(job.data)} received ` +
+            `on queue generate_poll`
     );
 
     done();
