@@ -21,6 +21,11 @@ const HTTP_PORT = process.env.HTTP_PORT || app_config.bind_port || 3001;
 // Register middlewares and utils
 fastify.register(require('fastify-sensible'));
 
+// Setup CORS
+fastify.register(require('fastify-cors'), {
+    origin: false,
+});
+
 // Register routes
 fastify.register(require('./views/v1'), { prefix: '/v1' });
 
