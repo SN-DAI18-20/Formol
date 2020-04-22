@@ -350,6 +350,10 @@ module.exports = {
                     handler: PollsRecipientsCollectionPost,
                     schema: PollsRecipientsPostSchema,
                 },
+                DELETE: {
+                    handler: PollsRecipientsCollectionDelete,
+                    schema: PollsRecipientsDeleteCollectionSchema
+                },
                 reinvite: {
                     PUT: {
                         handler: PollsRecipientsReinviteCollectionPut,
