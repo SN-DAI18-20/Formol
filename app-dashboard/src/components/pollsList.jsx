@@ -1,4 +1,7 @@
 import React from 'react';
+
+import { getPolls } from '../utils/Requests'
+
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import AddBoxIcon from '@material-ui/icons/AddBox';
@@ -63,17 +66,15 @@ function stableSort(array, comparator, search) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-
-
 export default function SimpleTable() {
   const classes = useStyles();
   const [search, setSearch] = React.useState();
-  const [polls, setPolls] = React.useState([]);  
+  const [polls, setPolls] = React.useState([]);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [page, setPage] = React.useState(0);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
-  
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -97,12 +98,13 @@ export default function SimpleTable() {
   }
 
   React.useEffect(() => {
-    http.get('http://www.mocky.io/v2/5e9b7b133300009432bf17b9', (res) => {
-      res.setEncoding('utf8')  
-      res.on('data', function(body){
-       setPolls(JSON.parse(body));    
-      })  
-    });
+    getPolls()
+    // http.get('http://www.mocky.io/v2/5e9b7b133300009432bf17b9', (res) => {
+    //   res.setEncoding('utf8')
+    //   res.on('data', function(body){
+    //    setPolls(JSON.parse(body));
+    //   })
+    // });
   }, [])
 
   function IsPublished(pollIsPublished){
@@ -132,8 +134,8 @@ export default function SimpleTable() {
                 <AddBoxIcon />
                   Nouveau
               </Fab>
-               
-              </Grid>          
+
+              </Grid>
             </Grid>
 
             <TableContainer component={Paper}>
