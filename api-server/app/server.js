@@ -23,7 +23,7 @@ fastify.register(require('fastify-sensible'));
 
 // Setup CORS
 fastify.register(require('fastify-cors'), {
-    origin: false,
+    origin: true,
 });
 
 // Register routes
