@@ -4,6 +4,8 @@ const { Polls, PollsVersions, PollsQuestions } = require('../../models');
 const generate_uid = require('../../helpers/uid-creation');
 const QuestionsValidators = require('./validators/questionTypes');
 const GenericSchema = require('./genericSchema');
+const backend = require('../../backend');
+const config = require('../../../config/server');
 
 const PollVersionGenericSchema = {
     id: { type: 'string', format: 'uuid' },
@@ -182,8 +184,10 @@ async function VersionCollectionGet(request, reply) {
             id: element.id,
             name: element.name,
             poll: element.poll,
-            view_url: element.view_url,
-            download_url: element.download_url,
+            // view_url: element.view_url,
+            // download_url: element.download_url,
+            view_url: `${config.polls_public_uri}/${element.poll}/${element.id}`,
+            download_url: `${config.polls_public_uri}/${element.poll}/${element.id}`,
             active: element.active || false,
         });
     });
@@ -214,7 +218,6 @@ async function VersionCollectionPost(request, reply) {
 
         return reply.badRequest(errorMessage).sent();
     }
-
 
     const poll = await Polls.findByPk(pollId);
 
@@ -264,6 +267,16 @@ async function VersionCollectionPost(request, reply) {
         });
 
         await PollsQuestions.bulkCreate(questions, { transaction });
+
+        // Send a task to the backend
+        backend.generate_poll.add({
+            poll: {
+                id: poll.id,
+                name: poll.name,
+                versionId: version.id,
+            },
+            questions: questions,
+        });
 
         await transaction.commit();
     } catch (error) {
@@ -327,8 +340,10 @@ async function VersionActiveGet(request, reply) {
         name: version.name,
         poll: poll_id,
         questions: questions,
-        view_href: version.view_url,
-        download_href: version.download_url,
+        // view_href: version.view_url,
+        // download_href: version.download_url,
+        view_url: `${config.polls_public_uri}/${poll_id}/${version.id}`,
+        download_url: `${config.polls_public_uri}/${poll_id}/${version.id}`,
     };
 
     return reply.send(JSON.stringify(result));
@@ -377,8 +392,10 @@ async function VersionGet(request, reply) {
         name: version.name,
         poll: poll_id,
         questions: questions,
-        view_href: version.view_url,
-        download_href: version.download_url,
+        // view_href: version.view_url,
+        // download_href: version.download_url,
+        view_url: `${config.polls_public_uri}/${poll_id}/${version.id}`,
+        download_url: `${config.polls_public_uri}/${poll_id}/${version.id}`,
     };
 
     reply.send(JSON.stringify(result));

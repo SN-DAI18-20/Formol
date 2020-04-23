@@ -12,4 +12,6 @@ const redisConn = {
 
 module.exports = {
     generate_poll: new Bull('generate_poll', { redis: redisConn }),
+    delete_poll_version: new Bull('delete_poll_version', { redis: redisConn }),
+    delete_poll: new Bull('delete_poll', { redis: redisConn }),
 };

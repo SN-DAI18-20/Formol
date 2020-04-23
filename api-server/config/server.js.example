@@ -4,6 +4,9 @@ module.exports = {
     bind_port: 3001,
     exposed_uri: 'api.dev.formol.site',
 
+    // URL where are exposed generated polls pages
+    polls_public_uri: 'https://static.dev.formol.site',
+
     // Security settings
     jwt_secret:
         'ae35b33173d1e51d1cc8d4165599d629c29d9cea119af9a332bac15a89450f74c546197c', // Example of command for generating one: openssl rand -hex 36
