@@ -6,6 +6,7 @@ const generate_uid = require('../../helpers/uid-creation');
 const QuestionsValidators = require('./validators/questionTypes');
 const GenericSchema = require('./genericSchema');
 const backend = require('../../backend');
+const config = require('../../../config/server');
 
 const PollGetGenericSchema = {
     id: { type: 'string', format: 'uuid' },
@@ -171,8 +172,14 @@ async function PollsCollectionGet(request, reply) {
             },
             draft: el.draft,
             view_url: el.PollsVersions[0].view_url,
-            download_url: el.PollsVersions[0].download_url,
-            published_at: el.published_at,
+            // download_url: el.PollsVersions[0].download_url,
+            // published_at: el.published_at,
+            view_url:
+                `${config.polls_public_uri}/${el.id}/` +
+                `${el.PollsVersions[0].id}`,
+            download_url:
+                `${config.polls_public_uri}/${el.id}/` +
+                `${el.PollsVersions[0].id}`,
             depublished_at: el.depublished_at,
             created_at: el.createdAt,
             updated_at: el.updatedAt,
@@ -208,8 +215,14 @@ async function PollsGet(request, reply) {
             name: pollsQuery.PollsVersions[0].name,
         },
         draft: pollsQuery.draft,
-        view_url: pollsQuery.PollsVersions[0].view_url,
-        download_url: pollsQuery.PollsVersions[0].download_url,
+        // view_url: pollsQuery.PollsVersions[0].view_url,
+        // download_url: pollsQuery.PollsVersions[0].download_url,
+        view_url:
+            `${config.polls_public_uri}/${pollsQuery.id}/` +
+            `${pollsQuery.PollsVersions[0].id}`,
+        download_url:
+            `${config.polls_public_uri}/${pollsQuery.id}/` +
+            `${pollsQuery.PollsVersions[0].id}`,
         published_at: pollsQuery.published_at,
         depublished_at: pollsQuery.depublished_at,
         created_at: pollsQuery.createdAt,
