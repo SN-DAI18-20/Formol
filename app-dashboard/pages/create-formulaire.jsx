@@ -8,12 +8,10 @@ import { Formulaire } from '../src/components/formulaire/Formulaire';
 export default () => {
 
     return (
-      <Layout>
         <Container maxWidth="md">
             <Box my={4}>
-                <Formulaire />
+              <Formulaire />
             </Box>
         </Container>
-      </Layout>
     )
 }
