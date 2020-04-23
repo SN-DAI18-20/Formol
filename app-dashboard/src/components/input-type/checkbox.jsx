@@ -44,7 +44,7 @@ export const CheckBox = ({bringBackState}) => {
   };
 
   React.useEffect(() => {
-    bringBackState({checkBoxs})
+    bringBackState({items: checkBoxs})
   }, [checkBoxs])
 
 	return (

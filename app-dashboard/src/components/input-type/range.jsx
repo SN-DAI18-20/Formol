@@ -9,7 +9,7 @@ export const Range = ({bringBackState}) => {
   const [defaultValue, setDefaultValue] = React.useState(0);
 
   React.useEffect(() => {
-    bringBackState({minValue, maxValue})
+    bringBackState({min: minValue, max: maxValue})
   }, [minValue, maxValue])
 
 	return (

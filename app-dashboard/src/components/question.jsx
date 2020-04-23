@@ -69,17 +69,17 @@ export default ({
 
     const renderChoosedQuestion = (choosedQuestion) => {
       switch (choosedQuestion) {
-        case "Number":
+        case "number":
             return <Number bringBackState={parameters => bringBackState(parameters, id)} />;
-        case "Text":
+        case "text":
             return <Text bringBackState={parameters => bringBackState(parameters, id)} />;
-        case "CheckBox":
+        case "checkbox":
             return <CheckBox bringBackState={parameters => bringBackState(parameters, id)} />;
-        case "Range":
+        case "range":
             return <Range bringBackState={parameters => bringBackState(parameters, id)} />;
-        case "Selector":
+        case "selector":
             return <Selector bringBackState={parameters => bringBackState(parameters, id)} />;
-        case "Date":
+        case "date":
             return <Dates bringBackState={parameters => bringBackState(parameters, id)} />;
         default:
             break;
@@ -104,12 +104,12 @@ export default ({
                               value={selected}
                               onChange={({target}) => handleSelect(target.value)}
                             >
-                              <MenuItem value="Text" children="Text" />
-                              <MenuItem value="Number" children="Number" />
-                              <MenuItem value="CheckBox" children="CheckBox" />
-                              <MenuItem value="Selector" children="Selector" />
-                              <MenuItem value="Range" children="Range" />
-                              <MenuItem value="Date" children="Date" />
+                              <MenuItem value="text" children="text" />
+                              <MenuItem value="number" children="number" />
+                              <MenuItem value="checkbox" children="checkbox" />
+                              <MenuItem value="selector" children="selector" />
+                              <MenuItem value="range" children="range" />
+                              <MenuItem value="date" children="date" />
                             </Select>
                           </FormControl>
                         </div>
@@ -136,7 +136,7 @@ const QuestionTitle = ({id, bringBackName}) => {
     React.useEffect(questionNameEffect, [questionTitle])
 
     const handleTextFieldChange = (textToChange) => {
-        setQuestionTitle(textToChange)
+        setQuestionTitle(textToChange || "")
     }
 
     return (
@@ -144,7 +144,7 @@ const QuestionTitle = ({id, bringBackName}) => {
           <TextField
             className={inputButton}
             onChange={({ target }) => handleTextFieldChange(target.value)}
-            defaultValue={questionTitle}
+            defaultValue={questionTitle || ""}
             variant="outlined"
             label="Nom de la question"
           />
