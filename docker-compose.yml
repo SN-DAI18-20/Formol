@@ -7,6 +7,7 @@ services:
     restart: on-failure
     volumes:
       - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./docker/caddy/certs:/etc/ssl/caddy-certs:ro
     ports:
       - 127.0.0.1:80:80
       - 127.0.0.1:443:443
@@ -36,6 +37,7 @@ services:
     restart: on-failure
     depends_on:
       - caddy
+      - s3-gateway
     volumes:
       - ./docker/volumes/minio:/data
     ports:
@@ -98,6 +100,18 @@ services:
     volumes:
       - ./backend-poll-generator/backend:/opt/formol/backend
       - ./backend-poll-generator/config:/opt/formol/config
+
+  # S3 Gateway
+  s3-gateway:
+    build: s3-gateway
+    restart: on-failure
+    volumes:
+      - ./s3-gateway/app:/opt/formol/app
+      - ./s3-gateway/config:/opt/formol/config
+    networks:
+      default:
+        aliases:
+          - s3-gateway.formol.dev
 
 networks:
   default:

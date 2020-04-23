@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Create from '@material-ui/icons/Create';
 
-import { FormulaireContext } from './creation-formulaire/Contexts';
+import { FormulaireContext } from '../../utils/Contexts';
 
 const useStyle = makeStyles({
 	paperStyle: {
@@ -36,11 +36,10 @@ const useStyle = makeStyles({
 	}
 });
 
-export const HeaderForm = () => {
+export const Header = () => {
 
   const { state, dispatch } = React.useContext(FormulaireContext);
-
-  const [ name, setName ] = React.useState(state?.name || 'Name');
+  const [ name, setName ] = React.useState(state?.name || '');
   const nameEffect = () => dispatch({type:'updateName', payload:name})
   React.useEffect(nameEffect, [name])
 
@@ -82,19 +81,21 @@ const Inputname = ({ name, setName, description, setDescription }) => {
 							onKeyDown={(key) => key.keyCode === 13 && setInput(false)}
 						/>
 					) : (
-						<Typography variant="h4" children={name} />
+						<Typography variant="h4" children={name || "Titre du formulaire"} />
 					)}
 				</div>
 				<Button onClick={() => setInput(!input)}>
 					<Create />
 				</Button>
 			</div>
-			<TextField
-				label="Description"
-				value={description}
-				onChange={({ target }) => setDescription(target.value)}
-				multiline
-			/>
+      <div>
+        <TextField
+          label="Description"
+          value={description}
+          onChange={({ target }) => setDescription(target.value)}
+          multiline
+        />
+        </div>
 		</div>
 	);
 };

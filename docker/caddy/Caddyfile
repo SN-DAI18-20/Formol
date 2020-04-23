@@ -6,13 +6,24 @@
 
 api.dev.formol.site {
     reverse_proxy api.formol.dev:3001
+
+    tls /etc/ssl/caddy-certs/_.dev.formol.site.crt /etc/ssl/caddy-certs/_.dev.formol.site.key
 }
 
 dashboard.dev.formol.site {
     reverse_proxy dashboard.formol.dev:3000
+
+    tls /etc/ssl/caddy-certs/_.dev.formol.site.crt /etc/ssl/caddy-certs/_.dev.formol.site.key
 }
 
 s3.dev.formol.site {
     reverse_proxy s3.formol.dev:9000
+
+    tls /etc/ssl/caddy-certs/_.dev.formol.site.crt /etc/ssl/caddy-certs/_.dev.formol.site.key
 }
 
+static.dev.formol.site {
+    reverse_proxy s3-gateway.formol.dev:3005
+
+    tls /etc/ssl/caddy-certs/_.dev.formol.site.crt /etc/ssl/caddy-certs/_.dev.formol.site.key
+}

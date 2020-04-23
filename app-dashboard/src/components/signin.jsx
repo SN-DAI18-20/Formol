@@ -42,11 +42,11 @@ export default function Index() {
               <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
               Formol
               </Typography>
-              <form className={classes.form} noValidate>         
-                <TextField id="login" name="login" label="Login" variant="outlined" margin="normal" required fullWidth autoFocus></TextField>                
-                <TextField id="password" name="password" label="Password" variant="outlined" type="password" margin="normal" required fullWidth autoFocus></TextField>                
-                <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Se souvenir de moi."/>                 
-                <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>Login</Button>                                
+              <form className={classes.form} noValidate>
+                <TextField id="login" name="login" label="Login" variant="outlined" margin="normal" required fullWidth autoFocus></TextField>
+                <TextField id="password" name="password" label="Password" variant="outlined" type="password" margin="normal" required fullWidth autoFocus></TextField>
+                <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Se souvenir de moi."/>
+                <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>Login</Button>
                 <Grid container spacing={1}>
                   <Grid item xs>
                     <Link href="#" variant="body2">
@@ -54,15 +54,14 @@ export default function Index() {
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link href="#" variant="body2">
+                    <Link href="/signup" variant="body2">
                     {"Vous n'avez pas de compte? Inscrivez-vous."}
                     </Link>
                   </Grid>
                 </Grid>
               </form>
             </Container>
-            </div>            
+            </div>
         </React.Fragment>
     );
 }
-

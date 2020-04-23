@@ -1,0 +1,19 @@
+{
+  "name": "s3-gateway",
+  "version": "0.1.0",
+  "description": "Stupid simple s3 gateway for Formol polls",
+  "main": "app/index.js",
+  "repository": "https://github.com/SN-DAI18-20/Formol",
+  "author": "Schola Nova DAI 18-20",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon",
+    "prettier:check": "./node_modules/.bin/prettier --check '**/*.js'",
+    "prettier:write": "./node_modules/.bin/prettier --write '**/*.js'"
+  },
+  "dependencies": {
+    "fastify": "^2.13.1",
+    "minio": "^7.0.15",
+    "winston": "^3.2.1"
+  }
+}
