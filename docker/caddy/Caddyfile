@@ -24,4 +24,6 @@ s3.dev.formol.site {
 
 static.dev.formol.site {
     reverse_proxy s3-gateway.formol.dev:3005
+
+    tls /etc/ssl/caddy-certs/_.dev.formol.site.crt /etc/ssl/caddy-certs/_.dev.formol.site.key
 }
