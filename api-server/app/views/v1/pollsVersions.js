@@ -4,6 +4,7 @@ const { Polls, PollsVersions, PollsQuestions } = require('../../models');
 const generate_uid = require('../../helpers/uid-creation');
 const QuestionsValidators = require('./validators/questionTypes');
 const GenericSchema = require('./genericSchema');
+const backend = require('../../backend');
 
 const PollVersionGenericSchema = {
     id: { type: 'string', format: 'uuid' },
@@ -263,6 +264,16 @@ async function VersionCollectionPost(request, reply) {
         });
 
         await PollsQuestions.bulkCreate(questions, { transaction });
+
+        // Send a task to the backend
+        backend.generate_poll.add({
+            poll: {
+                id: poll.id,
+                name: poll.name,
+                versionId: version.id,
+            },
+            questions: questions,
+        });
 
         await transaction.commit();
     } catch (error) {
