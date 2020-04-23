@@ -6,15 +6,19 @@ const url = process.env.NODE_ENV == 'development'
   : "https://api.dev.formol.site/v1/polls"
 
 export const getPolls = async () => {
-  const httpsAgent = new https.Agent({
-    rejectUnauthorized: false
-  });
+
   const options = {
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
-    httpsAgent
+    httpsAgent: new https.Agent({
+      rejectUnauthorized: false
+    })
   }
-  const data = await axios.get(url, options)
-  console.log({data})
+  try {
+    const data = await axios.get(url, options)
+    console.log({data})
+  } catch (error) {
+    console.log({error})
+  }
 }

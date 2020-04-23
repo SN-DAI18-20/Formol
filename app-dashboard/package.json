@@ -7,6 +7,7 @@
     "@material-ui/core": "^4.9.7",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/pickers": "^3.2.10",
+    "axios": "^0.19.2",
     "clsx": "^1.1.0",
     "date-fns": "^2.11.0",
     "next": "^9.3.2",
@@ -20,7 +21,7 @@
     "start": "next start",
     "docker:dev": "next --hostname 0.0.0.0",
     "docker:start": "next start --hostname 0.0.0.0",
-    "story": "start-storybook -p 9000",
+    "story": "start-storybook -p 9001",
     "prettier:check": "./node_modules/.bin/prettier --check '**/*.js'",
     "prettier:write": "./node_modules/.bin/prettier --write '**/*.js'"
   },
