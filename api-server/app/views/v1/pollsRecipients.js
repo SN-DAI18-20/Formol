@@ -1,7 +1,6 @@
 const GenericSchema = require('./genericSchema');
 const { sequelize } = require('../../models');
-const{PollRecipients, Polls} = require('../../models');
-const generate_uid = require('../../helpers/uid-creation');
+const { Polls, PollsRecipients } = require('../../models');
 
 const RecipientGenericSchema = {
     email: { type: 'string' },
@@ -144,125 +143,136 @@ const PollsRecipientsDeleteCollectionSchema = {
 };
 
 async function PollsRecipientsCollectionGet(request, reply) {
-    const recipientQuerry = await PollRecipients.findAll(
-        {
-            where:{poll:request.params.pollId}
-        }
-    );
-    if (recipientQuerry === null){
-        return reply
-        .notFound(`Ressource not exists.`)
-        .sent();
+    const pollId = request.params.pollId;
+    const poll = await Polls.findByPk(pollId);
+
+    if (poll === null) {
+        return reply.notFound(`Poll ressource '${pollId}' not exists.`).sent();
     }
-    const map = recipientQuerry.map(PollsRecipients => PollsRecipients.toJSON());
-    const recipients = [];
-    map.forEach(el => {
-        recipients.push({
-            email : el.recipient,
-        });
+
+    const recipientQuery = await PollsRecipients.findAll({
+        where: { poll: pollId },
     });
+
+    if (recipientQuery === null) {
+        return reply.notFound(`Ressource not exists.`).sent();
+    }
+
+    const recipients = [];
+    const map = recipientQuery.map(recipient =>
+        recipients.push({
+            id: recipient.id,
+            email: recipient.recipient,
+            created_at: recipient.createdAt,
+        })
+    );
+
     return reply.send(JSON.stringify(recipients));
 }
+
 async function PollsRecipientsCollectionPost(request, reply) {
     const pollId = request.params.pollId;
-    const pollQuerry = Polls.findByPk(pollId);
-    
-    if (pollQuerry === null){
-        return reply.notFound(`Ressource '${pollId}' not exists.`)
-        .sent();
+    const poll = await Polls.findByPk(pollId);
+    let recipientId;
+
+    if (poll === null) {
+        return reply.notFound(`Poll ressource '${pollId}' not exists.`).sent();
     }
-    try{
-        const recipients = [];
-        body.form.forEach(el => {
-            recipients.push({
-                recipient: el.email
-            });
+
+    try {
+        const recipient = await PollsRecipients.create({
+            poll: pollId,
+            recipient: request.body.email,
         });
-        const transaction = await sequalize.transaction();
-        await PollRecipients.bulkCreate(recipients, {transaction});
-        await transaction.commit();
-        return reply.code(201).send(
-            JSON.stringify({
-                message: 'Ressource created',
-                ressource_id: pollId,
-            })
-        );
-    }catch(error){
+
+        recipientId = recipient.id;
+    } catch (error) {
         request.log.error(error);
         request.log.trace('Unable to create the recipients');
 
-        await transaction.rollback();
-
         return reply.internalServerError();
-
     }
-    
 
+    return reply.code(201).send(
+        JSON.stringify({
+            message: 'Ressource created',
+            ressource_id: recipientId,
+        })
+    );
 }
+
 async function PollsRecipientsReinviteCollectionPut(request, reply) {
     const pollId = request.params.pollId;
     const poll = await Polls.findByPk(pollId);
-    if (poll === null){
-        return reply.notFound(`Ressource '${pollId}' not exists.`)
-        .sent();
-    } 
-    const recipientQuerry = await PollRecipients.findAll(
-        {
-            where:{poll:pollId}
-        }
-    );
-    if (recipientQuerry === null){
-        return reply.notFound(`Ressource '${pollId}' not exists.`)
-        .sent();
+
+    if (poll === null) {
+        return reply.notFound(`Ressource '${pollId}' not exists.`).sent();
     }
-    const map = recipientQuerry.map(PollsRecipients => PollsRecipients.toJSON());
-    const recipients = [];
-    map.forEach(el => {
-        recipients.push({
-            id : el.id,
-            email : el.recipient,
-        });
+
+    const recipientQuery = await PollsRecipients.findAll({
+        where: { poll: pollId },
     });
+
+    const recipients = [];
+    recipientQuery.map(recipient => recipients.push(recipient.recipient));
+
     //envoyer la liste au code de julie
+
+    return reply
+        .code(202)
+        .send(JSON.stringify({ message: 'Request accepted' }));
 }
 
 async function PollsRecipientsGet(request, reply) {
     const recipientId = request.params.recipientId;
     const pollId = request.params.pollId;
     const poll = await Polls.findByPk(pollId);
-    if (poll === null){
-        return reply.notFound(`Ressource '${pollId}' not exists.`)
-        .sent();
-    } 
-    const recipientQuerry = await PollRecipients.findByPk(recipientId);
-    if (recipientQuerry === null){
-        return reply.code(404).send("Ressource not found !");
+
+    if (poll === null) {
+        return reply.notFound(`Ressource '${pollId}' not exists.`).sent();
     }
+
+    const recipient = await PollsRecipients.findByPk(recipientId);
+
+    if (recipient === null) {
+        return reply.notFound(`Ressource '${recipientId}' not exists.`).sent();
+    }
+
     return reply.code(200).send(
         JSON.stringify({
-            email: recipientQuerry.recipient,
+            id: recipient.id,
+            email: recipient.recipient,
+            created_at: recipient.createdAt,
         })
     );
 }
+
 async function PollsRecipientsReinvitePut(request, reply) {
     const recipientId = request.params.recipientId;
     const pollId = request.params.pollId;
     const poll = await Polls.findByPk(pollId);
-    if (poll === null){
-        return reply.notFound(`Ressource '${pollId}' not exists.`)
-        .sent();
-    } 
-    const recipientQuerry = await PollsRecipients.findByPk(recipienId);
-    if (recipientQuerry === null){
-        return reply.notFound(`Ressource '${recipientId}' not exists.`)
-        .sent();
+
+    if (poll === null) {
+        return reply.notFound(`Ressource '${pollId}' not exists.`).sent();
     }
+
+    const recipientQuery = await PollsRecipients.findByPk(recipientId);
+
+    if (recipientQuery === null) {
+        return reply.notFound(`Ressource '${recipientId}' not exists.`).sent();
+    }
+
     const recipient = {
-        email: recipientQuerry.recipient,
+        email: recipientQuery.recipient,
     };
-    //envoyer la liste au code de julie
-    return reply.code(202).send(JSON.stringify({message : "Request accepted"}));
+
+    // envoyer la liste au code de julie
+
+    return reply
+        .code(202)
+        .send(JSON.stringify({ message: 'Request accepted' }));
 }
+
 async function PollsRecipientsDelete(request, reply) {
     const recipientId = request.params.recipientId;
     const pollId = request.params.pollId;
@@ -270,9 +280,7 @@ async function PollsRecipientsDelete(request, reply) {
     const poll = await Polls.findByPk(pollId);
 
     if (poll === null) {
-        return reply
-            .notFound(`Poll ressource '${pollId}' not exists.`)
-            .sent();
+        return reply.notFound(`Poll ressource '${pollId}' not exists.`).sent();
     }
 
     const recipient = await PollsRecipients.findByPk(recipientId);
@@ -310,9 +318,7 @@ async function PollsRecipientsCollectionDelete(request, reply) {
     const poll = await Polls.findByPk(pollId);
 
     if (poll === null) {
-        return reply
-            .notFound(`Poll ressource '${pollId}' not exists.`)
-            .sent();
+        return reply.notFound(`Poll ressource '${pollId}' not exists.`).sent();
     }
 
     const transaction = await sequelize.transaction();
@@ -352,7 +358,7 @@ module.exports = {
                 },
                 DELETE: {
                     handler: PollsRecipientsCollectionDelete,
-                    schema: PollsRecipientsDeleteCollectionSchema
+                    schema: PollsRecipientsDeleteCollectionSchema,
                 },
                 reinvite: {
                     PUT: {
@@ -360,7 +366,7 @@ module.exports = {
                         schema: PollsRecipientsReinviteCollectionPutSchema,
                     },
                 },
-                ':recepientId': {
+                ':recipientId': {
                     reinvite: {
                         PUT: {
                             handler: PollsRecipientsReinvitePut,

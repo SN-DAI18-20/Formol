@@ -215,7 +215,6 @@ async function VersionCollectionPost(request, reply) {
         return reply.badRequest(errorMessage).sent();
     }
 
-
     const poll = await Polls.findByPk(pollId);
 
     if (poll === null) {
