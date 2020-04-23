@@ -8,16 +8,24 @@ import Button from '@material-ui/core/Button';
 export const Questions = () => {
 
   const {state, dispatch} = React.useContext(FormulaireContext)
-  const [form, setForm] = React.useState(state || new Map([[0, { type: 'Text', required: false, parameters: {}, name: 'Question' }]]));
+  const arrayToMap = questions => {
+      const mapToPush = questions.map((question, index) => [index, question])
+      return new Map(mapToPush)
+    }
+  const [questions, setQuestions] = React.useState(state?.form
+  ? arrayToMap(state.form)
+  : new Map([[0, { type: 'text', required: false, parameters: {}, name: 'Question' }]])
+  );
+
 
   const effect = () => {
     dispatch({type:'setForm', payload:[...form.values()]})
   }
   React.useEffect(effect, [form])
 
-  const updateQuestionName = (id, name) => {
-    form.set(id, {...form.get(id), name})
-    setForm(new Map(form))
+  const updateQuestionName = (id, question) => {
+    questions.set(id, {...questions.get(id), question})
+    setQuestions(new Map(questions))
   }
 
   const deleteQuestion = (QuestionID) => {
@@ -40,9 +48,9 @@ export const Questions = () => {
   };
 
   const addQuestion = () => {
-    const lastKey = Array.from(form.keys()).pop()+1
-    form.set(lastKey || 1, {type:'Text', required:false})
-    setForm(new Map(form))
+    const lastKey = Array.from(questions.keys()).pop()+1
+    questions.set(lastKey || 1, {type:'text', required:false})
+    setQuestions(new Map(questions))
 	};
 
   return (

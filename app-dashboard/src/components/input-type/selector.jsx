@@ -45,7 +45,7 @@ export const Selector = ({bringBackState}) => {
   }
 
   React.useEffect(() => {
-    bringBackState({selectors})
+    bringBackState({items: selectors})
   }, [selectors])
 
   return (

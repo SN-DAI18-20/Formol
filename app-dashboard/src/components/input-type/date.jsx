@@ -61,7 +61,7 @@ export const Dates = ({ bringBackState }) => {
 
 	React.useEffect(
 		() => {
-			bringBackState({ minDate, maxDate });
+			bringBackState({ min_date: minDate, max_date: maxDate });
 		},
 		[ minDate, maxDate ]
 	);
