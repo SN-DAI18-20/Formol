@@ -1,5 +1,11 @@
 import React from 'react';
+
 import { makeStyles } from '@material-ui/core/styles';
+
+import Link from 'next/link'
+
+import { getVersionsPoll, deleteVersion } from '../utils/Requests'
+
 import Button from '@material-ui/core/Button';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -43,54 +49,53 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const http = require('http');
+// function convertDate(a){
+//   var dateParts = a.split("/");
+//   return new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+// }
 
-function convertDate(a){
-  var dateParts = a.split("/");
-  return new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]); 
-}
+// function descendingComparator(a, b, orderBy) {
+//     console.log({a,b})
+//   if (convertDate(b[orderBy]) < convertDate(a[orderBy])){
+//     return -1;
+//   }
+//   if (convertDate(b[orderBy]) > convertDate(a[orderBy])) {
+//     return 1;
+//   }
+//   return 0;
+// }
 
-function descendingComparator(a, b, orderBy) {
-  if (convertDate(b[orderBy]) < convertDate(a[orderBy])){
-    return -1;
-  }
-  if (convertDate(b[orderBy]) > convertDate(a[orderBy])) {
-    return 1;
-  }
-  return 0;
-}
+// function getComparator(order, orderBy) {
+//   return order === 'desc'
+//     ? (a, b) => descendingComparator(a, b, orderBy)
+//     : (a, b) => -descendingComparator(a, b, orderBy);
+// }
 
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator, search) {
-  if(search != null && search != '')
-  {
-    array = array.filter( element => element.created_at.toLowerCase().includes(search.toLowerCase()) );
-  }
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-
+// function stableSort(array, comparator, search) {
+//   if(search != null && search != '')
+//   {
+//     array = array.filter( element => element.created_at.toLowerCase().includes(search.toLowerCase()) );
+//   }
+//   const stabilizedThis = array.map((el, index) => [el, index]);
+//   stabilizedThis.sort((a, b) => {
+//     const order = comparator(a[0], b[0]);
+//     if (order !== 0) return order;
+//     return a[1] - b[1];
+//   });
+//   return stabilizedThis.map((el) => el[0]);
+// }
 
 
-export default function versionList(props) {
+
+function VersionList(props) {
   const classes = useStyles();
   const [search, setSearch] = React.useState();
-  const [versions, setVersions] = React.useState([]);  
+  const [versions, setVersions] = React.useState(props.versions);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [page, setPage] = React.useState(0);
   const [order, setOrder] = React.useState('desc');
   const [orderBy, setOrderBy] = React.useState('created_at');
-  
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -105,35 +110,31 @@ export default function versionList(props) {
     setSearch(event.target.value);
   }
 
-  function handleNewVersion(){
-    //ajouter redirection vers la page de creation
-  }
+//   function handleNewVersion(){
+//     //ajouter redirection vers la page de creation
+//   }
 
-  function handleSeeVersion(id){
+//   function handleSeeVersion(id){
+//     //ajouter redirection vers la page de poll
+//     console.log(props.pollId);
+//   }
+
+//   function handleDownloadVersion(id){
+//     //ajouter redirection vers la page de poll
+//   }
+
+
+
+//   function handleCreateWithVersion(id){
+//     //ajouter redirection vers la page de poll
+//   }
+
+  async function handleDeleteVersion(id){
     //ajouter redirection vers la page de poll
-    console.log(props.pollId);
+    await deleteVersion(props.pollId, id)
+    const versions = await getVersionsPoll(props.pollId)
+    await setVersions(versions)
   }
-
-  function handleDownloadVersion(id){
-    //ajouter redirection vers la page de poll
-  }
-
-  function handleCreateWithVersion(id){
-    //ajouter redirection vers la page de poll
-  }
-
-  function handleDeleteVersion(id){
-    //ajouter redirection vers la page de poll
-  }
-
-  React.useEffect(() => {
-    http.get('http://www.mocky.io/v2/5e9c466f30000075000a7e05', (res) => {
-      res.setEncoding('utf8')  
-      res.on('data', function(body){
-       setVersions(JSON.parse(body));    
-      })  
-    });
-  }, [])
 
   return (
     <div>
@@ -151,12 +152,14 @@ export default function versionList(props) {
                 <TextField fullWidth size="small" id="outlined-search" label="Search field" type="search" variant="outlined" value={search} onChange={handleChangeSearch}/>
               </Grid>
               <Grid item xs={3} align="center">
-              <Fab className={classes.favButton} variant="extended" color="primary" aria-label="add" onClick={() => handleNewVersion()} style={{position: 'fixed'}}>
+                <Link href={`/new-version?id=${props.pollId}`}>
+              <Fab className={classes.favButton} variant="extended" color="primary" aria-label="add" style={{position: 'fixed'}}>
                 <AddBoxIcon />
                   Nouvelle version
               </Fab>
-               
-              </Grid>          
+                </Link>
+
+              </Grid>
             </Grid>
 
             <TableContainer component={Paper}>
@@ -169,7 +172,7 @@ export default function versionList(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                {stableSort(versions, getComparator(order, orderBy), search)
+                {versions
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((version, index) => (
                     <TableRow key={version.name}>
@@ -184,10 +187,12 @@ export default function versionList(props) {
                         <Button onClick={() => handleDownloadVersion(version.id)} variant="contained" className={classes.dlBtn} startIcon={<GetAppIcon />}>
                           Télécharger
                         </Button>
-                        <Button onClick={() => handleCreateWithVersion(version.id)} variant="contained" className={classes.button} startIcon={<AddBoxIcon />}>
+                        <Link href={`/modify-formulaire?id=${version.id}&pollId=${props.pollId}`}>
+                        <Button variant="contained" className={classes.button} startIcon={<AddBoxIcon />}>
                           Créer à partir de
                         </Button>
-                        <Button onClick={() => handleDeleteVersion(version.id)} variant="contained" color="" className={classes.deleteBtn} startIcon={<DeleteIcon />}>
+                        </Link>
+                        <Button disabled={version.active} onClick={() => handleDeleteVersion(version.id)} variant="contained" color="" className={classes.deleteBtn} startIcon={<DeleteIcon />}>
                           Supprimer
                         </Button>
                       </TableCell>
@@ -211,4 +216,27 @@ export default function versionList(props) {
       </Paper>
     </div>
   );
+}
+
+export default ({pollId}) => {
+    const [versions, setVersions] = React.useState(null);
+
+    React.useEffect(() => {
+        if(pollId){
+            (async () => {
+                const data = await getVersionsPoll(pollId)
+                console.info({data})
+                setVersions(data)
+            })()
+        }
+    }, [pollId])
+
+    return (
+        <div>
+            {versions
+                ? <VersionList versions={versions} pollId={pollId} />
+                : <p>Load</p>
+            }
+        </div>
+    )
 }

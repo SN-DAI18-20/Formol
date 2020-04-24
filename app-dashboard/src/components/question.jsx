@@ -55,8 +55,11 @@ export default ({
   required,
   toggleRequired,
   bringBackName,
-  deleteDisabled
+  deleteDisabled,
+  question
 }) => {
+
+    console.log({question})
 
     const { header, questionType } = useStyle();
 
@@ -96,7 +99,7 @@ export default ({
                 <Card elevation={8} style={{ margin:'20px 0px' }}>
                 <CardContent>
                     <div className={header}>
-                        <QuestionTitle id={id} bringBackName={bringBackName} />
+                        <QuestionTitle defaultName={question.name} id={id} bringBackName={bringBackName} />
                         <div>
                           <FormControlLabel label="Required" control={<Switch onChange={({target}) => toggleRequired(target.checked, id)} value={required} />} />
                           <FormControl>
@@ -127,11 +130,11 @@ export default ({
     )
 }
 
-const QuestionTitle = ({id, bringBackName}) => {
+const QuestionTitle = ({id, bringBackName, defaultName}) => {
 
     const { questionTitleStyle, inputButton } = useStyle();
 
-    const [questionTitle, setQuestionTitle] = React.useState();
+    const [questionTitle, setQuestionTitle] = React.useState(defaultName || "");
     const questionNameEffect = () => bringBackName(id, questionTitle)
     React.useEffect(questionNameEffect, [questionTitle])
 

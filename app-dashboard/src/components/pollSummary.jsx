@@ -1,6 +1,10 @@
-import 'date-fns';  
+import 'date-fns';
 import React from 'react';
+
 import { makeStyles } from '@material-ui/core/styles';
+
+import { getSpecificPoll } from '../utils/Requests'
+
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -62,41 +66,26 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         marginBottom: theme.spacing(2)
     }
-    
+
 }));
 
 const http = require('http');
 
-export default function versionList(props) {
+function VersionList(props) {
     const classes = useStyles();
-    const [poll, setPoll] = React.useState({
-        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        "name": "string",
-        "description": "string",
-        "draft": true,
-        "view_url": "string",
-        "download_url": "string",
-        "version": {
-          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          "name": "string"
-        },
-        "published_at": "2020-04-23T13:28:30.116Z",
-        "depublished_at": "2020-04-23T23:28:30.116Z",
-        "created_at": "string",
-        "updated_at": "string"
-      });
+    const [poll, setPoll] = React.useState(props.poll);
     const [show, setShow] = React.useState(false);
     const [statePoll, setStatePoll] = React.useState(5);
 
     React.useEffect(() => {
         //décommenter et changer l'url pour l'api, id du formule dans props.pollId
         /*http.get('http://www.mocky.io/v2/5e68e2b02f00000498d8b08e', (res) => {
-          res.setEncoding('utf8')  
+          res.setEncoding('utf8')
           res.on('data', function(body){
-            setPoll(JSON.parse(body));    
-          })  
+            setPoll(JSON.parse(body));
+          })
         });*/
-
+        console.log({props})
         if(new Date() < new Date(poll.published_at) || poll.draft == false)
             setShow(true);
 
@@ -113,7 +102,7 @@ export default function versionList(props) {
                 setStatePoll(4);
         }
 
-        
+
     }, [])
 
     React.useEffect(()=>{
@@ -127,13 +116,13 @@ export default function versionList(props) {
             setShow(false);
     }, [statePoll]);
 
-    
+
 
 
     const handleChangeSelect = (event) => {
         setStatePoll(event.target.value);
-        
-        
+
+
         if(statePoll == 3 || statePoll == 4)
             setPoll({...poll, draft:false});
         if(statePoll == 2 || statePoll == 3 || statePoll == 4)
@@ -141,7 +130,7 @@ export default function versionList(props) {
         else
             setShow(false);
          console.log(show);
-        
+
     }
 
     const handleChangeName = (event) => {
@@ -201,7 +190,7 @@ export default function versionList(props) {
                                 className={classes.cardHeader}
                                 />
                                 <CardContent>
-                                    <div className={classes.cardContentInfo} direction="column" justify="left" alignItems="baseline">  
+                                    <div className={classes.cardContentInfo} direction="column" justify="left" alignItems="baseline">
                                         <Grid container>
                                             <Grid item className={classes.gridCustom}>
                                                 <Typography variant="subtitle1" align="left" >
@@ -210,8 +199,8 @@ export default function versionList(props) {
                                             </Grid>
                                             <Grid item className={classes.gridCustom}>
                                                 <TextField value={poll.name} onChange={handleChangeName}>
-                                                    
-                                                </TextField>                                                   
+
+                                                </TextField>
                                             </Grid>
                                             <Grid item className={classes.gridCustom}>
                                                 <Typography variant="subtitle1" align="left" >
@@ -220,14 +209,14 @@ export default function versionList(props) {
                                             </Grid>
                                             <Grid item className={classes.gridCustom}>
                                                 <TextField className={classes.gridCustom} onChange={handleChangeDescription} value={poll.description}  multiline rows={4}>
-                                                
+
                                                 </TextField>
                                             </Grid>
                                             <Grid item className={classes.gridCustom}>
                                                 <Typography>
                                                 Etat : {statePoll}
-                                                </Typography>    
-                                            </Grid> 
+                                                </Typography>
+                                            </Grid>
                                             <Grid item className={classes.gridCustom}>
                                                 <Select id="select" value={statePoll} onChange={handleChangeSelect}>
                                                     <MenuItem value={1}>Brouillon</MenuItem>
@@ -237,10 +226,10 @@ export default function versionList(props) {
                                                 </Select>
                                             </Grid>
                                             {
-                                                show ? 
+                                                show ?
                                                     <Grid Container direction="column" justify="center" alignItems="baseline">
-                                                
-                                                 
+
+
                                                         <Grid item className={classes.gridCustom}>
                                                             <Typography>
                                                                 Publication prévue pour :
@@ -264,11 +253,11 @@ export default function versionList(props) {
 
                                                                 </DateTimePicker>
                                                             </MuiPickersUtilsProvider>
-                                                        </Grid>  
+                                                        </Grid>
                                                     </Grid> : null}
-                                                
-                                            
-                                            
+
+
+
 
                                         </Grid>
                                     </div>
@@ -292,7 +281,7 @@ export default function versionList(props) {
                                         <Typography variant="subtitle1" align="left" >
                                         En appuyant  sur le bouton, vous supprimez l'intégralité des données de ce formulaire et il ne sera pas possible de le restaurer.
                                         </Typography>
-                                        
+
                                     </div>
                                 </CardContent>
                                 <CardActions>
@@ -319,7 +308,7 @@ export default function versionList(props) {
                                         Le formulaire est disponible sur le lien suivant : <br></br>
                                         <a href={poll.view_url}>{poll.view_url}</a>
                                         </Typography>
-                                        
+
                                     </div>
                                 </CardContent>
                                 <CardActions>
@@ -341,7 +330,7 @@ export default function versionList(props) {
                                         <Typography variant="subtitle1" align="left" >
                                         Le formulaire est disponible au téléchargement sur le lien suivant : <br></br>
                                         <a href={poll.download_url}>{poll.download_url}</a>
-                                        </Typography>                                     
+                                        </Typography>
                                     </div>
                                 </CardContent>
                                 <CardActions>
@@ -359,7 +348,7 @@ export default function versionList(props) {
                                 className={classes.cardHeader}
                                 />
                                 <CardContent>
-                                    
+
                                 </CardContent>
                                 <CardActions>
                                     <Button onClick={() => handleSeeStats(props.pollId)} variant="contained" color="primary" startIcon={<EqualizerIcon />}>
@@ -369,9 +358,33 @@ export default function versionList(props) {
                             </Card>
                         </Grid>
                     </Grid>
-                </Grid>   
+                </Grid>
             </Grid>
         </Container>
     );
 }
 
+
+export default ({pollId}) =>{
+
+    const [pollData, setPollData] = React.useState(null)
+
+    React.useEffect(() => {
+        if(pollId){
+            (async () => {
+                const data = await getSpecificPoll(pollId)
+                console.info({data})
+                setPollData(data)
+            })()
+        }
+    }, [pollId])
+    return (
+        <div>
+            {
+                pollData
+                ? <VersionList poll={pollData} pollId={pollId} />
+                : <p>Load</p>
+            }
+        </div>
+    )
+}

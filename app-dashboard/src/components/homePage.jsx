@@ -88,6 +88,7 @@ const tiers = [
   {
     title: 'Liste',
     price: '30',
+    link: 'formulaires',
     description: [
       'Liste de tous les questionnaire déjà créés.'
     ],

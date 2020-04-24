@@ -2,6 +2,7 @@ import React from 'react';
 
 import Button from '@material-ui/core/Button';
 
+import { createPoll, createNewVersion } from '../../utils/Requests'
 import { Questions } from './Questions'
 import { Header } from './Header';
 import { Draft } from './Draft';
@@ -16,30 +17,40 @@ const useStyle = makeStyles({
   }
 })
 
-export const Formulaire = () => {
+export const Formulaire = ({defaultData, modify, updateVersion, pollId}) => {
 
     const { dividerStyle } = useStyle();
 
     return (
-      <FormulaireProvider>
+      <FormulaireProvider defaultState={defaultData}>
         <div>
-          <Header />
+          {modify || <Header />}
           <Questions />
           <Divider className={dividerStyle} />
           <Draft />
-          <SendButton/>
+          <SendButton updateVersion={updateVersion} pollId={pollId} />
         </div>
       </FormulaireProvider>
     )
 }
 
-const SendButton = () => {
+const SendButton = ({updateVersion, pollId}) => {
 
   const {state} = React.useContext(FormulaireContext);
 
+  const handleClick = async () => {
+      if(updateVersion){
+        const response = await createNewVersion(pollId, state.form)
+        window.history.back()
+      } else {
+        const response = await createPoll(state)
+        window.history.back()
+      }
+  }
+
   return (
     <div style={{ display:'flex', flexDirection: 'row-reverse' }}>
-      <Button style={{ marginBottom: '40px' }} onClick={() => console.info({state})} color="primary" variant="contained">
+      <Button style={{ marginBottom: '40px' }} onClick={handleClick} color="primary" variant="contained">
         Valider formulaire
       </Button>
     </div>
