@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Link from 'next/link'
+
 import { getPolls } from '../utils/Requests'
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -33,8 +35,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10
   }
 }));
-
-const http = require('http');
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -98,13 +98,10 @@ export default function SimpleTable() {
   }
 
   React.useEffect(() => {
-    getPolls()
-    // http.get('http://www.mocky.io/v2/5e9b7b133300009432bf17b9', (res) => {
-    //   res.setEncoding('utf8')
-    //   res.on('data', function(body){
-    //    setPolls(JSON.parse(body));
-    //   })
-    // });
+      (async () => {
+          const data = await getPolls()
+          setPolls(data)
+    })()
   }, [])
 
   function IsPublished(pollIsPublished){
@@ -130,10 +127,12 @@ export default function SimpleTable() {
                 <TextField fullWidth size="small" id="outlined-search" label="Search field" type="search" variant="outlined" value={search} onChange={handleChangeSearch}/>
               </Grid>
               <Grid item xs={3} align="center">
-              <Fab className={classes.favButton} variant="extended" color="primary" aria-label="add" onClick={() => handleNewPoll()} style={{position: 'fixed'}}>
-                <AddBoxIcon />
-                  Nouveau
-              </Fab>
+                <Link href="/create-formulaire">
+                  <Fab className={classes.favButton} variant="extended" color="primary" aria-label="add" onClick={() => handleNewPoll()} style={{position: 'fixed'}}>
+                    <AddBoxIcon />
+                      Nouveau
+                  </Fab>
+                </Link>
 
               </Grid>
             </Grid>
@@ -163,9 +162,11 @@ export default function SimpleTable() {
                       <TableCell align="center">{IsPublished(poll.is_published)}</TableCell>
                       <TableCell align="center">{poll.updated_at}</TableCell>
                       <TableCell align="center">
-                        <Button onClick={() => handleSeePoll(poll.id)} variant="contained" color="primary" className={classes.button} startIcon={<VisibilityIcon />}>
-                          Voir
-                        </Button>
+                        <Link href={`/gestionFormulaire?id=${poll.id}`}>
+                          <Button onClick={() => handleSeePoll(poll.id)} variant="contained" color="primary" className={classes.button} startIcon={<VisibilityIcon />}>
+                            Voir
+                          </Button>
+                        </Link>
                       </TableCell>
                     </TableRow>
                   ))}

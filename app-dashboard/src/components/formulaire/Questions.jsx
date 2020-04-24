@@ -12,8 +12,8 @@ export const Questions = () => {
       const mapToPush = questions.map((question, index) => [index, question])
       return new Map(mapToPush)
     }
-  const [questions, setQuestions] = React.useState(state?.form
-  ? arrayToMap(state.form)
+  const [questions, setQuestions] = React.useState(state?.questions
+  ? arrayToMap(state.questions)
   : new Map([[0, { type: 'text', required: false, parameters: {}, name: 'Question' }]])
   );
 
@@ -59,6 +59,8 @@ export const Questions = () => {
         const { type, required, parameters } = question;
         return (
           <Question
+            question={question}
+            deleteDisabled={questions.size === 1}
             bringBackName={updateQuestionName}
             bringBackState={(stateToBringBack, required) =>
               bringBackState(stateToBringBack, id)}

@@ -18,7 +18,7 @@ export const reducer = (state, action) => {
     const { type, payload } = action;
     switch (type) {
         case 'setQuestions':
-            return { ...state, form: [...payload] };
+            return { ...state, questions: [...payload] };
         case 'updateName':
             return { ...state, name: payload };
         case 'updateDescription':
@@ -33,6 +33,8 @@ export const reducer = (state, action) => {
 export const FormulaireProvider = ({children, defaultState}) => {
 
   const [state, dispatch] = React.useReducer(reducer, defaultState || {})
+
+  console.log({state})
   return (
     <FormulaireContext.Provider value={{state, dispatch}}>
       {children}
