@@ -137,7 +137,7 @@ export default function Index() {
                   </div>
                 </CardContent>
                 <CardActions>
-                  <a style={{ textDecoration: 'none' }} href={tier.link}>
+                  <a style={{ textDecoration: 'none', width: "100%" }} href={tier.link}>
                     <Button fullWidth variant={tier.buttonVariant} color="primary">
                       {tier.buttonText}
                     </Button>
