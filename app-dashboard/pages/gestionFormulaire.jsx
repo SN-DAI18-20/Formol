@@ -59,11 +59,14 @@ export default function gstionFormulaire() {
   const [pollID, setPollID] = React.useState(null)
 
   const router = useRouter()
-  const { id } = router.query
+  const { id, goToVersion } = router.query
 
   React.useEffect(() => {
     if(id){
         setPollID(id)
+    }
+    if(goToVersion === "true"){
+        setValue(1)
     }
   }, [router])
 

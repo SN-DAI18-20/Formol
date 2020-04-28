@@ -133,7 +133,7 @@ function VersionList(props) {
     //ajouter redirection vers la page de poll
     await deleteVersion(props.pollId, id)
     const versions = await getVersionsPoll(props.pollId)
-    await setVersions(versions)
+    setVersions(versions)
   }
 
   return (

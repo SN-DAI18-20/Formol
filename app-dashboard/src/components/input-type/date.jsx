@@ -5,7 +5,7 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Typography from '@material-ui/core/Typography';
 import DateFnsUtils from '@date-io/date-fns';
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { KeyboardDatePicker, MuiPickersUtilsProvider, DateTimePicker } from '@material-ui/pickers';
 
 import { makeStyles } from '@material-ui/core/styles';
 const useStyle = makeStyles({
@@ -14,17 +14,18 @@ const useStyle = makeStyles({
 	}
 });
 
-export const Dates = ({ bringBackState }) => {
+export const Dates = ({ bringBackState, parameters }) => {
+
 	const { minDateStyle } = useStyle();
 
-	const [ limit, setLimit ] = React.useState(false);
+    const [ limit, setLimit ] = React.useState(parameters.min_date || parameters.max_date ? true : false);
 	const handleToggleLimit = ({ target }) => {
 		const { checked } = target;
 		setLimit(checked);
 	};
 
 
-	const [ maxDate, setMaxDate ] = React.useState(new Date(Date.now()));
+	const [ maxDate, setMaxDate ] = React.useState(new Date(parameters.max_date || Date.now()));
 	const handleMaxDateChange = (maxDate) => {
 		setMaxDate(new Date(maxDate));
   };
@@ -35,7 +36,7 @@ export const Dates = ({ bringBackState }) => {
     setMaxDate(checked ? new Date(Date.now()) : false)
   }
 
-	const [ minDate, setMinDate ] = React.useState(new Date(Date.now()));
+	const [ minDate, setMinDate ] = React.useState(new Date(parameters.min_date || Date.now()));
 	const handleMinDateChange = (minDate) => {
 		setMinDate(new Date(minDate));
   };
@@ -69,7 +70,7 @@ export const Dates = ({ bringBackState }) => {
 	return (
 		<div>
 			<FormControlLabel
-				control={<Switch value={limit} color="primary" onChange={handleToggleLimit} />}
+				control={<Switch checked={limit} color="primary" onChange={handleToggleLimit} />}
         label="Limit date"
 			/>
 			{limit ? (
@@ -78,14 +79,14 @@ export const Dates = ({ bringBackState }) => {
             <FormControlLabel control={<Switch onChange={handleToggleMinDateActive} checked={minDateActive} />} label="Min Date" />
 						{minDateActive && (
 							<MuiPickersUtilsProvider utils={DateFnsUtils}>
-								<KeyboardDatePicker
+								<DateTimePicker
                   className={minDateStyle}
                   maxDate={maxDateActive && maxDate}
 									value={minDate}
 									onChange={handleMinDateChange}
 									disableToolbar
 									variant="inline"
-									format="MM/dd/yyyy"
+									format="MM/dd/yyyy HH:mm"
 									margin="normal"
 									label="Min date"
 								/>
@@ -97,13 +98,13 @@ export const Dates = ({ bringBackState }) => {
             <FormControlLabel control={<Switch onChange={handleToggleMaxDateActive} checked={maxDateActive} />} label="Max Date" />
 						{maxDateActive && (
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-								<KeyboardDatePicker
+								<DateTimePicker
                   value={maxDate}
                   minDate={minDateActive && minDate}
 									onChange={handleMaxDateChange}
 									disableToolbar
 									variant="inline"
-									format="MM/dd/yyyy"
+									format="MM/dd/yyyy HH:mm"
 									margin="normal"
 									label="Max date"
                   />

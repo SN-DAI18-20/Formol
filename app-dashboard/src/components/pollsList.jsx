@@ -2,6 +2,8 @@ import React from 'react';
 
 import { getPolls } from '../utils/Requests'
 
+import Link from 'next/link'
+
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import AddBoxIcon from '@material-ui/icons/AddBox';
@@ -96,7 +98,11 @@ export default function SimpleTable() {
   }
 
   React.useEffect(() => {
-    getPolls()
+
+      (async () => {
+          const polls = await getPolls()
+          setPolls(polls)
+      })()
     // http.get('http://www.mocky.io/v2/5e9b7b133300009432bf17b9', (res) => {
     //   res.setEncoding('utf8')
     //   res.on('data', function(body){
@@ -128,10 +134,12 @@ export default function SimpleTable() {
                 <TextField fullWidth size="small" id="outlined-search" label="Search field" type="search" variant="outlined" value={search} onChange={handleChangeSearch}/>
               </Grid>
               <Grid item xs={3} align="center">
+                  <Link href="/create-formulaire">
               <Fab className={classes.favButton} variant="extended" color="primary" aria-label="add" onClick={() => handleNewPoll()} style={{position: 'fixed'}}>
                 <AddBoxIcon />
                   Nouveau
               </Fab>
+                  </Link>
 
               </Grid>
             </Grid>

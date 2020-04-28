@@ -20,10 +20,10 @@ const useStyle = makeStyles({
 	}
 });
 
-export const CheckBox = ({bringBackState}) => {
+export const CheckBox = ({bringBackState, parameters}) => {
 	const { addButton } = useStyle();
 
-	const [ checkBoxs, setCheckBoxs ] = React.useState([ { value: '', id: 1 } ]);
+	const [ checkBoxs, setCheckBoxs ] = React.useState(parameters?.items || [ { value: '', id: 1 } ]);
 
 	const addCheckBox = () => {
     const checkBoxsTable = [...checkBoxs]

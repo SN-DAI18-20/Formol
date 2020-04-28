@@ -31,8 +31,7 @@ const useStyles = makeStyles(theme => ({
       if(!mail.includes('@') || mail == null)
         setError(false)
       else
-        setError(true) 
-      console.log('Error: ', error); 
+        setError(true)
     }
 
     return (
@@ -44,18 +43,18 @@ const useStyles = makeStyles(theme => ({
                 <Typography component="h3" variant="h4" align="center" color="textPrimary">
                     Récuperation de mot de passe
                 </Typography>
-                <form className={classes.form} noValidate>         
-                    <TextField error={!error} onBlur={({target})=>{setEmail(target.value)}} id="email" name="email" label="Email" variant="outlined" margin="normal" required fullWidth autoFocus></TextField>                               
-                    {!error ? 
+                <form className={classes.form} noValidate>
+                    <TextField error={!error} onBlur={({target})=>{setEmail(target.value)}} id="email" name="email" label="Email" variant="outlined" margin="normal" required fullWidth autoFocus></TextField>
+                    {!error ?
                       <Typography component="h4" variant="h5" align="center" color="error">
                       Adresse email incorrect.
-                      </Typography> 
-                      : <span></span> 
+                      </Typography>
+                      : <span></span>
                     }
-                    <Button fullWidth variant="contained" color="primary" onClick={() => verifyPassword()} className={classes.submit}>Envoyer la confirmation</Button>                                
+                    <Button fullWidth variant="contained" color="primary" onClick={() => verifyPassword()} className={classes.submit}>Envoyer la confirmation</Button>
                 </form>
             </Container>
-            </div>            
+            </div>
         </React.Fragment>
     );
 }

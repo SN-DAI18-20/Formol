@@ -21,7 +21,9 @@ export default () => {
     return (
         <div>
             <Layout>
-            <Formulaire modify={true} updateVersion={true} pollId={id} />
+                <div style={{margin: "10px 50px"}}>
+                    <Formulaire modify={true} updateVersion={true} pollId={pollId} />
+                </div>
             </Layout>
         </div>
     )

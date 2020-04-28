@@ -55,9 +55,10 @@ export default ({
   required,
   toggleRequired,
   bringBackName,
-  deleteDisabled
+  deleteDisabled,
+  question,
+  parameters
 }) => {
-
     const { header, questionType } = useStyle();
 
     const [ChoosedQuestion, setChoosedQuestion] = React.useState(type);
@@ -66,21 +67,20 @@ export default ({
     const chooseAQuestion = (choosed) => {
       setChoosedQuestion(choosed)
     }
-
     const renderChoosedQuestion = (choosedQuestion) => {
       switch (choosedQuestion) {
         case "number":
-            return <Number bringBackState={parameters => bringBackState(parameters, id)} />;
+            return <Number parameters={parameters} bringBackState={parameters => bringBackState(parameters, id)} />;
         case "text":
-            return <Text bringBackState={parameters => bringBackState(parameters, id)} />;
+            return <Text parameters={parameters} bringBackState={parameters => bringBackState(parameters, id)} />;
         case "checkbox":
-            return <CheckBox bringBackState={parameters => bringBackState(parameters, id)} />;
+            return <CheckBox parameters={parameters} bringBackState={parameters => bringBackState(parameters, id)} />;
         case "range":
-            return <Range bringBackState={parameters => bringBackState(parameters, id)} />;
+            return <Range parameters={parameters} bringBackState={parameters => bringBackState(parameters, id)} />;
         case "selector":
-            return <Selector bringBackState={parameters => bringBackState(parameters, id)} />;
+            return <Selector parameters={parameters} bringBackState={parameters => bringBackState(parameters, id)} />;
         case "date":
-            return <Dates bringBackState={parameters => bringBackState(parameters, id)} />;
+            return <Dates parameters={parameters} bringBackState={parameters => bringBackState(parameters, id)} />;
         default:
             break;
       }
@@ -96,9 +96,9 @@ export default ({
                 <Card elevation={8} style={{ margin:'20px 0px' }}>
                 <CardContent>
                     <div className={header}>
-                        <QuestionTitle defaultName={question.name} id={id} bringBackName={bringBackName} />
+                        <QuestionTitle defaultName={question || ""} id={id} bringBackName={bringBackName} />
                         <div>
-                          <FormControlLabel label="Required" control={<Switch onChange={({target}) => toggleRequired(target.checked, id)} value={required} />} />
+                          <FormControlLabel label="Required" control={<Switch onChange={({target}) => toggleRequired(target.checked, id)} checked={required} />} />
                           <FormControl>
                             <Select
                               value={selected}
@@ -131,7 +131,7 @@ const QuestionTitle = ({id, bringBackName, defaultName}) => {
 
     const { questionTitleStyle, inputButton } = useStyle();
 
-    const [questionTitle, setQuestionTitle] = React.useState();
+    const [questionTitle, setQuestionTitle] = React.useState(defaultName || "");
     const questionNameEffect = () => bringBackName(id, questionTitle)
     React.useEffect(questionNameEffect, [questionTitle])
 
@@ -142,6 +142,7 @@ const QuestionTitle = ({id, bringBackName, defaultName}) => {
     return (
         <div className={questionTitleStyle}>
           <TextField
+            value={defaultName}
             className={inputButton}
             onChange={({ target }) => handleTextFieldChange(target.value)}
             defaultValue={questionTitle}

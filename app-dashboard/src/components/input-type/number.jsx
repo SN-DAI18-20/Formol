@@ -13,11 +13,11 @@ const useStyle = makeStyles({
 	}
 });
 
-export const Number = ({bringBackState}) => {
-	const { number } = useStyle();
-	const [ between, setBetween ] = React.useState(false);
-	const [ min, setMin ] = React.useState(0);
-	const [ max, setMax ] = React.useState(10);
+export const Number = ({bringBackState, parameters}) => {
+    const { number } = useStyle();
+	const [ between, setBetween ] = React.useState(parameters?.min ? true : false);
+	const [ min, setMin ] = React.useState(parameters?.min || 0);
+	const [ max, setMax ] = React.useState(parameters?.max || 10);
 
   const handleMinChange = (minToChange) => {
     if(minToChange < max){
@@ -37,7 +37,9 @@ export const Number = ({bringBackState}) => {
 
 	React.useEffect(
 		() => {
-			setMin(0);
+            if(!min){
+                setMin(0);
+            }
 		},
 		[ between ]
   );
