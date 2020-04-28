@@ -27,6 +27,7 @@ const CONFIGURED_QUEUES = config.backend_queues || [];
 
             logger.info(`Queue '${CONFIGURED_QUEUES[queue]}' configured!`);
         } catch (err) {
+            logger.error(err)
             logger.error(
                 `Unable to configure '${CONFIGURED_QUEUES[queue]}' queue ` +
                     `because it not exists.`
