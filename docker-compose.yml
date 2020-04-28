@@ -57,6 +57,7 @@ services:
     #   - NODE_ENV=PRODUCTION
     depends_on:
       - caddy
+      - api
     links:
       - api:api.formol.dev
     volumes:
@@ -76,6 +77,8 @@ services:
     #   - NODE_ENV=PRODUCTION
     depends_on:
       - caddy
+      - postgresql
+      - redis
       - backend
     links:
       - postgresql:psql.formol.dev
@@ -93,7 +96,8 @@ services:
     build: backend-poll-generator
     restart: on-failure
     depends_on:
-      - caddy
+      - minio
+      - redis
     links:
       - redis:redis.formol.dev
       - minio:s3.formol.dev
