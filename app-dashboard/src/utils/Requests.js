@@ -1,5 +1,4 @@
 import axios from 'axios'
-import https from 'https'
 
 const url = process.env.NODE_ENV == 'development'
   ? "https://api.dev.formol.site/v1/polls"

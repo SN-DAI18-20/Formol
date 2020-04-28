@@ -145,7 +145,7 @@ const QuestionTitle = ({id, bringBackName, defaultName}) => {
             value={defaultName}
             className={inputButton}
             onChange={({ target }) => handleTextFieldChange(target.value)}
-            defaultValue={questionTitle}
+            defaultValue={questionTitle || ""}
             variant="outlined"
             label="Nom de la question"
           />
