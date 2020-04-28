@@ -1,4 +1,9 @@
 import React from 'react';
+
+import Link from 'next/link'
+
+import { getPolls } from '../utils/Requests'
+
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import AddBoxIcon from '@material-ui/icons/AddBox';
@@ -31,8 +36,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const http = require('http');
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -63,17 +66,15 @@ function stableSort(array, comparator, search) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-
-
 export default function SimpleTable() {
   const classes = useStyles();
   const [search, setSearch] = React.useState();
-  const [polls, setPolls] = React.useState([]);  
+  const [polls, setPolls] = React.useState([]);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [page, setPage] = React.useState(0);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
-  
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -97,12 +98,10 @@ export default function SimpleTable() {
   }
 
   React.useEffect(() => {
-    http.get('http://www.mocky.io/v2/5e9b7b133300009432bf17b9', (res) => {
-      res.setEncoding('utf8')  
-      res.on('data', function(body){
-       setPolls(JSON.parse(body));    
-      })  
-    });
+      (async () => {
+          const data = await getPolls()
+          setPolls(data)
+    })()
   }, [])
 
   function IsPublished(pollIsPublished){
@@ -128,12 +127,14 @@ export default function SimpleTable() {
                 <TextField fullWidth size="small" id="outlined-search" label="Search field" type="search" variant="outlined" value={search} onChange={handleChangeSearch}/>
               </Grid>
               <Grid item xs={3} align="center">
-              <Fab className={classes.favButton} variant="extended" color="primary" aria-label="add" onClick={() => handleNewPoll()} style={{position: 'fixed'}}>
-                <AddBoxIcon />
-                  Nouveau
-              </Fab>
-               
-              </Grid>          
+                <Link href="/create-formulaire">
+                  <Fab className={classes.favButton} variant="extended" color="primary" aria-label="add" onClick={() => handleNewPoll()} style={{position: 'fixed'}}>
+                    <AddBoxIcon />
+                      Nouveau
+                  </Fab>
+                </Link>
+
+              </Grid>
             </Grid>
 
             <TableContainer component={Paper}>
@@ -161,9 +162,11 @@ export default function SimpleTable() {
                       <TableCell align="center">{IsPublished(poll.is_published)}</TableCell>
                       <TableCell align="center">{poll.updated_at}</TableCell>
                       <TableCell align="center">
-                        <Button onClick={() => handleSeePoll(poll.id)} variant="contained" color="primary" className={classes.button} startIcon={<VisibilityIcon />}>
-                          Voir
-                        </Button>
+                        <Link href={`/gestionFormulaire?id=${poll.id}`}>
+                          <Button onClick={() => handleSeePoll(poll.id)} variant="contained" color="primary" className={classes.button} startIcon={<VisibilityIcon />}>
+                            Voir
+                          </Button>
+                        </Link>
                       </TableCell>
                     </TableRow>
                   ))}

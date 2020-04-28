@@ -3,13 +3,13 @@ import React from 'react';
 import Slider from '@material-ui/core/Slider';
 import TextField from '@material-ui/core/TextField';
 
-export const Range = ({bringBackState}) => {
-  const [ maxValue, setMaxValue ] = React.useState(20);
-  const [minValue, setMinValue] = React.useState(-20);
+export const Range = ({bringBackState, parameters}) => {
+  const [ maxValue, setMaxValue ] = React.useState(parameters.max || 20);
+  const [minValue, setMinValue] = React.useState(parameters.min || -20);
   const [defaultValue, setDefaultValue] = React.useState(0);
 
   React.useEffect(() => {
-    bringBackState({minValue, maxValue})
+    bringBackState({min: parseInt(minValue), max: parseInt(maxValue)})
   }, [minValue, maxValue])
 
 	return (
@@ -28,7 +28,6 @@ export const Range = ({bringBackState}) => {
           label="Max"
 					value={maxValue}
 					onChange={({ target }) => {
-            console.info(target.value)
 						setMaxValue(target.value);
 					}}
 				/>

@@ -1,7 +1,7 @@
-import React from 'react';
+// import React from 'react';
 
-import { Formulaire } from '../src/components/formulaire/Formulaire';
+// import { Formulaire } from '../src/components/formulaire/Formulaire';
 
-export default {title: 'Formulaire'}
+// export default {title: 'Formulaire'}
 
-export const FormulaireNoState = () => <Formulaire/>
+// export const FormulaireNoState = () => <Formulaire/>

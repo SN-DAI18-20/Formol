@@ -1,6 +1,11 @@
-import 'date-fns';  
+import 'date-fns';
 import React from 'react';
+import Link from 'next/link'
+
 import { makeStyles } from '@material-ui/core/styles';
+
+import { getSpecificPoll, deletePoll, updatePollInformation, downloadPoll } from '../utils/Requests'
+
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -62,40 +67,24 @@ const useStyles = makeStyles((theme) => ({
         width: '100%',
         marginBottom: theme.spacing(2)
     }
-    
+
 }));
 
-const http = require('http');
-
-export default function versionList(props) {
+function VersionList(props) {
     const classes = useStyles();
-    const [poll, setPoll] = React.useState({
-        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        "name": "string",
-        "description": "string",
-        "draft": true,
-        "view_url": "string",
-        "download_url": "string",
-        "version": {
-          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-          "name": "string"
-        },
-        "published_at": "2020-04-23T13:28:30.116Z",
-        "depublished_at": "2020-04-23T23:28:30.116Z",
-        "created_at": "string",
-        "updated_at": "string"
-      });
+    const [poll, setPoll] = React.useState(props.poll);
     const [show, setShow] = React.useState(false);
     const [statePoll, setStatePoll] = React.useState(5);
 
     React.useEffect(() => {
-        //décommenter et changer l'url pour l'api, id du formule dans props.pollId
-        /*http.get('http://www.mocky.io/v2/5e68e2b02f00000498d8b08e', (res) => {
-          res.setEncoding('utf8')  
-          res.on('data', function(body){
-            setPoll(JSON.parse(body));    
-          })  
-        });*/
+        if(!poll.published_at){
+            console.log(poll.published_at)
+            setPoll({...poll, published_at: new Date()})
+        }
+
+        if(!poll.depublished_at){
+            setPoll({...poll, depublished_at: new Date()})
+        }
 
         if(new Date() < new Date(poll.published_at) || poll.draft == false)
             setShow(true);
@@ -103,7 +92,6 @@ export default function versionList(props) {
 
         if(poll.draft == true){
             setStatePoll(1);
-            console.log("test 1 " + statePoll);
             if(new Date() <= new Date(poll.published_at) && poll.draft == true)
                 setStatePoll(2);
         } else{
@@ -113,7 +101,7 @@ export default function versionList(props) {
                 setStatePoll(4);
         }
 
-        
+
     }, [])
 
     React.useEffect(()=>{
@@ -121,70 +109,80 @@ export default function versionList(props) {
             setPoll({...poll, draft:false});
         if(statePoll == 2 || statePoll == 3 || statePoll == 4){
             setShow(true);
-            console.log("show " + show);
         }
         else
             setShow(false);
     }, [statePoll]);
 
-    
+
 
 
     const handleChangeSelect = (event) => {
         setStatePoll(event.target.value);
-        
-        
+
+
         if(statePoll == 3 || statePoll == 4)
             setPoll({...poll, draft:false});
         if(statePoll == 2 || statePoll == 3 || statePoll == 4)
             setShow(true);
         else
             setShow(false);
-         console.log(show);
-        
+
     }
 
     const handleChangeName = (event) => {
         setPoll({...poll, name:event.target.value});
-        console.log(poll.name);
     }
 
     const handleChangeDescription = (event) => {
         setPoll({...poll, description:event.target.value});
-        console.log(poll.description);
     }
 
     const handlePublishedDateChange = (date) => {
-        setPoll({...poll, published_at:date.toISOString()})
-        console.log(poll.published_at);
+        setPoll({...poll, published_at:date})
     };
 
     const handleDepublishedDateChange = (date) => {
-        setPoll({...poll, depublished_at:date.toISOString()})
-        console.log(poll.depublished_at);
+        setPoll({...poll, depublished_at:date})
     };
 
-    function handleUpdate(id){
+    async function handleUpdate(){
         //request update des informations du formualire
-        console.log(poll);
+        const { name, description, draft, published_at, depublished_at } = poll;
+        console.log({poll})
+        try {
+
+            const response = await updatePollInformation(props.pollId, {
+                name, description, draft, published_at, depublished_at
+            })
+            console.log({response})
+        }catch(err) {
+            console.log({err})
+        }
     }
 
-    function handleDelete(id){
+    async function handleDelete(id){
         //ajouter redirection vers la page de poll
+        try {
+            await deletePoll(id)
+            window.location.replace("/formulaires")
+        } catch(error) {
+        }
     }
 
-    function handleDownload(id){
+    async function handleDownload(){
         //ajouter redirection vers la page de poll
+        console.log(props.poll.download_url)
+      const data = await downloadPoll(props.poll.download_url)
+      console.log({data})
     }
 
     function handleSee(id){
         //ajouter redirection vers la page de poll
-        console.log(props.pollId);
     }
 
     function handleSeeStats(id){
         //ajouter redirection vers la page des statistiques de la poll
-        console.log(props.pollId);
     }
 
 
@@ -201,7 +199,7 @@ export default function versionList(props) {
                                 className={classes.cardHeader}
                                 />
                                 <CardContent>
-                                    <div className={classes.cardContentInfo} direction="column" justify="left" alignItems="baseline">  
+                                    <div className={classes.cardContentInfo} direction="column" justify="left" alignItems="baseline">
                                         <Grid container>
                                             <Grid item className={classes.gridCustom}>
                                                 <Typography variant="subtitle1" align="left" >
@@ -210,8 +208,8 @@ export default function versionList(props) {
                                             </Grid>
                                             <Grid item className={classes.gridCustom}>
                                                 <TextField value={poll.name} onChange={handleChangeName}>
-                                                    
-                                                </TextField>                                                   
+
+                                                </TextField>
                                             </Grid>
                                             <Grid item className={classes.gridCustom}>
                                                 <Typography variant="subtitle1" align="left" >
@@ -220,14 +218,14 @@ export default function versionList(props) {
                                             </Grid>
                                             <Grid item className={classes.gridCustom}>
                                                 <TextField className={classes.gridCustom} onChange={handleChangeDescription} value={poll.description}  multiline rows={4}>
-                                                
+
                                                 </TextField>
                                             </Grid>
                                             <Grid item className={classes.gridCustom}>
                                                 <Typography>
                                                 Etat : {statePoll}
-                                                </Typography>    
-                                            </Grid> 
+                                                </Typography>
+                                            </Grid>
                                             <Grid item className={classes.gridCustom}>
                                                 <Select id="select" value={statePoll} onChange={handleChangeSelect}>
                                                     <MenuItem value={1}>Brouillon</MenuItem>
@@ -237,10 +235,10 @@ export default function versionList(props) {
                                                 </Select>
                                             </Grid>
                                             {
-                                                show ? 
+                                                show ?
                                                     <Grid Container direction="column" justify="center" alignItems="baseline">
-                                                
-                                                 
+
+
                                                         <Grid item className={classes.gridCustom}>
                                                             <Typography>
                                                                 Publication prévue pour :
@@ -264,17 +262,17 @@ export default function versionList(props) {
 
                                                                 </DateTimePicker>
                                                             </MuiPickersUtilsProvider>
-                                                        </Grid>  
+                                                        </Grid>
                                                     </Grid> : null}
-                                                
-                                            
-                                            
+
+
+
 
                                         </Grid>
                                     </div>
                                 </CardContent>
                                 <CardActions>
-                                    <Button onClick={() => handleUpdate(props.pollId)} variant="contained" color="primary" className={classes.button} startIcon={<SystemUpdateAltIcon />}>
+                                    <Button onClick={handleUpdate} variant="contained" color="primary" className={classes.button} startIcon={<SystemUpdateAltIcon />}>
                                     Modifier les informations
                                     </Button>
                                 </CardActions>
@@ -292,7 +290,7 @@ export default function versionList(props) {
                                         <Typography variant="subtitle1" align="left" >
                                         En appuyant  sur le bouton, vous supprimez l'intégralité des données de ce formulaire et il ne sera pas possible de le restaurer.
                                         </Typography>
-                                        
+
                                     </div>
                                 </CardContent>
                                 <CardActions>
@@ -319,7 +317,7 @@ export default function versionList(props) {
                                         Le formulaire est disponible sur le lien suivant : <br></br>
                                         <a href={poll.view_url}>{poll.view_url}</a>
                                         </Typography>
-                                        
+
                                     </div>
                                 </CardContent>
                                 <CardActions>
@@ -341,13 +339,15 @@ export default function versionList(props) {
                                         <Typography variant="subtitle1" align="left" >
                                         Le formulaire est disponible au téléchargement sur le lien suivant : <br></br>
                                         <a href={poll.download_url}>{poll.download_url}</a>
-                                        </Typography>                                     
+                                        </Typography>
                                     </div>
                                 </CardContent>
                                 <CardActions>
-                                    <Button onClick={() => handleDownload(props.pollId)} variant="contained" color="primary" className={classes.buttonDownload} startIcon={<GetAppIcon />}>
+                                  <a href={`${props.poll.download_url}`} download="poll.html" target="_blank">
+                                    <Button onClick={handleDownload} variant="contained" color="primary" className={classes.buttonDownload} startIcon={<GetAppIcon />}>
                                     Télécharger le formulaire
                                     </Button>
+                                  </a>
                                 </CardActions>
                             </Card>
                         </Grid>
@@ -359,7 +359,7 @@ export default function versionList(props) {
                                 className={classes.cardHeader}
                                 />
                                 <CardContent>
-                                    
+
                                 </CardContent>
                                 <CardActions>
                                     <Button onClick={() => handleSeeStats(props.pollId)} variant="contained" color="primary" startIcon={<EqualizerIcon />}>
@@ -369,9 +369,37 @@ export default function versionList(props) {
                             </Card>
                         </Grid>
                     </Grid>
-                </Grid>   
+                </Grid>
             </Grid>
         </Container>
     );
 }
 
+
+export default ({pollId}) =>{
+
+    const [pollData, setPollData] = React.useState(null)
+
+    React.useEffect(() => {
+        if(pollId){
+            (async () => {
+                const data = await getSpecificPoll(pollId)
+                const dataToPush = Object.assign({}, data)
+                dataToPush.published_at = dataToPush.published_at || new Date()
+                dataToPush.depublished_at = dataToPush.depublished_at || new Date()
+                setPollData(dataToPush)
+            })()
+        }
+    }, [pollId])
+
+    console.log({pollData})
+    return (
+        <div>
+            {
+                pollData
+                ? <VersionList poll={pollData} pollId={pollId} />
+                : <p>Load</p>
+            }
+        </div>
+    )
+}

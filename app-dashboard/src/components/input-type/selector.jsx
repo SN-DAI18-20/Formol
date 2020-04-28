@@ -18,11 +18,11 @@ const useStyle = makeStyles({
   }
 })
 
-export const Selector = ({bringBackState}) => {
+export const Selector = ({bringBackState, parameters}) => {
 
   const { addButton } = useStyle();
 
-  const [selectors, setSelectors] = React.useState([{id:1, value:'' } ]);
+  const [selectors, setSelectors] = React.useState(parameters?.items || [{id:1, value:'' } ]);
 
   const addSelector = () => {
     const selectorsTable = [...selectors]
@@ -45,7 +45,7 @@ export const Selector = ({bringBackState}) => {
   }
 
   React.useEffect(() => {
-    bringBackState({selectors})
+    bringBackState({items: selectors})
   }, [selectors])
 
   return (

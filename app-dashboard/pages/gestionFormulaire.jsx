@@ -1,5 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+import { useRouter } from 'next/router';
+
+import { Layout } from '../src/components/Layout'
 import SwipeableViews from 'react-swipeable-views';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -52,16 +56,31 @@ export default function gstionFormulaire() {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
+  const [pollID, setPollID] = React.useState(null)
+
+  const router = useRouter()
+  const { id, goToVersion } = router.query
+
+  React.useEffect(() => {
+    if(id){
+        setPollID(id)
+    }
+    if(goToVersion === "true"){
+        setValue(1)
+    }
+  }, [router])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const handleChangeIndex = (index) => {    
+  const handleChangeIndex = (index) => {
     setValue(index);
   };
 
   return (
+      <Layout>
+
     <div className={classes.root}>
       <AppBar position="static" color="default">
         <Tabs
@@ -71,7 +90,7 @@ export default function gstionFormulaire() {
           textColor="primary"
           variant="fullWidth"
           aria-label="full width tabs example"
-        >
+          >
           <Tab label="Général" {...a11yProps(0)} />
           <Tab label="Version" {...a11yProps(1)} />
           <Tab label="Utilisateur" {...a11yProps(2)} />
@@ -82,12 +101,12 @@ export default function gstionFormulaire() {
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={value}
         onChangeIndex={handleChangeIndex}
-      >
+        >
         <TabPanel value={value} index={0} dir={theme.direction}>
-            <PollSummary pollId={1}></PollSummary>
+            <PollSummary pollId={pollID}></PollSummary>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-            <ListVersion pollId={1}></ListVersion>
+            <ListVersion pollId={pollID}></ListVersion>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
             Utilisateurs
@@ -97,5 +116,6 @@ export default function gstionFormulaire() {
         </TabPanel>
       </SwipeableViews>
     </div>
+        </Layout>
   );
 }

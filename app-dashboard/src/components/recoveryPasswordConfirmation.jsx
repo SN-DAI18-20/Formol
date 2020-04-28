@@ -32,8 +32,8 @@ const useStyles = makeStyles(theme => ({
       if(pass1 != pass2 || pass1 == null || pass2 == null)
         setError(false)
       else
-        setError(true) 
-      console.log( 'Password1:', pass1, 'Password2: ', pass2, 'Error: ', error); 
+        setError(true)
+      console.log( 'Password1:', pass1, 'Password2: ', pass2, 'Error: ', error);
     }
 
 
@@ -46,20 +46,20 @@ const useStyles = makeStyles(theme => ({
                 <Typography component="h3" variant="h4" align="center" color="textPrimary">
                     Récuperation de mot de passe
                 </Typography>
-                <form className={classes.form} noValidate>         
-                    <TextField error={!error} onBlur={({target})=>{setPass1(target.value)}} id="newPassword" name="newPassword" label="Nouveau mot de passe" variant="outlined" margin="normal" required fullWidth autoFocus></TextField> 
-                    <TextField error={!error} onBlur={({target})=>{setPass2(target.value)}} id="confirmation" name="confirmation" label="Confirmation du mot de passe" variant="outlined" margin="normal" required fullWidth autoFocus></TextField>   
-                    {!error ? 
+                <form className={classes.form} noValidate>
+                    <TextField error={!error} onBlur={({target})=>{setPass1(target.value)}} id="newPassword" name="newPassword" label="Nouveau mot de passe" variant="outlined" margin="normal" required fullWidth autoFocus></TextField>
+                    <TextField error={!error} onBlur={({target})=>{setPass2(target.value)}} id="confirmation" name="confirmation" label="Confirmation du mot de passe" variant="outlined" margin="normal" required fullWidth autoFocus></TextField>
+                    {!error ?
                       <Typography component="h4" variant="h5" align="center" color="error">
                       Mot de passe incorrect.
-                      </Typography> 
-                      : <span></span> 
-                      
+                      </Typography>
+                      : <span></span>
+
                     }
-                    <Button fullWidth variant="contained" color="primary" onClick={() => verifyPassword()} className={classes.submit}>Confirmer</Button>                            
+                    <Button fullWidth variant="contained" color="primary" onClick={() => verifyPassword()} className={classes.submit}>Confirmer</Button>
                 </form>
             </Container>
-            </div>            
+            </div>
         </React.Fragment>
     );
 }

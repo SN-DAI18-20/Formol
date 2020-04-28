@@ -1,20 +1,21 @@
 import React from 'react';
 
+import { Layout } from '../src/components/Layout'
+
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 
-import { Layout } from '../src/components/Layout'
 import { Formulaire } from '../src/components/formulaire/Formulaire';
 
 export default () => {
 
     return (
-      <Layout>
+        <Layout>
         <Container maxWidth="md">
             <Box my={4}>
-                <Formulaire />
+              <Formulaire />
             </Box>
         </Container>
-      </Layout>
+        </Layout>
     )
 }

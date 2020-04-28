@@ -16,9 +16,9 @@ const useStyle = makeStyles({
 	}
 });
 
-export const Text = ({bringBackState}) => {
+export const Text = ({bringBackState, parameters}) => {
 	const [ text, setText ] = React.useState('');
-	const [ selectedTextRange, setSelectedTextRange ] = React.useState('Court');
+	const [ selectedTextRange, setSelectedTextRange ] = React.useState(parameters?.multiline ? 'Long' : 'Court');
   const [ selectedType, setSelectedType ] = React.useState('text');
 
   const { textField, textStyle } = useStyle();

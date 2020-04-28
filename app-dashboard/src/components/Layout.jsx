@@ -49,10 +49,7 @@ export const Layout = ({children}) => {
               <a className={classes.link} href="/create-poll">
                 <MenuItem children="Créer" onClick={closeMenu}/>
               </a>
-              <a className={classes.link} href="/modify-poll">
-                <MenuItem children="Modifier" onClick={closeMenu}/>
-              </a>
-              <a className={classes.link} href="/list-poll">
+              <a className={classes.link} href="/formulaires">
                 <MenuItem children="Liste" onClick={closeMenu}/>
               </a>
             </Menu>

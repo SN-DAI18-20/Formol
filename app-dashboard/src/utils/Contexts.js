@@ -32,8 +32,9 @@ export const reducer = (state, action) => {
 
 export const FormulaireProvider = ({children, defaultState}) => {
 
-  const [state, dispatch] = React.useReducer(reducer, defaultState)
+  const [state, dispatch] = React.useReducer(reducer, defaultState || {})
 
+  console.log({state})
   return (
     <FormulaireContext.Provider value={{state, dispatch}}>
       {children}

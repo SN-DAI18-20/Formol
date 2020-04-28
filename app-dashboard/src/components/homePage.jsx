@@ -76,18 +76,9 @@ const tiers = [
     buttonVariant: 'outlined',
   },
   {
-    title: 'Modification',
-    //subheader: 'Most popular',
-    price: '15',
-    description: [
-      'Modifier vos questionnaires.'
-    ],
-    buttonText: 'Modifier',
-    buttonVariant: 'outlined',
-  },
-  {
     title: 'Liste',
     price: '30',
+    link: 'formulaires',
     description: [
       'Liste de tous les questionnaire déjà créés.'
     ],
