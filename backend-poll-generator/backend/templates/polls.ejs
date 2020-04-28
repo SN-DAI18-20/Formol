@@ -68,7 +68,7 @@
     </style>
     <body>
         <div class="container poll-container">
-            <% for(var items=0; items < playload.length; items++){ %>
+            <% for(var items=0; items < renderedTemplate.length; items++){ %>
                 <h1 class="poll-title"><%= items.poll.name %></h1>
             <% }); %>
             <form class="form-horizontal" action="" method="POST">
@@ -191,7 +191,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <% if (items.questions.type == "range") { %>
-                                    <h4 class="card-title"><%= %></h4>
+                                    <h4 class="card-title"><%= items.questions.item %></h4>
                                 
                                     <div class="form-group">
                                         <input
@@ -219,7 +219,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <% if (items.questions.type == "selector") { %>
-                                    <h4 class="card-title"><%= %></h4>
+                                    <h4 class="card-title"><%= items.questions.item %></h4>
                               
                                     <div class="form-group">
                                         <select
