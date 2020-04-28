@@ -64,12 +64,13 @@ const s3Client = new Minio.Client({
                 return reply
                     .header(
                         'content-type',
-                        file.headers['content-type'] + '; charset=utf-8'
+                        'text/html; charset=utf-8'
                     )
                     .header('Cache-Control', 'max-age=3600')
                     .send(Buffer.concat(chunks).toString()).sent;
             });
         } catch (err) {
+            console.error(err);
             log.warn('Unable to retrieve the file from s3. Traceback: ', err);
             return reply.code(404).send({ message: 'File not found.' });
         }
